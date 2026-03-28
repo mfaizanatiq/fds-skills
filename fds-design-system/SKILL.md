@@ -476,18 +476,18 @@ Typography follows the same base → brand → component chain. The `design-toke
 
 ## FDS Icon Font — setup for every new project
 
-**Flow Icons V4** is served locally via the global `FDS Assets` server (port 8099, defined in `~/.claude/launch.json`). It must be started before the project preview. Serves from `/Users/designersmantra/Projects/fds-icons/dist`.
+**Flow Icons V4** is served locally via the global `FDS Assets` server (port 8099, defined in `~/.claude/launch.json`). It must be started before the project preview.
 
 ### Step 1 — Start the server
 ```
-~/.claude/launch.json → "FDS Assets" → npx serve --cors -p 8099 /Users/.../fds-icons/dist
+preview_start("FDS Assets")
 ```
-Start it with `preview_start("FDS Assets")` before generating code.
+This starts the `FDS Assets` server defined in `~/.claude/launch.json`. Call it before generating any code.
 
 ### Step 2 — Add the link tag (MANDATORY in every new FDS project)
 ```html
 <!-- FDS Icon Font — Flow Icons V4 -->
-<link rel="stylesheet" href="http://localhost:8099/fds-icons/font/fds-icons.css">
+<link rel="stylesheet" href="http://localhost:8099/fds-icons/fds-icons/font/fds-icons.css">
 ```
 
 ### Step 3 — Add icon sizing utility classes
@@ -540,31 +540,36 @@ Start it with `preview_start("FDS Assets")` before generating code.
 Full catalogue: `foundations.md §Iconography` — 739 nav + 294 badge icons.
 
 ### Production / CI / remote preview
-When the local server is not available (Netlify deploys, shared previews, CI), copy the font into the project:
+When the local server is not available (Netlify deploys, shared previews, CI), copy the icon font from the `fds-assets` repo into the project:
 ```bash
-cp -r /Users/designersmantra/Projects/fds-icons/dist/fds-icons/font ./assets/fonts/
+cp -r <fds-assets-dir>/fds-icons/fds-icons/font ./assets/fds-icons/
 ```
-Then reference: `<link rel="stylesheet" href="./assets/fonts/fds-icons.css">`
+Then reference: `<link rel="stylesheet" href="./assets/fds-icons/fds-icons.css">`
 
 ---
 
 ## FDS Typeface Loading — self-hosted URLs (mandatory)
 
-All FDS typefaces are self-hosted on `https://www.qatarairways.com`. **Never use Google Fonts, Adobe Typekit, or any external font CDN.**
+All FDS typefaces are cached in the `fds-assets` repo and served by the FDS Assets server at port 8099. **Never use Google Fonts, Adobe Typekit, or any external font CDN.**
 
 ### How font loading works
 
-The remote URLs are always the primary source. They are protected by Akamai hotlink rules — the browser passes automatically because it sends `Referer: https://www.qatarairways.com/...` when a stylesheet is loaded from within the site. **In production on qatarairways.com these URLs always work.**
+| Environment | Primary source | How |
+|---|---|---|
+| `*.qatarairways.com` production | CDN (`qatarairways.com`) | Browser Referer passes Akamai hotlink check automatically |
+| Any other origin (localhost, Netlify, prototypes) | Local server (`localhost:8099`) | FDS Assets server serves `fds-assets` repo — no CDN dependency |
 
-For external environments (prototypes, Netlify, CI, local dev on a different domain) the Referer check fails and fonts fall back to system fonts. In those cases **download the fonts locally** using the script below and prepend local paths to the `src:` list. The remote URL remains in the list as a secondary fallback.
+The CDN URLs are always included as a secondary fallback in the `src:` list, but the local server is primary for all non-QA work.
+
+> **Vietnamese note:** `noto-viet.woff2` is not yet in `fds-assets` — CDN URL remains primary for Viet. Pull request the file into the repo when available.
 
 ---
 
-### Step 1 — Check whether local fonts are needed
+### Step 1 — Start the FDS Assets server (all non-QA projects)
 
-**If the project is served from `*.qatarairways.com`** → skip to Step 2, use remote-only `@font-face`.
-
-**If the project is served from any other origin** (localhost, Netlify, GitHub Pages, a different domain) → run the download script first, then use the local+remote `@font-face` block.
+```
+preview_start("FDS Assets")   ← starts the FDS Assets server defined in ~/.claude/launch.json
+```
 
 ---
 
@@ -740,80 +745,27 @@ For external environments (prototypes, Netlify, CI, local dev on a different dom
 
 ---
 
-### Step 2B — Local + remote `@font-face` (external/prototype projects)
+### Step 2B — Local server `@font-face` (external/prototype projects)
 
-First run this download script from the project root to fetch all font files into `./assets/fonts/`:
-
-```bash
-#!/bin/bash
-# fds-fonts-download.sh
-# Run from project root: bash fds-fonts-download.sh
-# Downloads all FDS typefaces to ./assets/fonts/ for use in external/prototype projects.
-
-set -e
-DEST="./assets/fonts"
-mkdir -p "$DEST/cyrillic" "$DEST/latin" "$DEST/ar" "$DEST/fa" "$DEST/vi"
-
-QA="https://www.qatarairways.com/content/dam/assets"
-UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
-REF="https://www.qatarairways.com/en-qa/homepage.html"
-
-dl() { curl -fsSL --http1.1 -A "$UA" -e "$REF" -o "$1" "$2" && echo "  ✓ $1"; }
-
-# Jotia
-dl "$DEST/jotia_thin.woff"         "$QA/font/jotia_thin.woff"
-dl "$DEST/jotia_light.woff"        "$QA/font/jotia_light.woff"
-
-# Graphik Web
-dl "$DEST/Graphik-Light-Web.woff2"   "$QA/font/Graphik-Light-Web.woff2"
-dl "$DEST/Graphik-Light-Web.woff"    "$QA/font/Graphik-Light-Web.woff"
-dl "$DEST/Graphik-Regular-Web.woff2" "$QA/font/Graphik-Regular-Web.woff2"
-dl "$DEST/Graphik-Regular-Web.woff"  "$QA/font/Graphik-Regular-Web.woff"
-dl "$DEST/Graphik-Medium-Web.woff2"  "$QA/font/Graphik-Medium-Web.woff2"
-dl "$DEST/Graphik-Medium-Web.woff"   "$QA/font/Graphik-Medium-Web.woff"
-
-# Almarai (Arabic)
-dl "$DEST/ar/almarai.woff2" "$QA/font/ar/almarai.woff2"
-
-# Noto Sans — Cyrillic
-dl "$DEST/cyrillic/noto-cyrillic-1.woff2" "$QA/font/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVadyBx2pqPIif.woff2"
-dl "$DEST/cyrillic/noto-cyrillic-2.woff2" "$QA/font/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVYNyBx2pqPIif.woff2"
-
-# Noto Sans — Latin (shared by Thai, Far, Viet, Pol, Turk fallback rules)
-dl "$DEST/latin/noto-latin-1.woff2" "$QA/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2"
-dl "$DEST/latin/noto-latin-2.woff2" "$QA/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2"
-
-# Noto Sans Thai — Thai WOFF is 404 on CDN, Latin fallbacks above cover it
-# (skip download, noto-latin-1/2 already downloaded)
-
-# Noto Sans Farsi
-dl "$DEST/fa/noto-farsi.woff" "$QA/font/fa/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff"
-
-# Noto Sans Vietnamese
-dl "$DEST/vi/noto-viet.woff2" "$QA/font/vi/o-0NIpQlx3QUlC5A4PNjThZVa9yBx2pqPIif.woff2"
-
-# Noto Sans Pol / Turk — use noto-latin-1/2 above (no extra files needed)
-
-echo ""
-echo "Done. All FDS fonts saved to $DEST"
-```
-
-Then use this `@font-face` block (local path first, remote URL as fallback):
+Fonts are served by the FDS Assets server at `http://localhost:8099`. Make sure `preview_start("FDS Assets")` has been called. Use this block (local server first, CDN as fallback):
 
 ```css
+/* Local server paths → fds-assets repo served at localhost:8099            */
+/* CDN URLs are fallback only (blocked outside qatarairways.com by Akamai)  */
+
 /* ─── Jotia ─────────────────────────────────────────────────── */
 @font-face {
   font-family: 'Jotia';
   font-weight: 100;
   font-style: normal;
-  src: url('./assets/fonts/jotia_thin.woff') format('woff'),
+  src: url('http://localhost:8099/fds-typography/fonts/jotia/jotia_thin.woff') format('woff'),
        url('https://www.qatarairways.com/content/dam/assets/font/jotia_thin.woff') format('woff');
 }
 @font-face {
   font-family: 'Jotia';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/jotia_light.woff') format('woff'),
+  src: url('http://localhost:8099/fds-typography/fonts/jotia/jotia_light.woff') format('woff'),
        url('https://www.qatarairways.com/content/dam/assets/font/jotia_light.woff') format('woff');
 }
 
@@ -822,8 +774,8 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-family: 'Graphik Web';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/Graphik-Light-Web.woff2') format('woff2'),
-       url('./assets/fonts/Graphik-Light-Web.woff') format('woff'),
+  src: url('http://localhost:8099/fds-typography/fonts/graphik/Graphik-Light-Web.woff2') format('woff2'),
+       url('http://localhost:8099/fds-typography/fonts/graphik/Graphik-Light-Web.woff') format('woff'),
        url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Light-Web.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Light-Web.woff') format('woff');
 }
@@ -831,8 +783,8 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-family: 'Graphik Web';
   font-weight: 400;
   font-style: normal;
-  src: url('./assets/fonts/Graphik-Regular-Web.woff2') format('woff2'),
-       url('./assets/fonts/Graphik-Regular-Web.woff') format('woff'),
+  src: url('http://localhost:8099/fds-typography/fonts/graphik/Graphik-Regular-Web.woff2') format('woff2'),
+       url('http://localhost:8099/fds-typography/fonts/graphik/Graphik-Regular-Web.woff') format('woff'),
        url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Regular-Web.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Regular-Web.woff') format('woff');
 }
@@ -840,8 +792,8 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-family: 'Graphik Web';
   font-weight: 500;
   font-style: normal;
-  src: url('./assets/fonts/Graphik-Medium-Web.woff2') format('woff2'),
-       url('./assets/fonts/Graphik-Medium-Web.woff') format('woff'),
+  src: url('http://localhost:8099/fds-typography/fonts/graphik/Graphik-Medium-Web.woff2') format('woff2'),
+       url('http://localhost:8099/fds-typography/fonts/graphik/Graphik-Medium-Web.woff') format('woff'),
        url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Medium-Web.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Medium-Web.woff') format('woff');
 }
@@ -851,7 +803,7 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-family: 'Almarai';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/ar/almarai.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/almarai/almarai.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/ar/almarai.woff2') format('woff2');
 }
 
@@ -861,7 +813,7 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-weight: 300;
   font-style: normal;
   unicode-range: U+0400-045F;
-  src: url('./assets/fonts/cyrillic/noto-cyrillic-1.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVadyBx2pqPIif.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVadyBx2pqPIif.woff2') format('woff2');
 }
 @font-face {
@@ -869,7 +821,7 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-weight: 300;
   font-style: normal;
   unicode-range: U+0400-045F;
-  src: url('./assets/fonts/cyrillic/noto-cyrillic-2.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVYNyBx2pqPIif.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVYNyBx2pqPIif.woff2') format('woff2');
 }
 
@@ -879,7 +831,7 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-weight: 300;
   font-style: normal;
   unicode-range: U+0000-00FF;
-  src: url('./assets/fonts/latin/noto-latin-1.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
 }
 @font-face {
@@ -887,31 +839,30 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-weight: 300;
   font-style: normal;
   unicode-range: U+0000-00FF;
-  src: url('./assets/fonts/latin/noto-latin-2.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
 }
 
 /* ─── Noto Sans Thai ─────────────────────────────────────────── */
-/* Thai WOFF returns 404 on CDN — Latin WOFF2 rules below serve as fallback */
+/* Thai WOFF not in fds-assets + 404 on CDN — Latin WOFF2 rules are the fallback */
 @font-face {
   font-family: 'Noto Sans Thai';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/th/noto-thai.woff') format('woff'),
-       url('https://www.qatarairways.com/content/dam/assets/th/iJWnBXeUZi_OHPqn4wq6hQ2_hbJ1xyN9wd43SofNWcd1MKVQt_So_9CdU8ptlyJ0Rjn23Xl8Ng.woff') format('woff');
+  src: url('https://www.qatarairways.com/content/dam/assets/th/iJWnBXeUZi_OHPqn4wq6hQ2_hbJ1xyN9wd43SofNWcd1MKVQt_So_9CdU8ptlyJ0Rjn23Xl8Ng.woff') format('woff');
 }
 @font-face {
   font-family: 'Noto Sans Thai';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/latin/noto-latin-1.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Noto Sans Thai';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/latin/noto-latin-2.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
 }
 
@@ -920,44 +871,44 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-family: 'Noto Sans Far';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/fa/noto-farsi.woff') format('woff'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/farsi/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff') format('woff'),
        url('https://www.qatarairways.com/content/dam/assets/font/fa/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff') format('woff');
 }
 @font-face {
   font-family: 'Noto Sans Far';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/latin/noto-latin-1.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Noto Sans Far';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/latin/noto-latin-2.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
 }
 
 /* ─── Noto Sans Vietnamese ───────────────────────────────────── */
+/* noto-viet.woff2 not yet in fds-assets — CDN only until added to repo */
 @font-face {
   font-family: 'Noto Sans Viet';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/vi/noto-viet.woff2') format('woff2'),
-       url('https://www.qatarairways.com/content/dam/assets/font/vi/o-0NIpQlx3QUlC5A4PNjThZVa9yBx2pqPIif.woff2') format('woff2');
+  src: url('https://www.qatarairways.com/content/dam/assets/font/vi/o-0NIpQlx3QUlC5A4PNjThZVa9yBx2pqPIif.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Noto Sans Viet';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/latin/noto-latin-1.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Noto Sans Viet';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/latin/noto-latin-2.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
 }
 
@@ -966,14 +917,14 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-family: 'Noto Sans Pol';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/latin/noto-latin-1.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Noto Sans Pol';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/latin/noto-latin-2.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
 }
 
@@ -982,14 +933,14 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-family: 'Noto Sans Turk';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/latin/noto-latin-1.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Noto Sans Turk';
   font-weight: 300;
   font-style: normal;
-  src: url('./assets/fonts/latin/noto-latin-2.woff2') format('woff2'),
+  src: url('http://localhost:8099/fds-typography/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
 }
 ```
