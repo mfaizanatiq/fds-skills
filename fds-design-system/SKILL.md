@@ -778,11 +778,47 @@ The chain is: `@font-face` registers the font → `--f-base-type-family-*` names
 .f-icon--lg { font-size: 32px; }
 ```
 
+### Icon sizing rule
+
+| Rendered size | Icon set to use | How |
+|---|---|---|
+| ≤ 24px | `icon-ic-nav-{name}` | Set `font-size: 24px` (or smaller) directly |
+| > 24px up to 48px | `icon-ic-nav-{name}` at 48px inside a frame | **Do not upscale the glyph** — keep icon at 48px, use a larger frame/container to fill the space |
+| Any size — illustrative | `icon-ic-badge-{name}` | **Only when explicitly asked for a badge icon** |
+
+**Default rule:** always reach for `icon-ic-nav-*`. The maximum glyph size is 48px. When a visually larger icon is needed, wrap it in a sized container (circle, card, tile) rather than increasing `font-size` beyond 48px.
+
+```html
+<!-- Standard UI icon at 24px -->
+<i class="icon icon-ic-nav-search" aria-hidden="true" style="font-size:24px"></i>
+
+<!-- Large icon — nav glyph at 48px inside a 96px frame -->
+<div class="f-icon-frame" aria-hidden="true">
+  <i class="icon icon-ic-nav-aircraft" style="font-size:48px"></i>
+</div>
+
+<!-- Badge icon — only when explicitly requested -->
+<i class="icon icon-ic-badge-qsuite" aria-hidden="true" style="font-size:48px"></i>
+```
+
+```css
+/* Frame wrapper — makes the icon appear larger without exceeding 48px glyph */
+.f-icon-frame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;   /* adjust to desired visual size */
+  height: 96px;
+  border-radius: 50%;  /* or var(--f-radius-*) for rounded square */
+  background: var(--f-color-surface-secondary);
+}
+```
+
 ### Icon class naming
 | Prefix | Size | Use |
 |---|---|---|
-| `icon-ic-nav-{name}` | 24px | All UI icons — nav, actions, arrows, utilities |
-| `icon-ic-badge-{name}` | 48px | Illustrative / category badges |
+| `icon-ic-nav-{name}` | 24–48px | All UI icons — nav, actions, arrows, utilities |
+| `icon-ic-badge-{name}` | 48px | Illustrative / category badges — use only when explicitly asked |
 | `icon-ic-nav-ar-{name}` | 24px | RTL Arabic variants |
 
 ### Common icon names (nav 24px)
