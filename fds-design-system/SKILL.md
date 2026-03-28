@@ -649,11 +649,24 @@ For external environments (prototypes, Netlify, CI, local dev on a different dom
 }
 
 /* ─── Noto Sans Thai ─────────────────────────────────────────── */
+/* Thai WOFF returns 404 on CDN — browser falls through to Latin WOFF2 rules */
 @font-face {
   font-family: 'Noto Sans Thai';
   font-weight: 300;
   font-style: normal;
   src: url('https://www.qatarairways.com/content/dam/assets/th/iJWnBXeUZi_OHPqn4wq6hQ2_hbJ1xyN9wd43SofNWcd1MKVQt_So_9CdU8ptlyJ0Rjn23Xl8Ng.woff') format('woff');
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
 }
 
 /* ─── Noto Sans Farsi / Persian ──────────────────────────────── */
@@ -661,8 +674,19 @@ For external environments (prototypes, Netlify, CI, local dev on a different dom
   font-family: 'Noto Sans Far';
   font-weight: 300;
   font-style: normal;
-  src: url('https://www.qatarairways.com/content/dam/assets/font/fa/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff') format('woff'),
-       url('https://www.qatarairways.com/content/dam/assets/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+  src: url('https://www.qatarairways.com/content/dam/assets/font/fa/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff') format('woff');
+}
+@font-face {
+  font-family: 'Noto Sans Far';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Far';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
 }
 
 /* ─── Noto Sans Vietnamese ───────────────────────────────────── */
@@ -672,8 +696,46 @@ For external environments (prototypes, Netlify, CI, local dev on a different dom
   font-style: normal;
   src: url('https://www.qatarairways.com/content/dam/assets/font/vi/o-0NIpQlx3QUlC5A4PNjThZVa9yBx2pqPIif.woff2') format('woff2');
 }
+@font-face {
+  font-family: 'Noto Sans Viet';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Viet';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
 
-/* ─── Noto Sans Polish / Turkish — use Latin subset above ────── */
+/* ─── Noto Sans Polish ───────────────────────────────────────── */
+@font-face {
+  font-family: 'Noto Sans Pol';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Pol';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
+
+/* ─── Noto Sans Turkish ──────────────────────────────────────── */
+@font-face {
+  font-family: 'Noto Sans Turk';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Turk';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
 ```
 
 ---
@@ -690,13 +752,13 @@ First run this download script from the project root to fetch all font files int
 
 set -e
 DEST="./assets/fonts"
-mkdir -p "$DEST/cyrillic" "$DEST/latin" "$DEST/ar" "$DEST/th" "$DEST/fa" "$DEST/vi"
+mkdir -p "$DEST/cyrillic" "$DEST/latin" "$DEST/ar" "$DEST/fa" "$DEST/vi"
 
 QA="https://www.qatarairways.com/content/dam/assets"
 UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
 REF="https://www.qatarairways.com/en-qa/homepage.html"
 
-dl() { curl -fsSL -A "$UA" -e "$REF" -o "$1" "$2" && echo "  ✓ $1"; }
+dl() { curl -fsSL --http1.1 -A "$UA" -e "$REF" -o "$1" "$2" && echo "  ✓ $1"; }
 
 # Jotia
 dl "$DEST/jotia_thin.woff"         "$QA/font/jotia_thin.woff"
@@ -717,19 +779,20 @@ dl "$DEST/ar/almarai.woff2" "$QA/font/ar/almarai.woff2"
 dl "$DEST/cyrillic/noto-cyrillic-1.woff2" "$QA/font/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVadyBx2pqPIif.woff2"
 dl "$DEST/cyrillic/noto-cyrillic-2.woff2" "$QA/font/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVYNyBx2pqPIif.woff2"
 
-# Noto Sans — Latin (shared by Polish + Turkish too)
+# Noto Sans — Latin (shared by Thai, Far, Viet, Pol, Turk fallback rules)
 dl "$DEST/latin/noto-latin-1.woff2" "$QA/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2"
 dl "$DEST/latin/noto-latin-2.woff2" "$QA/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2"
 
-# Noto Sans Thai
-dl "$DEST/th/noto-thai.woff" "$QA/th/iJWnBXeUZi_OHPqn4wq6hQ2_hbJ1xyN9wd43SofNWcd1MKVQt_So_9CdU8ptlyJ0Rjn23Xl8Ng.woff"
+# Noto Sans Thai — Thai WOFF is 404 on CDN, Latin fallbacks above cover it
+# (skip download, noto-latin-1/2 already downloaded)
 
 # Noto Sans Farsi
-dl "$DEST/fa/noto-farsi.woff"  "$QA/font/fa/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff"
-dl "$DEST/fa/noto-farsi.woff2" "$QA/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2"
+dl "$DEST/fa/noto-farsi.woff" "$QA/font/fa/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff"
 
 # Noto Sans Vietnamese
 dl "$DEST/vi/noto-viet.woff2" "$QA/font/vi/o-0NIpQlx3QUlC5A4PNjThZVa9yBx2pqPIif.woff2"
+
+# Noto Sans Pol / Turk — use noto-latin-1/2 above (no extra files needed)
 
 echo ""
 echo "Done. All FDS fonts saved to $DEST"
@@ -829,12 +892,27 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
 }
 
 /* ─── Noto Sans Thai ─────────────────────────────────────────── */
+/* Thai WOFF returns 404 on CDN — Latin WOFF2 rules below serve as fallback */
 @font-face {
   font-family: 'Noto Sans Thai';
   font-weight: 300;
   font-style: normal;
   src: url('./assets/fonts/th/noto-thai.woff') format('woff'),
        url('https://www.qatarairways.com/content/dam/assets/th/iJWnBXeUZi_OHPqn4wq6hQ2_hbJ1xyN9wd43SofNWcd1MKVQt_So_9CdU8ptlyJ0Rjn23Xl8Ng.woff') format('woff');
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-weight: 300;
+  font-style: normal;
+  src: url('./assets/fonts/latin/noto-latin-1.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-weight: 300;
+  font-style: normal;
+  src: url('./assets/fonts/latin/noto-latin-2.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
 }
 
 /* ─── Noto Sans Farsi / Persian ──────────────────────────────── */
@@ -843,9 +921,21 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   font-weight: 300;
   font-style: normal;
   src: url('./assets/fonts/fa/noto-farsi.woff') format('woff'),
-       url('./assets/fonts/fa/noto-farsi.woff2') format('woff2'),
-       url('https://www.qatarairways.com/content/dam/assets/font/fa/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff') format('woff'),
-       url('https://www.qatarairways.com/content/dam/assets/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+       url('https://www.qatarairways.com/content/dam/assets/font/fa/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff') format('woff');
+}
+@font-face {
+  font-family: 'Noto Sans Far';
+  font-weight: 300;
+  font-style: normal;
+  src: url('./assets/fonts/latin/noto-latin-1.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Far';
+  font-weight: 300;
+  font-style: normal;
+  src: url('./assets/fonts/latin/noto-latin-2.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
 }
 
 /* ─── Noto Sans Vietnamese ───────────────────────────────────── */
@@ -856,28 +946,75 @@ Then use this `@font-face` block (local path first, remote URL as fallback):
   src: url('./assets/fonts/vi/noto-viet.woff2') format('woff2'),
        url('https://www.qatarairways.com/content/dam/assets/font/vi/o-0NIpQlx3QUlC5A4PNjThZVa9yBx2pqPIif.woff2') format('woff2');
 }
+@font-face {
+  font-family: 'Noto Sans Viet';
+  font-weight: 300;
+  font-style: normal;
+  src: url('./assets/fonts/latin/noto-latin-1.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Viet';
+  font-weight: 300;
+  font-style: normal;
+  src: url('./assets/fonts/latin/noto-latin-2.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
 
-/* ─── Noto Sans Polish / Turkish — use Latin subset above ────── */
+/* ─── Noto Sans Polish ───────────────────────────────────────── */
+@font-face {
+  font-family: 'Noto Sans Pol';
+  font-weight: 300;
+  font-style: normal;
+  src: url('./assets/fonts/latin/noto-latin-1.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Pol';
+  font-weight: 300;
+  font-style: normal;
+  src: url('./assets/fonts/latin/noto-latin-2.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
+
+/* ─── Noto Sans Turkish ──────────────────────────────────────── */
+@font-face {
+  font-family: 'Noto Sans Turk';
+  font-weight: 300;
+  font-style: normal;
+  src: url('./assets/fonts/latin/noto-latin-1.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Turk';
+  font-weight: 300;
+  font-style: normal;
+  src: url('./assets/fonts/latin/noto-latin-2.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
 ```
 
 ---
 
 ### Font family reference
 
-| Font family | Weights loaded | Format | Purpose |
+| Font family | Weights | Files | Notes |
 |---|---|---|---|
-| `Jotia` | 100, 300 | WOFF | Brand display — `page-title`, `title-1` through `title-5` |
-| `Graphik Web` | 300, 400, 500 | WOFF2 + WOFF | Primary UI — all body, headline, caption, link styles |
-| `Almarai` | 300 | WOFF2 | Arabic language |
-| `Noto Sans` | 300 | WOFF2 | Cyrillic, Latin, Polish, Turkish subsets |
-| `Noto Sans Thai` | 300 | WOFF | Thai language |
-| `Noto Sans Far` | 300 | WOFF + WOFF2 | Farsi / Persian |
-| `Noto Sans Viet` | 300 | WOFF2 | Vietnamese |
+| `Jotia` | 100, 300 | WOFF | Brand display — `page-title`, `title-1–5` |
+| `Graphik Web` | 300, 400, 500 | WOFF2 + WOFF | Primary UI — body, headline, caption, link |
+| `Almarai` | 300 | WOFF2 | Arabic |
+| `Noto Sans` | 300 | WOFF2 | Cyrillic + Latin subsets (separate unicode-range rules) |
+| `Noto Sans Thai` | 300 | WOFF2 (Latin fallback) | Thai WOFF is 404 on CDN — Latin WOFF2 rules cover Latin chars in Thai text |
+| `Noto Sans Far` | 300 | WOFF + WOFF2 | Farsi WOFF + Latin WOFF2 fallback rules |
+| `Noto Sans Viet` | 300 | WOFF2 | Vietnamese WOFF2 + Latin WOFF2 fallback rules |
+| `Noto Sans Pol` | 300 | WOFF2 | Latin WOFF2 rules (Polish uses Latin script) |
+| `Noto Sans Turk` | 300 | WOFF2 | Latin WOFF2 rules (Turkish uses Latin script) |
 
 ### Rules
 
 - Include **all** `@font-face` blocks at the top of the stylesheet, before `:root` or any component CSS
-- Polish (`Pol`) and Turkish (`Turk`) share the Latin subset — no additional `@font-face` needed
+- Locale fonts (Thai, Far, Viet, Pol, Turk) each use multiple separate `@font-face` rules — this matches the live site structure
+- Pol and Turk have their own `@font-face` declarations (Latin WOFF2 files) — do not omit them
 - `font-display: swap` may be added for performance but is not required by FDS spec
 - Never reference a font family name that is not in the table above
 
