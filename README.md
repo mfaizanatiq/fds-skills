@@ -6,7 +6,7 @@ Qatar Airways Flow Design System (FDS) skills for Claude Code.
 
 | Skill | Description |
 |-------|-------------|
-| `flow-design-system` | FDS reference — components, tokens, typography, colors, spacing, patterns, content guidelines |
+| `fds-design-system` | FDS reference — components, tokens, typography, colors, spacing, patterns, content guidelines |
 | `fds-presentations` | FDS presentation deck system — dark/light themes, slide layouts, 1920×1080 canvas |
 
 ## Setup on a new machine

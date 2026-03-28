@@ -1,5 +1,5 @@
 ---
-name: flow-design-system
+name: fds-design-system
 description: |
   Qatar Airways Flow Design System (FDS) reference for building UI that complies
   with FDS guidelines. Use whenever: (1) implementing UI components with FDS colors,
@@ -8,10 +8,11 @@ description: |
   FDS voice/tone/error-message guidelines, (5) asked about any FDS foundation
   values — colors, type scale, spacing, motion, iconography, elevation, surfaces,
   icons, loyalty tiers, flight status, tag colors, or brand tokens. Triggers on
-  mentions of "FDS", "Flow Design System", "Qatar Airways design", or requests
-  involving FDS components, tokens, colors, typography, fonts, spacing, shadows,
-  motion, icons, or brand guidelines. When in doubt, trigger — don't leave the
-  user without design system guidance.
+  mentions of "FDS", "fds-design-system", "flow-design-system", "Flow Design System",
+  "FDS Design System", "Qatar Airways design", or requests involving FDS components,
+  tokens, colors, typography, fonts, spacing, shadows, motion, icons, or brand
+  guidelines. When in doubt, trigger — don't leave the user without design system
+  guidance.
 ---
 
 # Flow Design System (FDS)
@@ -547,6 +548,139 @@ Then reference: `<link rel="stylesheet" href="./assets/fonts/fds-icons.css">`
 
 ---
 
+## FDS Typeface Loading — self-hosted URLs (mandatory)
+
+All FDS typefaces are self-hosted on `https://www.qatarairways.com`. **Never use Google Fonts, Adobe Typekit, or any external font CDN.** Always load fonts with these exact URLs.
+
+### `@font-face` declarations — copy verbatim into every new FDS project
+
+```css
+/* ─── Jotia ─────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Jotia';
+  font-weight: 100;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/jotia_thin.woff') format('woff');
+}
+@font-face {
+  font-family: 'Jotia';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/jotia_light.woff') format('woff');
+}
+
+/* ─── Graphik Web ────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Graphik Web';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Light-Web.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Light-Web.woff') format('woff');
+}
+@font-face {
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Regular-Web.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Regular-Web.woff') format('woff');
+}
+@font-face {
+  font-family: 'Graphik Web';
+  font-weight: 500;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Medium-Web.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Medium-Web.woff') format('woff');
+}
+
+/* ─── Almarai (Arabic) ───────────────────────────────────────── */
+@font-face {
+  font-family: 'Almarai';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/ar/almarai.woff2') format('woff2');
+}
+
+/* ─── Noto Sans — Cyrillic subset ────────────────────────────── */
+@font-face {
+  font-family: 'Noto Sans';
+  font-weight: 300;
+  font-style: normal;
+  unicode-range: U+0400-045F;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVadyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans';
+  font-weight: 300;
+  font-style: normal;
+  unicode-range: U+0400-045F;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVYNyBx2pqPIif.woff2') format('woff2');
+}
+
+/* ─── Noto Sans — Latin subset ───────────────────────────────── */
+@font-face {
+  font-family: 'Noto Sans';
+  font-weight: 300;
+  font-style: normal;
+  unicode-range: U+0000-00FF;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans';
+  font-weight: 300;
+  font-style: normal;
+  unicode-range: U+0000-00FF;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
+
+/* ─── Noto Sans Thai ─────────────────────────────────────────── */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/th/iJWnBXeUZi_OHPqn4wq6hQ2_hbJ1xyN9wd43SofNWcd1MKVQt_So_9CdU8ptlyJ0Rjn23Xl8Ng.woff') format('woff');
+}
+
+/* ─── Noto Sans Farsi / Persian ──────────────────────────────── */
+@font-face {
+  font-family: 'Noto Sans Far';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/fa/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff') format('woff'),
+       url('https://www.qatarairways.com/content/dam/assets/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
+
+/* ─── Noto Sans Vietnamese ───────────────────────────────────── */
+@font-face {
+  font-family: 'Noto Sans Viet';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/vi/o-0NIpQlx3QUlC5A4PNjThZVa9yBx2pqPIif.woff2') format('woff2');
+}
+
+/* ─── Noto Sans Polish / Turkish — use Latin subset above ────── */
+```
+
+### Font family reference
+
+| Font family | Weights loaded | Format | Purpose |
+|---|---|---|---|
+| `Jotia` | 100, 300 | WOFF | Brand display — `page-title`, `title-1` through `title-5` |
+| `Graphik Web` | 300, 400, 500 | WOFF2 + WOFF | Primary UI — all body, headline, caption, link styles |
+| `Almarai` | 300 | WOFF2 | Arabic language |
+| `Noto Sans` | 300 | WOFF2 | Cyrillic, Latin, Polish, Turkish subsets |
+| `Noto Sans Thai` | 300 | WOFF | Thai language |
+| `Noto Sans Far` | 300 | WOFF + WOFF2 | Farsi / Persian |
+| `Noto Sans Viet` | 300 | WOFF2 | Vietnamese |
+
+### Rules
+
+- Include **all** `@font-face` blocks at the top of the stylesheet, before `:root` or any component CSS
+- Polish (`Pol`) and Turkish (`Turk`) share the Latin subset — no additional `@font-face` needed
+- `font-display: swap` may be added for performance but is not required by FDS spec
+- Never reference a font family name that is not in the table above
+
+---
+
 ## Component implementation pattern — 4 steps (mandatory)
 
 Every FDS component follows this pattern without exception. No new properties in modifiers. No brand tokens in rules. No hardcoded px values.
@@ -675,6 +809,8 @@ Beyond token compliance, a well-built FDS UI should:
 
 > **Never load Google Fonts, Adobe Fonts, or any external font CDN.** FDS ships Jotia and Graphik as licensed typefaces. Use them directly. Never substitute Plus Jakarta Sans, DM Sans, Inter, or any other web font as a "stand-in" — not even with a comment saying it's temporary.
 
+> **Always include the `@font-face` declarations** from §FDS Typeface Loading above at the top of every new project's stylesheet. Without them the browser will fall back to Verdana/Arial and no FDS type token will render correctly.
+
 **Font stacks** — read the exact values from `foundations.md` §Typography §Font families before writing any code. Do not guess or hardcode:
 - Primary (headings/titles): `--f-base-type-family-primary` → read value from `foundations.md`
 - Secondary (body/UI): `--f-base-type-family-secondary` → read value from `foundations.md`
@@ -737,6 +873,7 @@ Run through this before declaring a component or page complete.
 - [ ] Modifiers only reassign component tokens — no new CSS properties
 
 **Typography**
+- [ ] `@font-face` declarations from §FDS Typeface Loading are present at the top of the stylesheet (Jotia, Graphik Web, and any locale-specific fonts needed)
 - [ ] No Google Fonts, Adobe Fonts, or external font CDN links anywhere in the output
 - [ ] All `--f-brand-type-*` tokens use font stacks sourced from `foundations.md` §Font families (`--f-base-type-family-primary` / `--f-base-type-family-secondary`) — no other font names, no hardcoded weight/size values
 - [ ] Token names are from the approved list only — no invented names like `display`, `label`, `overline`

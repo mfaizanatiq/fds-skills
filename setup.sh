@@ -7,7 +7,7 @@ set -e
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILLS_DIR="$HOME/.claude/skills"
 
-SKILLS=("flow-design-system" "fds-presentations")
+SKILLS=("fds-design-system" "fds-presentations")
 
 echo "Setting up FDS skills..."
 echo "Repo:   $REPO_DIR"
