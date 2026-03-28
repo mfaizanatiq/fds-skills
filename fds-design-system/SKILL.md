@@ -480,11 +480,14 @@ All fonts and icons are sourced from the `fds-assets` repo and copied into the p
 
 ### Step 1 — Copy assets into the project
 
-Copy font files and icon font from `fds-assets` into the project:
+Copy from `fds-assets` into the project root:
 
 ```
-fds-assets/fds-typography/fonts  →  ./assets/fonts/
-fds-assets/fds-icons/fds-icons/font  →  ./assets/icons/
+fds-assets/fds-typography/fonts             →  ./assets/fonts/
+fds-assets/fds-icons/fds-icons/font         →  ./assets/icons/fds-icons/
+fds-assets/fds-icons/fds-code-share/fds-code-share.css         →  ./assets/icons/
+fds-assets/fds-icons/fds-country-flags/fds-country-flags.css   →  ./assets/icons/
+fds-assets/fds-icons/fds-payment-badges/fds-payment-badges.css →  ./assets/icons/
 ```
 
 The resulting structure:
@@ -494,15 +497,18 @@ assets/
     jotia/
     graphik/
     almarai/
-    noto-sans/
-      cyrillic/
-      latin/
-      farsi/
+    noto-sans/  (cyrillic/ latin/ farsi/)
   icons/
-    fds-icons.css
-    fds-icons.woff2
-    fds-icons.woff
+    fds-icons/
+      fds-icons.css
+      fds-icons.woff2
+      fds-icons.woff
+    fds-code-share.css      ← 190 airline partner logos  (.ic-badge-{airline}, .ic-nav-generic-code-share-24)
+    fds-country-flags.css   ← 236 country flags          (.ic-nav-flag-{country})
+    fds-payment-badges.css  ← 100 payment methods        (.ic-payment-{method})
 ```
+
+> Code-share, flags, and payment CSS files are fully self-contained — SVGs are inlined as data URIs, no extra image assets needed.
 
 ### Step 2 — Create `fonts.css` (load once, reference everywhere via tokens)
 
@@ -727,8 +733,11 @@ Create `./css/fonts.css` (or equivalent entry stylesheet). This file does two th
 ### Step 3 — Link in HTML (in this order)
 
 ```html
-<!-- 1. Icon font -->
-<link rel="stylesheet" href="./assets/icons/fds-icons.css">
+<!-- 1. Icon libraries (font + CSS sprite libraries) -->
+<link rel="stylesheet" href="./assets/icons/fds-icons/fds-icons.css">
+<link rel="stylesheet" href="./assets/icons/fds-code-share.css">
+<link rel="stylesheet" href="./assets/icons/fds-country-flags.css">
+<link rel="stylesheet" href="./assets/icons/fds-payment-badges.css">
 <!-- 2. FDS fonts + family tokens -->
 <link rel="stylesheet" href="./css/fonts.css">
 <!-- 3. FDS tokens + component styles -->
@@ -800,6 +809,48 @@ The chain is: `@font-face` registers the font → `--f-base-type-family-*` names
 | Location | `icon-ic-nav-location-navigation` |
 
 Full catalogue: `foundations.md §Iconography` — 739 nav + 294 badge icons.
+
+### Code-share airline logos (`fds-code-share.css`)
+190 airline partner logos. All self-contained SVG data URIs — no extra files needed.
+
+```html
+<!-- Generic code-share icon -->
+<i class="ic-nav-generic-code-share-24" aria-hidden="true"></i>
+
+<!-- Specific airline partner (replace {airline} with IATA code lowercase) -->
+<i class="ic-badge-qr" aria-hidden="true"></i>   <!-- Qatar Airways -->
+<i class="ic-badge-ba" aria-hidden="true"></i>   <!-- British Airways -->
+<i class="ic-badge-aa" aria-hidden="true"></i>   <!-- American Airlines -->
+```
+
+Class pattern: `.ic-badge-{iata}` (lowercase IATA code).
+
+### Country flags (`fds-country-flags.css`)
+236 country flags. Self-contained SVG data URIs.
+
+```html
+<i class="ic-nav-flag-gb" aria-hidden="true"></i>   <!-- United Kingdom -->
+<i class="ic-nav-flag-us" aria-hidden="true"></i>   <!-- United States -->
+<i class="ic-nav-flag-qa" aria-hidden="true"></i>   <!-- Qatar -->
+<i class="ic-nav-flag-ae" aria-hidden="true"></i>   <!-- UAE -->
+```
+
+Class pattern: `.ic-nav-flag-{iso2}` (lowercase ISO 3166-1 alpha-2 code).
+
+### Payment method badges (`fds-payment-badges.css`)
+100 payment method logos. Self-contained SVG data URIs.
+
+```html
+<i class="ic-payment-visa" aria-hidden="true"></i>
+<i class="ic-payment-mastercard" aria-hidden="true"></i>
+<i class="ic-payment-amex" aria-hidden="true"></i>
+<i class="ic-payment-applepay" aria-hidden="true"></i>
+<i class="ic-payment-googlepay" aria-hidden="true"></i>
+```
+
+Class pattern: `.ic-payment-{method}` (lowercase, no spaces).
+
+> All three CSS libraries are fully self-contained — SVGs are inlined as data URIs. No additional image assets are required.
 
 ---
 
