@@ -14,8 +14,8 @@ Qatar Airways Flow Design System (FDS) skills for Claude Code.
 Clone the repo and run the setup script:
 
 ```bash
-git clone git@github.com:<your-username>/flow-design-system-skills.git ~/Projects/flow-design-system-skills
-cd ~/Projects/flow-design-system-skills
+git clone https://github.com/mfaizanatiq/fds-skills.git ~/Projects/fds-skills
+cd ~/Projects/fds-skills
 chmod +x setup.sh
 ./setup.sh
 ```
@@ -36,7 +36,7 @@ git push
 ## Syncing on another machine
 
 ```bash
-cd ~/Projects/flow-design-system-skills
+cd ~/Projects/fds-skills
 git pull
 ```
 
