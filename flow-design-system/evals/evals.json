@@ -1,0 +1,105 @@
+{
+  "skill_name": "flow-design-system",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "What are the exact CSS token names and hex values for all FDS warning state colors — text, background, border, and icon?",
+      "expected_output": "All four warning tokens listed with correct hex values from foundations.md and design-tokens.md"
+    },
+    {
+      "id": 2,
+      "prompt": "I'm building a loyalty tier badge component. What are the correct FDS background and text color tokens for all four loyalty tiers — Burgundy, Silver, Gold, and Platinum?",
+      "expected_output": "All 8 tokens (bg + text × 4 tiers) with correct hex values"
+    },
+    {
+      "id": 3,
+      "prompt": "What font family, size, and weight does FDS specify for a page title, body text, and caption? Give me the base type tokens and the brand role they map to.",
+      "expected_output": "Jotia for headings, Graphik for body; correct sizes from the 11-step type scale; brand role mapping"
+    },
+    {
+      "id": 4,
+      "prompt": "Show me how to apply FDS typography tokens correctly to an h1 heading and a paragraph. What composite token names do I use, and why should I never set font-size individually?",
+      "expected_output": "Uses font: var(--f-brand-type-*) composite shorthand; explains why individual properties break the system"
+    },
+    {
+      "id": 5,
+      "prompt": "List all FDS spacing tokens from smallest to largest with their pixel values. Which brand aliases should I use in code?",
+      "expected_output": "Full spacing scale from --f-brand-space-2xs (4px) through --f-brand-space-6xl (80px) with brand aliases"
+    },
+    {
+      "id": 6,
+      "prompt": "I'm adding a hover transition to an FDS button. What motion duration and easing tokens should I use? What are the actual millisecond values for each duration?",
+      "expected_output": "instant=240ms, quick=480ms, gentle=960ms, generous=1200ms; correct easing token names"
+    },
+    {
+      "id": 7,
+      "prompt": "I need three FDS icons: one for luggage, one for a Visa payment method, and one Arabic RTL variant of the cart icon. What are the correct icon names, prefixes, and sizes?",
+      "expected_output": "ic_nav_luggage (24px), ic_payment_visa (48px), ic_nav_ar_cart (24px) or equivalent correct names"
+    },
+    {
+      "id": 8,
+      "prompt": "What FDS shadow token should I use for a modal dialog versus a dropdown tooltip? What are the actual CSS values behind those tokens?",
+      "expected_output": "--f-brand-shadow-large for modal, --f-brand-shadow-medium for dropdown; correct shadow values"
+    },
+    {
+      "id": 9,
+      "prompt": "What FDS border radius token gives a pill-shaped button, and what pixel value does it resolve to? Also what token gives the standard button/input corner rounding?",
+      "expected_output": "--f-brand-radius-rounded (64px) for pill; --f-brand-radius-base (8px) for standard"
+    },
+    {
+      "id": 10,
+      "prompt": "Build a complete FDS-compliant primary button and secondary button in HTML and CSS. Include the token map on the block, all interactive states (hover, focus-visible, disabled), and correct BEM class naming.",
+      "expected_output": ".f-button block with token map, .f-button--secondary modifier, all states using component tokens, composite font shorthand"
+    },
+    {
+      "id": 11,
+      "prompt": "How do I build an FDS text input field with default, focused, error, and disabled states? Show me the correct HTML structure, BEM naming, and all CSS tokens for each state.",
+      "expected_output": ".f-input BEM structure, token map on block, all 4 states using brand tokens, correct border and focus tokens"
+    },
+    {
+      "id": 12,
+      "prompt": "I need to implement an FDS flight status badge that shows Confirmed, Delayed, and Cancelled states. Use the correct color tokens, icon names, and BEM structure.",
+      "expected_output": "--f-brand-color-flight-status-confirmed (#34DB80), delayed (#FCC500), cancelled (#D95757); ic_flightindicator_ icons"
+    },
+    {
+      "id": 13,
+      "prompt": "Explain the FDS three-tier token system. Show me a concrete example of how base, brand, and component tokens chain together for a navigation link's active color.",
+      "expected_output": "Base → brand → component chain explained; example shows why you never use base tokens in components"
+    },
+    {
+      "id": 14,
+      "prompt": "Review this CSS for FDS compliance: `.search-bar { background: #F2F3FA; font-size: 16px; color: #1F212B; border: 1px solid #DBDEE8; border-radius: 8px; padding: 12px 16px; }` — list every violation and show the corrected version.",
+      "expected_output": "Identifies: hardcoded hex (4 violations), font-size not using composite shorthand, 1px not tokenised, 8px not tokenised, 12px/16px not tokenised"
+    },
+    {
+      "id": 15,
+      "prompt": "I'm building a flight search form in FDS. What layout principles, field ordering rules, spacing guidelines, and validation behavior should I follow?",
+      "expected_output": "Single-column layout, labels above inputs, validate on blur, FDS spacing tokens, submit at bottom"
+    },
+    {
+      "id": 16,
+      "prompt": "What grid system and breakpoints does FDS define? How many columns at mobile, tablet, and desktop? What breakpoint token values should I use?",
+      "expected_output": "4 cols at xs-sm, 8 cols at tablet, 12 cols at desktop; correct breakpoint token values from foundations.md"
+    },
+    {
+      "id": 17,
+      "prompt": "Write three FDS-compliant error messages: (1) a payment that couldn't be processed, (2) a passport photo that's too blurry to scan, (3) a selected seat that's just been taken by another passenger.",
+      "expected_output": "Sentence case, active voice, empathetic + solution-focused tone matching FDS content guidelines"
+    },
+    {
+      "id": 18,
+      "prompt": "What are the FDS rules for UI copy casing, voice, and tone? Give me five examples of incorrect button labels and their corrected FDS-compliant versions.",
+      "expected_output": "Sentence case rule; active voice; warm/confident/premium tone; 5 before/after examples"
+    },
+    {
+      "id": 19,
+      "prompt": "I need to build an FDS card component that supports both English LTR and Arabic RTL layouts. What icon variants do I need, what fonts change, what Figma prop controls the language switch, and what CSS considerations apply?",
+      "expected_output": "ic_nav_ar_ prefix for RTL icons; Almarai font for Arabic; Language: English/Arabic Figma prop; dir=rtl CSS"
+    },
+    {
+      "id": 20,
+      "prompt": "Build me a complete FDS QSuite tag component — the kind shown on flight search results to mark Qatar Airways' premium cabin. Include the correct color token, BEM structure, appropriate icon or label, and all interactive/display states.",
+      "expected_output": "--f-brand-color-tags-qsuite (#8E2157); correct BEM .f-tag block; appropriate token map; luxury/premium visual treatment"
+    }
+  ]
+}
