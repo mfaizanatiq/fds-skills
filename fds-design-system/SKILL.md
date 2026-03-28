@@ -165,12 +165,12 @@ When the user asks to build UI, a screen, a feature, a component, or an AI agent
 ### Step 1 — Identify required FDS components
 Parse the request. List every FDS component the UI will need. Check `components-data.md` for each — get the props, variants, states, and sub-components.
 
-### Step 2 — Fetch visuals (Figma MCP → Netlify fallback)
+### Step 2 — Fetch visuals (Figma MCP → FDS MCP → text)
 For each identified component, retrieve a screenshot to anchor the implementation:
 
 1. Look up `nodeId` in `references/component-nodes.md`
 2. **Primary**: call Figma MCP `get_screenshot(nodeId)` — always try this first
-3. **Fallback**: if Figma MCP fails or is unavailable, fetch the `netlify_url` from `component-nodes.md`
+3. **Fallback**: if Figma MCP fails or is unavailable, call FDS MCP `inspect_frame(nodeId)` or fetch the `netlify_url` from `component-nodes.md`
 4. **Text-only fallback**: if both fail, proceed with props/variant data from `components-data.md` and explicitly flag: *"Visual unavailable for [component] — proceeding from spec data only"*
 
 **Never use local cache. Always fetch live.**
@@ -198,7 +198,7 @@ Quick reference for fetching component visuals at any point (not just code agent
 |---|---|
 | 1 | Find component in `references/component-nodes.md` |
 | 2 | Call Figma MCP `get_screenshot(nodeId)` |
-| 3 | On failure → fetch `netlify_url` from same table |
+| 3 | On failure → call FDS MCP `inspect_frame(nodeId)` or fetch `netlify_url` |
 | 4 | On both failures → proceed text-only, flag it |
 
 Use visuals when:
