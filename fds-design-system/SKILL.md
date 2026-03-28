@@ -474,37 +474,299 @@ Typography follows the same base → brand → component chain. The `design-toke
 
 ---
 
-## FDS Icon Font — setup for every new project
+## FDS Asset Setup — fonts and icons (every new project)
 
-**Flow Icons V4** is served locally via the global `FDS Assets` server (port 8099, defined in `~/.claude/launch.json`). It must be started before the project preview.
+All fonts and icons are sourced from the `fds-assets` repo and copied into the project so it is fully self-contained. **Never use Google Fonts, Adobe Typekit, or any external font CDN.**
 
-### Step 1 — Start the server
+### Step 1 — Copy assets into the project
+
+Copy font files and icon font from `fds-assets` into the project:
+
 ```
-preview_start("FDS Assets")
-```
-This starts the `FDS Assets` server defined in `~/.claude/launch.json`. Call it before generating any code.
-
-### Step 2 — Add the link tag (MANDATORY in every new FDS project)
-```html
-<!-- FDS Icon Font — Flow Icons V4 -->
-<link rel="stylesheet" href="http://localhost:8099/fds-icons/fds-icons/font/fds-icons.css">
+fds-assets/fds-typography/fonts  →  ./assets/fonts/
+fds-assets/fds-icons/fds-icons/font  →  ./assets/icons/
 ```
 
-### Step 3 — Add icon sizing utility classes
+The resulting structure:
+```
+assets/
+  fonts/
+    jotia/
+    graphik/
+    almarai/
+    noto-sans/
+      cyrillic/
+      latin/
+      farsi/
+  icons/
+    fds-icons.css
+    fds-icons.woff2
+    fds-icons.woff
+```
+
+### Step 2 — Create `fonts.css` (load once, reference everywhere via tokens)
+
+Create `./css/fonts.css` (or equivalent entry stylesheet). This file does two things:
+1. Declares `@font-face` rules pointing to `./assets/fonts/`
+2. Defines `:root` CSS custom properties for font families — **components never reference a font name directly**
+
 ```css
-/* FDS icon utilities — add to :root stylesheet block */
+/* ── fonts.css ────────────────────────────────────────────────
+   Load once. Components use var(--f-base-type-family-*) only.
+   Never hardcode a font family name outside this file.
+─────────────────────────────────────────────────────────────── */
+
+/* ─── @font-face declarations ───────────────────────────────── */
+
+/* Jotia */
+@font-face {
+  font-family: 'Jotia';
+  font-weight: 100;
+  font-style: normal;
+  src: url('../assets/fonts/jotia/jotia_thin.woff') format('woff'),
+       url('https://www.qatarairways.com/content/dam/assets/font/jotia_thin.woff') format('woff');
+}
+@font-face {
+  font-family: 'Jotia';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/jotia/jotia_light.woff') format('woff'),
+       url('https://www.qatarairways.com/content/dam/assets/font/jotia_light.woff') format('woff');
+}
+
+/* Graphik Web */
+@font-face {
+  font-family: 'Graphik Web';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/graphik/Graphik-Light-Web.woff2') format('woff2'),
+       url('../assets/fonts/graphik/Graphik-Light-Web.woff') format('woff'),
+       url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Light-Web.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Light-Web.woff') format('woff');
+}
+@font-face {
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  src: url('../assets/fonts/graphik/Graphik-Regular-Web.woff2') format('woff2'),
+       url('../assets/fonts/graphik/Graphik-Regular-Web.woff') format('woff'),
+       url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Regular-Web.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Regular-Web.woff') format('woff');
+}
+@font-face {
+  font-family: 'Graphik Web';
+  font-weight: 500;
+  font-style: normal;
+  src: url('../assets/fonts/graphik/Graphik-Medium-Web.woff2') format('woff2'),
+       url('../assets/fonts/graphik/Graphik-Medium-Web.woff') format('woff'),
+       url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Medium-Web.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/Graphik-Medium-Web.woff') format('woff');
+}
+
+/* Almarai */
+@font-face {
+  font-family: 'Almarai';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/almarai/almarai.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/ar/almarai.woff2') format('woff2');
+}
+
+/* Noto Sans — Cyrillic */
+@font-face {
+  font-family: 'Noto Sans';
+  font-weight: 300;
+  font-style: normal;
+  unicode-range: U+460-52F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+  src: url('../assets/fonts/noto-sans/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVadyBx2pqPIif.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVadyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans';
+  font-weight: 300;
+  font-style: normal;
+  unicode-range: U+301, U+400-45F, U+490-491, U+4B0-4B1, U+2116;
+  src: url('../assets/fonts/noto-sans/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVYNyBx2pqPIif.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/cyrillic/o-0NIpQlx3QUlC5A4PNjThZVYNyBx2pqPIif.woff2') format('woff2');
+}
+
+/* Noto Sans — Latin */
+@font-face {
+  font-family: 'Noto Sans';
+  font-weight: 300;
+  font-style: normal;
+  unicode-range: U+100-24F, U+259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans';
+  font-weight: 300;
+  font-style: normal;
+  unicode-range: U+0-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
+
+/* Noto Sans Thai — Thai WOFF is 404 on CDN, Latin rules serve as fallback */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/th/iJWnBXeUZi_OHPqn4wq6hQ2_hbJ1xyN9wd43SofNWcd1MKVQt_So_9CdU8ptlyJ0Rjn23Xl8Ng.woff') format('woff');
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
+
+/* Noto Sans Farsi */
+@font-face {
+  font-family: 'Noto Sans Far';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/noto-sans/farsi/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff') format('woff'),
+       url('https://www.qatarairways.com/content/dam/assets/font/fa/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCflmyfuXqGNwfKi0ZX.woff') format('woff');
+}
+@font-face {
+  font-family: 'Noto Sans Far';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Far';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
+
+/* Noto Sans Vietnamese — not yet in fds-assets, CDN only */
+@font-face {
+  font-family: 'Noto Sans Viet';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://www.qatarairways.com/content/dam/assets/font/vi/o-0NIpQlx3QUlC5A4PNjThZVa9yBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Viet';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Viet';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
+
+/* Noto Sans Polish */
+@font-face {
+  font-family: 'Noto Sans Pol';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Pol';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
+
+/* Noto Sans Turkish */
+@font-face {
+  font-family: 'Noto Sans Turk';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVatyBx2pqPIif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans Turk';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/noto-sans/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2'),
+       url('https://www.qatarairways.com/content/dam/assets/font/latin/o-0NIpQlx3QUlC5A4PNjThZVZNyBx2pqPA.woff2') format('woff2');
+}
+
+/* ─── Font family tokens — single source of truth ────────────
+   Components reference these vars. Font names never appear
+   anywhere else in the codebase.
+─────────────────────────────────────────────────────────────── */
+:root {
+  --f-base-type-family-primary:   'Jotia', Verdana, Geneva, sans-serif;
+  --f-base-type-family-secondary: 'Graphik Web', Arial, sans-serif;
+  --f-base-type-family-arabic:    'Almarai', sans-serif;
+  --f-base-type-family-cyrillic:  'Noto Sans', sans-serif;
+  --f-base-type-family-thai:      'Noto Sans Thai', sans-serif;
+  --f-base-type-family-farsi:     'Noto Sans Far', sans-serif;
+  --f-base-type-family-viet:      'Noto Sans Viet', sans-serif;
+  --f-base-type-family-polish:    'Noto Sans Pol', sans-serif;
+  --f-base-type-family-turkish:   'Noto Sans Turk', sans-serif;
+}
+```
+
+### Step 3 — Link in HTML (in this order)
+
+```html
+<!-- 1. Icon font -->
+<link rel="stylesheet" href="./assets/icons/fds-icons.css">
+<!-- 2. FDS fonts + family tokens -->
+<link rel="stylesheet" href="./css/fonts.css">
+<!-- 3. FDS tokens + component styles -->
+<link rel="stylesheet" href="./css/tokens.css">
+```
+
+### Step 4 — Component usage rules (dynamic, never hardcoded)
+
+```css
+/* ✓ correct — composite token, family resolved via var() chain */
+.f-button { font: var(--f-brand-type-body-medium); }
+.f-hero__title { font: var(--f-brand-type-page-title); }
+
+/* ✓ correct — family var when you need family only */
+.f-rtl-text { font-family: var(--f-base-type-family-arabic); }
+
+/* ✗ never — hardcoded font name */
+.f-button { font-family: 'Graphik Web'; }
+.f-hero__title { font-family: 'Jotia'; }
+```
+
+The chain is: `@font-face` registers the font → `--f-base-type-family-*` names the stack → `--f-brand-type-*` composes size/weight/family → components use the composite token. **Font names appear in exactly one place: `fonts.css`.**
+
+### Step 5 — Icons
+
+```html
+<!-- Always <i> tag, aria-hidden="true", two classes: icon + icon-{name} -->
+<i class="icon icon-ic-nav-search f-icon--sm" aria-hidden="true"></i>
+<i class="icon icon-ic-nav-profile f-icon" aria-hidden="true"></i>
+<i class="icon icon-ic-badge-qsuite f-icon--lg" aria-hidden="true"></i>
+```
+
+```css
+/* Icon sizing utilities */
 .f-icon     { font-size: 24px; line-height: 1; display: inline-flex; align-items: center; }
 .f-icon--xs { font-size: 12px; }
 .f-icon--sm { font-size: 16px; }
 .f-icon--lg { font-size: 32px; }
-```
-
-### Step 4 — Use icons in HTML
-```html
-<!-- Always <i> tag, always aria-hidden="true", always two classes: icon + icon-{name} -->
-<i class="icon icon-ic-nav-search f-icon--sm" aria-hidden="true"></i>
-<i class="icon icon-ic-nav-profile f-icon" aria-hidden="true"></i>
-<i class="icon icon-ic-badge-qsuite f-icon--lg" aria-hidden="true"></i>
 ```
 
 ### Icon class naming
@@ -539,39 +801,15 @@ This starts the `FDS Assets` server defined in `~/.claude/launch.json`. Call it 
 
 Full catalogue: `foundations.md §Iconography` — 739 nav + 294 badge icons.
 
-### Production / CI / remote preview
-When the local server is not available (Netlify deploys, shared previews, CI), copy the icon font from the `fds-assets` repo into the project:
-```bash
-cp -r <fds-assets-dir>/fds-icons/fds-icons/font ./assets/fds-icons/
-```
-Then reference: `<link rel="stylesheet" href="./assets/fds-icons/fds-icons.css">`
-
 ---
 
-## FDS Typeface Loading — self-hosted URLs (mandatory)
+## FDS Typeface Loading — reference only
 
-All FDS typefaces are cached in the `fds-assets` repo and served by the FDS Assets server at port 8099. **Never use Google Fonts, Adobe Typekit, or any external font CDN.**
+> The `@font-face` declarations and family tokens live in `fonts.css` (see §FDS Asset Setup above). The sections below document the full URL inventory for reference and for projects deployed on `*.qatarairways.com` where CDN URLs load natively.
 
-### How font loading works
+### CDN-only `@font-face` (qatarairways.com projects)
 
-| Environment | Primary source | How |
-|---|---|---|
-| `*.qatarairways.com` production | CDN (`qatarairways.com`) | Browser Referer passes Akamai hotlink check automatically |
-| Any other origin (localhost, Netlify, prototypes) | Local server (`localhost:8099`) | FDS Assets server serves `fds-assets` repo — no CDN dependency |
-
-The CDN URLs are always included as a secondary fallback in the `src:` list, but the local server is primary for all non-QA work.
-
-> **Vietnamese note:** `noto-viet.woff2` is not yet in `fds-assets` — CDN URL remains primary for Viet. Pull request the file into the repo when available.
-
----
-
-### Step 1 — Start the FDS Assets server (all non-QA projects)
-
-```
-preview_start("FDS Assets")   ← starts the FDS Assets server defined in ~/.claude/launch.json
-```
-
----
+On `*.qatarairways.com` the Akamai CDN serves fonts directly — no local assets needed. Use this block instead of the `fonts.css` pattern above:
 
 ### Step 2A — Remote-only `@font-face` (qatarairways.com projects)
 
@@ -963,11 +1201,11 @@ Fonts are served by the FDS Assets server at `http://localhost:8099`. Make sure 
 
 ### Rules
 
-- Include **all** `@font-face` blocks at the top of the stylesheet, before `:root` or any component CSS
-- Locale fonts (Thai, Far, Viet, Pol, Turk) each use multiple separate `@font-face` rules — this matches the live site structure
+- Font names (`'Jotia'`, `'Graphik Web'`, etc.) appear in **exactly one place**: `fonts.css` — never in component CSS
+- Components use `var(--f-brand-type-*)` composite tokens or `var(--f-base-type-family-*)` family tokens only
+- Locale fonts (Thai, Far, Viet, Pol, Turk) each use multiple separate `@font-face` rules — matches live site structure
 - Pol and Turk have their own `@font-face` declarations (Latin WOFF2 files) — do not omit them
 - `font-display: swap` may be added for performance but is not required by FDS spec
-- Never reference a font family name that is not in the table above
 
 ---
 
@@ -1163,9 +1401,11 @@ Run through this before declaring a component or page complete.
 - [ ] Modifiers only reassign component tokens — no new CSS properties
 
 **Typography**
-- [ ] `@font-face` declarations from §FDS Typeface Loading are present at the top of the stylesheet (Jotia, Graphik Web, and any locale-specific fonts needed)
+- [ ] `fonts.css` exists with all `@font-face` declarations + `--f-base-type-family-*` variables (§FDS Asset Setup)
+- [ ] Font files are in `./assets/fonts/`, icon font in `./assets/icons/` (copied from fds-assets)
 - [ ] No Google Fonts, Adobe Fonts, or external font CDN links anywhere in the output
-- [ ] All `--f-brand-type-*` tokens use font stacks sourced from `foundations.md` §Font families (`--f-base-type-family-primary` / `--f-base-type-family-secondary`) — no other font names, no hardcoded weight/size values
+- [ ] Font family names (`'Jotia'`, `'Graphik Web'`, etc.) appear only in `fonts.css` — never in component CSS
+- [ ] All `--f-brand-type-*` tokens use `var(--f-base-type-family-primary/secondary)` — no hardcoded font names outside `fonts.css`
 - [ ] Token names are from the approved list only — no invented names like `display`, `label`, `overline`
 - [ ] Composite `font:` shorthand used everywhere — no individual `font-size`/`font-weight`/`font-family`
 - [ ] Jotia tokens only for `page-title` and `title-1` through `title-5`; Graphik for everything else
