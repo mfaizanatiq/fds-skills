@@ -1400,6 +1400,164 @@ Modifiers **never add new CSS properties** — they only override `--f-{componen
 
 ---
 
+## CSS file organisation
+
+Every stylesheet in an FDS project must follow this layer order. Never mix them.
+
+```css
+/* ─────────────────────────────────────────────────────────────
+   1. FDS CORE TOKENS
+   Brand-level variables from design-tokens.md.
+   These come from tokens.css — do not redeclare here unless
+   you are building tokens.css itself.
+───────────────────────────────────────────────────────────── */
+:root {
+  --f-brand-color-primary:              #8E2157;
+  --f-brand-color-background-primary:   #8E2157;
+  --f-brand-space-sm:                   var(--f-base-space-2);
+  /* ... all --f-brand-* tokens ... */
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   2. COMPONENT TOKENS
+   Component-scoped token maps — one block per component.
+   Only --f-{component}-* vars here. No brand tokens directly.
+───────────────────────────────────────────────────────────── */
+.f-button {
+  --f-button-bg:           var(--f-brand-color-background-primary);
+  --f-button-text:         var(--f-brand-color-text-light);
+  --f-button-radius:       var(--f-brand-radius-rounded);
+  --f-button-font:         var(--f-brand-type-body-medium);
+}
+
+.f-card {
+  --f-card-bg:             var(--f-brand-color-surface-primary);
+  --f-card-radius:         var(--f-brand-radius-md);
+  --f-card-shadow:         var(--f-brand-shadow-md);
+}
+
+/* ... one block per component ... */
+
+
+/* ─────────────────────────────────────────────────────────────
+   3. COMPONENT RULES
+   Structural CSS that consumes only --f-{component}-* tokens.
+   No --f-brand-* references here. No hardcoded values.
+───────────────────────────────────────────────────────────── */
+.f-button {
+  display: inline-flex;
+  align-items: center;
+  background:    var(--f-button-bg);
+  color:         var(--f-button-text);
+  border-radius: var(--f-button-radius);
+  font:          var(--f-button-font);
+}
+
+.f-button--secondary {
+  --f-button-bg:   transparent;
+  --f-button-text: var(--f-brand-color-text-primary);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   4. CUSTOM / PROJECT-SPECIFIC
+   Anything that is not part of the FDS library — page layouts,
+   project-specific overrides, one-off utilities.
+   Must still use --f-brand-* tokens, never hardcoded values.
+───────────────────────────────────────────────────────────── */
+.page-hero {
+  padding: var(--f-brand-space-2xl) 0;
+  background: var(--f-brand-color-background-dark);
+}
+```
+
+### Rules
+
+- **Never mix layers** — a block belongs to exactly one layer
+- **Layer 1 (core tokens)** comes from `tokens.css` — loaded via `<link>`, not redeclared in component files
+- **Layer 2 (component tokens)** and **Layer 3 (rules)** live together in the component stylesheet or a single `components.css`
+- **Layer 4 (custom)** is a separate file or a clearly marked section at the bottom — never interspersed with component code
+- Brand tokens (`--f-brand-*`) may only appear in layers 1, 2, and 4 — **never in layer 3 rules**
+- Hardcoded values (`#8E2157`, `16px`, `0.3s`) are forbidden in layers 2–4; all values must come from tokens
+
+### Recommended file split
+
+```
+css/
+  fonts.css       ← @font-face + :root family vars only
+  tokens.css      ← Layer 1: all --f-brand-* and --f-base-* vars
+  components.css  ← Layer 2 + 3: component token maps + rules
+  custom.css      ← Layer 4: project-specific styles
+```
+
+---
+
+## CSS audit — how to review existing code
+
+When asked to audit a stylesheet, check for these violations in order:
+
+### 1. Layer ordering violations
+Flag any file where component rules appear before token maps, or where custom styles are mixed into component blocks.
+
+```css
+/* ✗ violation — brand token used directly in a rule */
+.f-button {
+  background: var(--f-brand-color-background-primary);  /* should be --f-button-bg */
+}
+
+/* ✗ violation — hardcoded value in a rule */
+.f-card {
+  border-radius: 8px;  /* should be var(--f-card-radius) */
+  background: #FFFFFF;  /* should be var(--f-card-bg) */
+}
+
+/* ✗ violation — custom page style mixed into component block */
+.f-button {
+  --f-button-bg: var(--f-brand-color-primary);
+  margin-top: 48px;  /* page layout — belongs in custom layer */
+}
+```
+
+### 2. Token chain violations
+```css
+/* ✗ violation — hardcoded font name in component */
+.f-button { font-family: 'Graphik Web'; }
+
+/* ✗ violation — brand token bypassed entirely */
+.f-card { color: #1F212B; }
+
+/* ✓ correct chain */
+.f-card {
+  --f-card-text: var(--f-brand-color-text-primary);   /* token map */
+}
+.f-card { color: var(--f-card-text); }                 /* rule */
+```
+
+### 3. Audit output format
+
+When reporting to the user, group findings by severity:
+
+```
+CSS AUDIT — [filename]
+
+🔴 Blocking (breaks token chain)
+  - Line 42: .f-button uses background: #8E2157 — replace with var(--f-button-bg)
+  - Line 67: font-family: 'Graphik Web' hardcoded — use var(--f-brand-type-body-medium)
+
+🟡 Structure (wrong layer)
+  - Lines 88–104: custom page layout mixed into .f-card block — move to custom layer
+  - Line 112: --f-brand-color-primary used directly in .f-input rule — should go through component token
+
+🟢 Suggestions
+  - tokens.css and components.css could be split for clarity
+  - Layer 4 (custom) styles have no section comment — add one
+```
+
+Always suggest the corrected code alongside each finding.
+
+---
+
 ## Naming conventions
 
 | Concept | Pattern | Example |
