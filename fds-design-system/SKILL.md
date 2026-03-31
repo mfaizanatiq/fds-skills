@@ -23,16 +23,69 @@ Source datasets: `_Flow_App_V2_DataSet_23032026`, `_Flow_Web_V2_DataSet_23032026
 
 ---
 
+## JSON Datasets — Primary Data Source
+
+**JSON-first rule**: Always read the relevant JSON dataset before referencing .md files. JSON files are indexed, machine-parseable, and faster to query. The .md files are human-readable documentation and secondary references.
+
+### Library lookup files (components, nodes, props, do's/don'ts, Figma push config)
+
+| File | Platform | What it contains |
+|---|---|---|
+| `references/flow-app-v2.lookup.json` | iOS / Android | App component entries: nodeId, figmaLink, props, subComponents, tokens, dos, donts, figmaPush |
+| `references/flow-web-v2.lookup.json` | Web (desktop/tablet/mobile) | Web component entries: same schema + Viewport prop |
+| `references/flow-email.lookup.json` | Email templates | 42 email components schema + email-specific constraints |
+| `references/flow-icons-v4.lookup.json` | All platforms | Icon prefix/size rules, common icon names, icon gap protocol |
+
+### Protocol and rules files (read when platform or push decisions are needed)
+
+| File | What it contains |
+|---|---|
+| `references/platform-rules.json` | Strict per-platform rules: forbidden patterns, state values, icon sizes, cross-platform alignment |
+| `references/figma-push.json` | Full Figma push workflow: MCP tool names, 9-step protocol, variable binding rules, validation checklist |
+| `references/prop-lookup.json` | Canonical prop naming: Title Case rules, synonyms, Arabic (Ar) suffix, validation scoring |
+
+### Quick JSON lookup guide
+
+| "I need to know…" | Read this |
+|---|---|
+| NodeId / Figma link / screenshot URL for a component | `references/flow-{platform}-v2.lookup.json` → find by `name` in `components[]` |
+| What props/variants a component accepts | `references/flow-{platform}-v2.lookup.json` → component entry `props` |
+| What to do / avoid with a component | `references/flow-{platform}-v2.lookup.json` → component entry `dos` / `donts` |
+| What tokens a component uses | `references/flow-{platform}-v2.lookup.json` → component entry `tokens` |
+| How to push this component to Figma | `references/flow-{platform}-v2.lookup.json` → `figmaPush` + `references/figma-push.json` |
+| Whether a component exists on App vs Web | `references/platform-rules.json` |
+| Canonical prop name / Arabic naming rules | `references/prop-lookup.json` |
+| What icon to use | `references/flow-icons-v4.lookup.json` → `commonNavIcons` or `sizingRules` |
+| Token by CSS / iOS / Android name + hex value | `references/tokens.json` → search by `css`, `ios`, `android`, or `path` |
+| Token usage, relationships, keywords | `references/tokens.json` → entry `usage`, `relationships`, `keywords` |
+| Full token hex values (legacy fallback) | `references/design-tokens.md` (or inline quick-reference below) |
+| Component props not yet in lookup JSON | `references/components-data.md` |
+| Figma file key for a library | Any lookup JSON `meta.fileKey` |
+
+---
+
 ## Pre-flight: Read these files before writing code
 
-The inline content in this SKILL.md covers architecture rules and patterns only. All actual values — hex codes, font sizes, spacing scale, token names, component specs — live in the reference files. **Reading the right files is what separates a correct FDS implementation from a guess.**
+The inline content in this SKILL.md covers architecture rules and patterns only. All actual values — hex codes, font sizes, spacing scale, token names, component specs — live in the reference files. **JSON files are fastest to parse. Use them first.**
 
-### For any UI implementation task — read all three:
+### For any UI implementation task — read in this order:
 
-1. **[references/foundations.md](references/foundations.md)** — colors (primary, text, background, border, status, flight, loyalty, tags), typography (Jotia/Graphik, 11-step type scale), grid (4–12 col breakpoints), spacing scale, elevation/shadows, surfaces, border radius, iconography (1,254 icons across 11 types), motion durations and easings
-2. **[references/design-tokens.md](references/design-tokens.md)** — the authoritative token list: 87 brand color tokens, spacing tokens, composite typography tokens, motion tokens, opacity tokens, component token examples, and cross-platform naming (CSS `--f-brand-*` vs iOS/Android `FBrand*`)
-3. **[references/components-data.md](references/components-data.md)** — 118 component families with Figma props, variants, platform availability (App/Web), sub-components, and state naming rules
-4. **[references/component-nodes.md](references/component-nodes.md)** — nodeId + Figma link + Netlify fallback URL for every component set (App: 132, Web: 297, Icons: 2) — used for visual fetching only
+**Step 1 — Platform lookup (JSON, fastest)**
+- App work → `references/flow-app-v2.lookup.json` — component nodeIds, props, tokens, dos/donts
+- Web work → `references/flow-web-v2.lookup.json` — same + Viewport prop
+- Email work → `references/flow-email.lookup.json` — email component schema
+- Icons → `references/flow-icons-v4.lookup.json` — icon names, sizes, common nav icons
+
+**Step 2 — Foundations and tokens (read as needed)**
+1. **[references/foundations.md](references/foundations.md)** — colors, typography (Jotia/Graphik, 11-step scale), grid, spacing, elevation, surfaces, border radius, iconography (1,254 icons), motion
+2. **[references/design-tokens.md](references/design-tokens.md)** — authoritative 87 brand color tokens, spacing, type, motion, opacity tokens; CSS `--f-brand-*` vs iOS/Android `FBrand*`
+3. **[references/components-data.md](references/components-data.md)** — fallback for component props/variants not yet in lookup JSON (118 families, App/Web, sub-components, state rules)
+4. **[references/component-nodes.md](references/component-nodes.md)** — complete nodeId/Figma link/Netlify URL table (use lookup JSON first; .md as fallback)
+5. **[references/prop-lookup.json](references/prop-lookup.json)** — canonical prop naming, Title Case rules, synonyms, `(Ar)` Arabic suffix, camelCase code key strategy
+
+**Step 3 — Protocol files (read when platform/push decisions needed)**
+- **[references/platform-rules.json](references/platform-rules.json)** — strict per-platform rules, forbidden patterns, cross-platform component list
+- **[references/figma-push.json](references/figma-push.json)** — Figma push workflow, MCP tool names, variable binding rules
 
 ### For specific additional topics — read as needed:
 
@@ -44,16 +97,20 @@ The inline content in this SKILL.md covers architecture rules and patterns only.
 
 ### Quick decision guide
 
-- **"What color/hex is…"** → `foundations.md` §Color system, then confirm token in `design-tokens.md`
+- **"What color/hex is…"** → `references/tokens.json` (search `css` or `path`), then inline quick-reference below
 - **"What font/size/weight…"** → `foundations.md` §Typography
-- **"What spacing/padding/gap…"** → `foundations.md` §Spacing, `design-tokens.md` §Spacing tokens
-- **"What shadow/elevation…"** → `foundations.md` §Elevation
+- **"What spacing/padding/gap…"** → inline spacing quick-reference below, then `design-tokens.md`
+- **"What shadow/elevation…"** → inline shadow quick-reference below
 - **"What motion/duration/easing…"** → `foundations.md` §Motion, `design-tokens.md` §Motion tokens
-- **"What icon should I use…"** → `foundations.md` §Iconography (1,253 icons with prefixes and naming)
-- **"How do I implement [component]…"** → `components-data.md` (props, variants, states, sub-components)
+- **"What icon should I use…"** → `references/flow-icons-v4.lookup.json` §commonNavIcons; full catalogue in `references/foundations.md`
+- **"How do I implement [component]…"** → platform lookup JSON → component entry `props` + `dos` + `donts`
+- **"What does [component] look like…"** → platform lookup JSON → `figma.nodeId` → `get_screenshot` → `figma.fallback`
+- **"Can I use [component] on App/Web…"** → `references/platform-rules.json` §platforms
+- **"How do I push this to Figma…"** → platform lookup JSON `figmaPush` + `references/figma-push.json`
 - **"How should I write this copy/error…"** → `content-guidelines.md`
-- **"Which token name for…"** → `design-tokens.md` (CSS and iOS/Android formats)
-- **MCP connected** → use `inspect_frame`, `suggest_tokens`, `generate_snippet` first; reference files as fallback
+- **"Which token name for…"** → `design-tokens.md` (CSS `--f-brand-*` and iOS/Android `FBrand*`)
+- **"What props does [component] accept…"** → lookup JSON `props` → fallback `components-data.md`
+- **MCP connected** → use `inspect_frame`, `suggest_tokens`, `generate_snippet` first; files as fallback
 
 ---
 
@@ -128,23 +185,34 @@ If no FDS icon covers the need, flag it: **"Icon gap: [description] — no FDS i
 
 ## Dataset management
 
-Reference files track these source datasets:
+### File hierarchy — JSON first, .md as fallback
 
-| File | Dataset | Last updated |
-|---|---|---|
-| `foundations.md` §Iconography | `_Flow_Icons_V4_DataSet_25032026` | 25 Mar 2026 |
-| `components-data.md` | `_Flow_App_V2_DataSet_23032026`, `_Flow_Web_V2_DataSet_23032026` | 23 Mar 2026 |
-| `component-nodes.md` | All three above | 25 Mar 2026 |
+| JSON file (primary) | Markdown fallback | Dataset source | Last updated |
+|---|---|---|---|
+| `references/tokens.json` | `references/design-tokens.md` | `variables.json — fds-design-tokens` | 31 Mar 2026 |
+| `references/flow-app-v2.lookup.json` | `references/components-data.md` (App) | `_Flow_App_V2_DataSet` | populate from export |
+| `references/flow-web-v2.lookup.json` | `references/components-data.md` (Web) | `_Flow_Web_V2_DataSet` | populate from export |
+| `references/flow-email.lookup.json` | `references/email-components.md` | `_Flow_Email_DataSet` | populate from export |
+| `references/flow-icons-v4.lookup.json` | `references/foundations.md` §Iconography | `_Flow_Icons_V4_DataSet_25032026` | 25 Mar 2026 |
+| `references/platform-rules.json` | `references/components-data.md` §Platform | hand-authored | 31 Mar 2026 |
+| `references/figma-push.json` | — | hand-authored | 31 Mar 2026 |
+| `references/prop-lookup.json` | `references/components-data.md` §Props | hand-authored | 30 Mar 2026 |
 
-**When new datasets arrive**, the update workflow is:
-1. Diff new vs old JSON (component counts, new/removed items)
-2. Update icon counts + new icon categories in `foundations.md`
-3. Update component counts in `components-data.md` header table
-4. Add new component sections to `components-data.md` §Component Details
-5. Regenerate `component-nodes.md` from all three JSON files
-6. Update the table above with new dataset dates
+### When new datasets arrive — update workflow
 
-The design system team owns Figma → dataset exports. Claude updates the skill reference files when new exports are provided.
+1. **Diff** new vs old dataset (component counts, new/removed items, prop changes)
+2. **Regenerate** `references/flow-app-v2.lookup.json` and `references/flow-web-v2.lookup.json` using `figma-dataset-exporter` tool
+3. **Preserve** hand-authored fields during re-export: `dos[]`, `donts[]`, `figmaPush{}` per component
+4. **Update** `flow-icons-v4.lookup.json` `counts` if icon totals change
+5. **Update** `foundations.md` §Iconography for new icon categories or name changes
+6. **Update** `components-data.md` header table component counts
+7. **Update** `meta.lastUpdated` in each lookup JSON
+8. **Verify** `component-nodes.md` nodeIds still match (nodes can change between dataset versions)
+
+### Key rule
+JSON lookup files are the source of truth for component data. The `.md` files are human-readable documentation. When they conflict, trust the JSON (it is the more recently updated dataset).
+
+The design system team owns Figma → dataset exports. Claude updates skill reference files when new exports are provided. Hand-authored fields (dos, donts, figmaPush) are preserved across re-exports.
 
 ---
 
@@ -158,31 +226,114 @@ The design system team owns Figma → dataset exports. Claude updates the skill 
 
 ---
 
+## Figma Push Workflow (push designs to Figma using MCP)
+
+When the user asks to push, create, or update a design in Figma — follow this protocol. Full spec is in `references/figma-push.json`.
+
+### Summary (9 steps)
+
+1. **Identify components** — look up each in the platform lookup JSON for `nodeId`, `props`, `defaultVariant`
+2. **Fetch visuals** — call Figma MCP `get_screenshot(nodeId, fileKey)` to confirm visual context
+3. **Platform check** — read `references/platform-rules.json`; App components → App file only, Web → Web file only
+4. **Start transaction** — call `start-editing-transaction` on the TARGET design file (not the library)
+5. **Insert library components** — use `perform-editing-operations` with the library `nodeId`; never build custom equivalents
+6. **Set props** — apply `defaultVariant` then override per design; prop names must match `prop-lookup.json` canonical values
+7. **Bind variables** — for custom frames: bind fills/strokes/spacing to Foundation file variables (never hardcode)
+8. **Validate** — run through the checklist below before committing
+9. **Commit or cancel** — `commit-editing-transaction` on pass; `cancel-editing-transaction` on any failure
+
+### Pre-commit validation checklist
+
+- [ ] All components are library instances from the correct platform library (no detached, no custom-built)
+- [ ] Props use canonical names and Title Case values (check `prop-lookup.json`)
+- [ ] Language=Arabic set on RTL components — not manually mirrored
+- [ ] No hardcoded fills/strokes — all bound to Foundation file variables
+- [ ] Icons are from `flow-icons-v4` library: `ic_nav_` at 24px, `ic_badge_` at 48px
+- [ ] Spacing in Auto Layout uses space variable bindings — not fixed numeric values
+- [ ] No cross-platform components (App components in Web files or vice versa)
+
+### On failure
+Cancel the transaction immediately. Log each failing check (component + prop + violation). Fix all before restarting. Read `references/figma-push.json` → `errorRecovery` for full guidance.
+
+---
+
+## Do's & Don'ts Protocol
+
+Per-component do's and don'ts live in each library lookup JSON under `dos[]` and `donts[]`.
+
+**How to check:**
+1. Identify the component name
+2. Open the relevant platform lookup JSON (`flow-app-v2.lookup.json` or `flow-web-v2.lookup.json`)
+3. Find the component entry and read `dos` and `donts`
+4. Apply them before generating code or pushing to Figma
+
+**Global don'ts that apply everywhere (no exceptions):**
+- No custom component when a library equivalent exists
+- No third-party icons — FDS icon libraries only
+- No Google Fonts / external CDN fonts — FDS assets only
+- No hardcoded hex, px, or duration values — always use tokens
+- No Hover state on App — use Pressed
+- No missing Viewport prop on Web components
+- No Arabic text via manual mirroring — use Language=Arabic variant
+- No detached library instances in Figma
+
+---
+
+## Platform Guard Rules
+
+Before implementing or pushing any component, confirm the platform. Read `references/platform-rules.json` for the complete rule set.
+
+| Check | App | Web | Email |
+|---|---|---|---|
+| Viewport prop | ❌ Never | ✅ Always | ❌ Not applicable |
+| Hover state | ❌ Use Pressed | ✅ Required | ❌ Not applicable |
+| Bottom nav | Bottom Navigation Bar (App) | Super Nav + Footer | — |
+| Overlay/dialog | Modal Alert or Drawer | Modal or Sidesheet | — |
+| Icon size (nav) | 24px `ic_nav_` | 24px `ic_nav_` | PNG/GIF only |
+| Fonts | Jotia + Graphik | Jotia + Graphik | Graphik only (no Jotia) |
+| Layout model | Native | CSS / HTML | Table-based only |
+
+**Forbidden cross-platform patterns** (see full list in `references/platform-rules.json`):
+- App Drawer ≠ Web Sidesheet
+- App Modal Alert ≠ Web Modal
+- App Bottom Navigation Bar ≠ Web Super Nav / Footer
+- App Status Bar / Home Indicator = iOS hardware elements — never on Web
+- mWeb ≠ App — mWeb is a browser viewport, not a native mobile app
+
+---
+
 ## Code agent mode
 
 When the user asks to build UI, a screen, a feature, a component, or an AI agent interface:
 
 ### Step 1 — Identify required FDS components
-Parse the request. List every FDS component the UI will need. Check `components-data.md` for each — get the props, variants, states, and sub-components.
+Parse the request. Confirm the platform (App / Web / Email). For each component needed:
+1. Look it up in the platform lookup JSON (`references/flow-app-v2.lookup.json` or `references/flow-web-v2.lookup.json`)
+2. Get: `nodeId`, `props`, `defaultVariant`, `tokens`, `dos`, `donts`
+3. If not yet in the lookup JSON: fall back to `references/components-data.md`
+4. Check `references/platform-rules.json` — confirm the component is valid for this platform
 
-### Step 2 — Fetch visuals (Figma MCP → FDS MCP → text)
+### Step 2 — Fetch visuals (Figma MCP → fallback → text-only)
 For each identified component, retrieve a screenshot to anchor the implementation:
 
-1. Look up `nodeId` in `references/component-nodes.md`
-2. **Primary**: call Figma MCP `get_screenshot(nodeId)` — always try this first
-3. **Fallback**: if Figma MCP fails or is unavailable, call FDS MCP `inspect_frame(nodeId)` or fetch the `netlify_url` from `component-nodes.md`
-4. **Text-only fallback**: if both fail, proceed with props/variant data from `components-data.md` and explicitly flag: *"Visual unavailable for [component] — proceeding from spec data only"*
+1. Get `nodeId` and `fileKey` from the platform lookup JSON
+2. **Primary**: call Figma MCP `get_screenshot(nodeId, fileKey)` — always try this first
+3. **Fallback**: if Figma MCP fails, fetch the `figma.fallback` netlify URL from the lookup JSON
+4. **Text-only fallback**: if both fail, proceed with `props`/`tokens` data and flag: *"Visual unavailable for [component] — proceeding from spec data only"*
 
 **Never use local cache. Always fetch live.**
 
-### Step 3 — Read foundations and tokens
-Confirm colors, typography, spacing, motion, and icon choices from `foundations.md` and `design-tokens.md` before writing any code.
+### Step 3 — Check do's and don'ts
+Before writing any code, read the `dos[]` and `donts[]` arrays from each component's lookup JSON entry. These override general patterns for this specific component.
 
-### Step 4 — Build
+### Step 4 — Read foundations and tokens
+Confirm colors, typography, spacing, motion, and icon choices from `foundations.md` and `design-tokens.md`.
+
+### Step 5 — Build
 Implement using the 4-step component pattern below (BEM → token map → rules → modifiers). Every component, every time.
 
-### Step 5 — Gap analysis (report only, never self-modify)
-After building, note any UI patterns not covered by the existing FDS library. Build them using FDS naming, tokens, and BEM structure — no deviation. Flag them briefly:
+### Step 6 — Gap analysis (report only, never self-modify)
+After building, note any UI patterns not in the FDS library. Build them using FDS naming, tokens, and BEM — no deviation. Flag:
 
 > **FDS gap: f-{name}** — [what it does]. Candidate for the design system team to formalise in Figma.
 
@@ -196,10 +347,13 @@ Quick reference for fetching component visuals at any point (not just code agent
 
 | Step | Action |
 |---|---|
-| 1 | Find component in `references/component-nodes.md` |
-| 2 | Call Figma MCP `get_screenshot(nodeId)` |
-| 3 | On failure → call FDS MCP `inspect_frame(nodeId)` or fetch `netlify_url` |
-| 4 | On both failures → proceed text-only, flag it |
+| 1 | Find component in the platform lookup JSON — get `figma.nodeId` and `meta.fileKey` |
+| 2 | Call Figma MCP `get_screenshot(nodeId, fileKey)` — primary |
+| 3 | On failure → fetch `figma.fallback` netlify URL from lookup JSON |
+| 4 | On failure → call FDS MCP `inspect_frame(nodeId)` |
+| 5 | On all failures → proceed text-only from `props`/`tokens` in lookup JSON, flag it |
+
+**Fallback chain**: Lookup JSON → Figma MCP screenshot → Netlify fallback URL → FDS MCP → text-only
 
 Use visuals when:
 - Implementing a specific FDS component for the first time

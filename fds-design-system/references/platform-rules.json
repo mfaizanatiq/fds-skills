@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "platform-rules.v1",
+  "description": "Strict platform-specific guidelines for the Qatar Airways Flow Design System. Check this file before implementing or auditing any platform-specific feature. These rules are non-negotiable — violations break platform integrity.",
+
+  "platforms": {
+
+    "app": {
+      "libraryId":   "flow-app-v2",
+      "libraryName": "Flow App V2",
+      "fileKey":     "1fefe3u3ntgI9SfbU2gppC",
+      "lookupFile":  "flow-app-v2.lookup.json",
+      "description": "Native iOS and Android mobile app components",
+      "os":          ["iOS", "Android"],
+
+      "keyRules": [
+        "No Viewport prop — App components are inherently mobile-sized",
+        "State values include Pressed (not Hover) — hover is a pointer/desktop concept",
+        "Bottom Navigation Bar: max 5 tabs, each icon must be ic_nav_menu_ at 32px",
+        "Status Bar must always appear above the Navigation Bar in full-screen designs",
+        "App Drawers open from the bottom — not from the side (Web uses Sidesheet for side panels)",
+        "Modal on App = Modal Alert component only (not Web Modal)",
+        "iOS Keyboard and Android Keyboard are separate components — never swap them",
+        "Use Handle Bar component at the top of all bottom-sheet drawers",
+        "Home Indicator is an iOS hardware element — include it in iPhone frames",
+        "OTP Input is App-only — Web uses standard Input Field for OTP flows",
+        "App-only components: App Tutorial, Bottom Navigation Bar, Conversational Header, Handle Bar, Home Banner, iOS Notifications, Keyboard (iOS + Android), Main Menu, Membership Cards, Membership Progress Bar, Membership Progress Circles, Modal Alert, OTP Input, Salutations, Search List, Status Bar, Tab Bar"
+      ],
+
+      "iconSizes": {
+        "ic_nav_":         { "size": 24, "use": "All UI icons — navigation, actions, utilities" },
+        "ic_badge_":       { "size": 48, "use": "Illustrative, feature/category icons" },
+        "ic_nav_menu_":    { "size": 32, "use": "Bottom navigation bar tab icons only" },
+        "ic_badge_footer_":{ "size": 32, "use": "Social footer icons" },
+        "ic_alerts_":      { "size": 12, "use": "Inline status indicators" }
+      },
+
+      "forbiddenPatterns": [
+        "Do not use Web Sidesheet on App — use Drawer (bottom sheet)",
+        "Do not use Web Modal on App — use Modal Alert or Drawer",
+        "Do not use Web Super Nav — use Navigation Bar (App)",
+        "Do not use Web Footer on App — use Bottom Navigation Bar",
+        "Do not add a Viewport prop to App components",
+        "Do not use Hover state — use Pressed instead",
+        "Do not use Web Breadcrumbs on App",
+        "Do not use Web Scroll Bar on App",
+        "Do not mix iOS and Android keyboard components",
+        "Do not create custom bottom navigation — always use Bottom Navigation Bar component"
+      ],
+
+      "stateValues":   ["Default", "Pressed", "Focused", "Disabled", "Error", "Active", "Selected", "Loading", "Success"],
+      "noHoverState":  true,
+      "viewportProp":  false
+    },
+
+    "web": {
+      "libraryId":   "flow-web-v2",
+      "libraryName": "Flow Web V2",
+      "fileKey":     "6JoGJ2tuMzkJ0b5gnAX7UR",
+      "lookupFile":  "flow-web-v2.lookup.json",
+      "description": "Desktop, tablet, and mobile web (browser-based) components",
+      "viewports":   ["Desktop", "Tablet", "Mobile", "mWeb"],
+
+      "keyRules": [
+        "Always include Viewport prop: Desktop / Tablet / Mobile. Use mWeb for mobile-web-specific responsive variants.",
+        "mWeb ≠ Mobile App — mWeb is a browser viewport variant, not a native app screen",
+        "Hover and Focus states are required for desktop interactions — do not omit them",
+        "Web Sidesheet opens from the right (or left) — not from the bottom (App Drawer does that)",
+        "Web Modal is a full overlay dialog — not the same as App Modal Alert",
+        "Super Nav is Web-only — the top navigation bar for qatarairways.com",
+        "Booking Widget Web has 6 sub-components including Calendar Picker — all must be included in booking flows",
+        "Calendar and Calendar Picker are Web-only — App uses Booking Widget with Date Passenger Picker sub-component",
+        "Avatar Group is Web-only",
+        "Web-only components: 7-day Calendar, Avatar Group, Avios Card, Bench Alert, Booking Autocomplete Dropdown, Booking Wizard, Brand, Breadcrumbs, Calendar, Calendar Picker, Carousel (full), Cart Recovery, Content Module, Counter, Destination Block, Fare Block, Fare Itinerary, Feature Banner, Feedback Banner, Flight Summary Card, Footer, Gallery, Generic Block, Hero Block, Icon Card, Images, Information Card, Interstitials, Lightbox, List Items Dropdown, Loading, Loyalty Login, Marketplace Card, Marketplace Control Card, Membership Card, Modal, Partners Showcase Block, Passenger Details, Passenger Picker, PC Login Pop-up, Progress Tracker, Promotional Banner, Quick Links, Radio Button, Scroll Bar, Section Card, Segment Control, Sidesheet, Slider, Super Nav, Tags"
+      ],
+
+      "iconSizes": {
+        "ic_nav_":             { "size": 24, "use": "All UI icons" },
+        "ic_badge_":           { "size": 48, "use": "Illustrative icons" },
+        "ic_payment_":         { "size": 48, "use": "Payment method logos" },
+        "ic_flightindicator_": { "size": 16, "use": "Flight status indicators" },
+        "ic_inline_":          { "size": 16, "use": "Icons inline with text" },
+        "ic_alerts_":          { "size": 24, "use": "Status indicators (Web uses 24px, not 12px)" }
+      },
+
+      "forbiddenPatterns": [
+        "Do not use App Bottom Navigation Bar on Web — use Super Nav or Footer",
+        "Do not use App Status Bar on Web — it is an OS hardware element",
+        "Do not use App Home Indicator on Web — iOS hardware only",
+        "Do not use App iOS/Android Keyboard on Web — use native browser keyboard",
+        "Do not use App Modal Alert on Web — use Web Modal",
+        "Do not use App Drawer (bottom sheet) on Web — use Web Sidesheet",
+        "Do not omit Viewport prop on Web components",
+        "Do not treat mWeb as equivalent to the App platform"
+      ],
+
+      "stateValues":  ["Default", "Hover", "Pressed", "Focused", "Disabled", "Error", "Active", "Selected", "Loading", "Success"],
+      "hoverRequired": true,
+      "viewportProp":  true,
+      "viewportValues": ["Desktop", "Tablet", "Mobile", "mWeb"]
+    },
+
+    "email": {
+      "libraryId":   "flow-email",
+      "libraryName": "Flow Email",
+      "fileKey":     null,
+      "lookupFile":  "flow-email.lookup.json",
+      "description": "HTML email templates — bilingual (English + Arabic), responsive. 42 components.",
+
+      "keyRules": [
+        "Email components are a completely separate library — never cross-reference App or Web components",
+        "42 email components: headers, bodies, footers, promotional banners, CTAs, informational blocks",
+        "Bilingual: every email component has English and Arabic language variants",
+        "Responsive: 600px max-width for desktop email clients, single-column stack on mobile",
+        "Use table-based layout — not CSS Grid or Flexbox (email client compatibility)",
+        "Inline all CSS in production — no external stylesheets",
+        "Images: always include alt text, explicit width and height attributes",
+        "CTA buttons: bullet-proof VML fallback for Outlook compatibility",
+        "Font stack: 'Graphik Web', Arial, sans-serif (Jotia is NOT widely supported in email clients)",
+        "No JavaScript in email templates"
+      ],
+
+      "forbiddenPatterns": [
+        "Do not use CSS Grid or Flexbox in email markup",
+        "Do not use @font-face without solid system font fallbacks",
+        "Do not use JavaScript — email clients will strip or block it",
+        "Do not use App or Web components in email — email has its own component library",
+        "Do not use Jotia for email headings — use Graphik Bold weight instead",
+        "Do not use CSS variables (custom properties) in email — not supported by most clients",
+        "Do not use SVG inline — use PNG/GIF with ALT text for icons in email"
+      ],
+
+      "fontStack":   "'Graphik Web', Arial, sans-serif",
+      "maxWidth":    600,
+      "layoutModel": "table-based"
+    }
+  },
+
+  "crossPlatformComponents": {
+    "description": "26 component families exist in both App and Web libraries. These rules govern how they must stay aligned.",
+    "count": 26,
+    "families": [
+      "Accordion", "Action Card", "Action Footer", "Alert", "Avatar",
+      "Badge", "Booking Widget", "Bullet List", "Destination Card", "Divider",
+      "Drawers", "Dropdown", "Fare Card", "Flight Card", "General Card",
+      "Helper Text", "Home Indicator", "Input Field", "Keyboard", "Link",
+      "Navigation Bar", "Number Stepper", "Pagination", "Progress Stepper",
+      "Tab Bar", "Tooltip"
+    ],
+    "alignmentRules": [
+      "Tier prop values must be identical across platforms: Burgundy, Silver, Gold, Platinum",
+      "Direction prop values must be identical: Horizontal, Vertical",
+      "Boolean props must use True/False on both platforms — never On/Off",
+      "Arabic props must use (Ar) suffix on both platforms — never 'Arabic' prefix",
+      "State values may diverge: Web adds Hover and Focus; App uses Pressed instead of Hover",
+      "Type values may diverge: Web components often have more variants for desktop contexts",
+      "Viewport prop exists on Web only — App components never have Viewport",
+      "Naming conflicts to resolve: 'Collapse' (App) → use 'Collapsed' (Web standard); 'In Active' (App) → use 'Inactive'"
+    ]
+  },
+
+  "strictGlobalRules": {
+    "libraryFirst":             "If a component exists in the platform library, always use it. Never build a custom equivalent when a library component covers the use case.",
+    "iconSourceExclusive":      "FDS icon libraries (flow-icons-v4) are the ONLY approved icon source. No emoji, no inline SVG files, no third-party icon packs (Heroicons, Material, Feather, etc.).",
+    "fontSourceExclusive":      "FDS font assets (Jotia, Graphik) are the ONLY approved fonts. No Google Fonts, no Adobe Fonts, no CDN substitutes, no Plus Jakarta Sans, no Inter.",
+    "tokenRequired":            "All visual properties (color, spacing, shadow, radius, motion) must reference FDS design tokens. No hardcoded hex, px, or duration values in production code.",
+    "arabicRequiresVariant":    "Structural RTL layout changes must use the Language=Arabic component variant. Manual mirroring, CSS transform: scaleX(-1), or dir=rtl overrides without a proper component variant are forbidden.",
+    "noCrossLibraryComponents": "App components must not appear in Web designs and vice versa. Email components are always separate.",
+    "noDetaching":              "Library component instances must not be detached. If customisation is needed beyond what props allow, raise an FDS gap request to the design system team."
+  }
+}

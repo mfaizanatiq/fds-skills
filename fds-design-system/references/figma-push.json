@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "figma-push.v1",
+  "description": "Protocol for pushing FDS-compliant designs to Figma using MCP. All insertions must use components from the FDS library files. No custom ad-hoc components when a library equivalent exists. Variables must be bound — never hardcoded.",
+
+  "mcpTools": {
+    "startTransaction":    "start-editing-transaction",
+    "performOperations":   "perform-editing-operations",
+    "commitTransaction":   "commit-editing-transaction",
+    "cancelTransaction":   "cancel-editing-transaction",
+    "getDesign":           "get-design",
+    "getDesignContent":    "get-design-content",
+    "getScreenshot":       "get-screenshot",
+    "getAssets":           "get-assets"
+  },
+
+  "libraryFileKeys": {
+    "flow-app-v2":   "1fefe3u3ntgI9SfbU2gppC",
+    "flow-web-v2":   "6JoGJ2tuMzkJ0b5gnAX7UR",
+    "flow-icons-v4": "yQr5ZzAh1bEQGdybc9tnAM",
+    "foundation":    "7D95UtZ3mvVWUvv1P3CGGW"
+  },
+
+  "workflow": [
+    {
+      "step": 1,
+      "action": "identify-components",
+      "instruction": "Parse the design requirement. List every FDS component needed. For each, look up the correct library lookup JSON (flow-app-v2.lookup.json or flow-web-v2.lookup.json) to get the nodeId, canonical props, and defaultVariant. Also identify which FDS icons are needed (flow-icons-v4.lookup.json).",
+      "readFiles": ["flow-app-v2.lookup.json", "flow-web-v2.lookup.json", "flow-icons-v4.lookup.json"]
+    },
+    {
+      "step": 2,
+      "action": "fetch-visuals",
+      "instruction": "For each component, call Figma MCP get_screenshot(nodeId, fileKey) to confirm visual context before insertion. This prevents misidentification of variants. If get_screenshot fails, use the netlifyFallback URL from the lookup JSON.",
+      "fallbackOrder": ["get-screenshot (Figma MCP)", "netlifyFallback URL from lookup JSON", "proceed text-only and flag"]
+    },
+    {
+      "step": 3,
+      "action": "platform-check",
+      "instruction": "Confirm the target platform. Check references/platform-rules.json. App components must never be pushed to Web files and vice versa. Email components are strictly separate.",
+      "readFiles": ["references/platform-rules.json"]
+    },
+    {
+      "step": 4,
+      "action": "start-transaction",
+      "instruction": "Call start-editing-transaction on the TARGET design file (not the library file). Capture the transaction ID for use in subsequent operations.",
+      "note": "Never start a transaction on a library file. Target files are project/feature Figma files."
+    },
+    {
+      "step": 5,
+      "action": "insert-library-components",
+      "instruction": "Use perform-editing-operations to insert components by their library nodeId. Reference the exact nodeId from the lookup JSON. Apply defaultVariant props first, then override with the specific variant needed for the design.",
+      "rules": [
+        "Never create a custom frame when a library component exists for the same purpose",
+        "Insert sub-components as library instances — never flatten or detach",
+        "For icons: always use flow-icons-v4 library — never embed custom SVGs",
+        "For Arabic/RTL: set Language=Arabic on the component — do not manually mirror"
+      ]
+    },
+    {
+      "step": 6,
+      "action": "set-component-props",
+      "instruction": "After insertion, set the component props according to the design requirement. Prop names and values must match the canonical values in prop-lookup.json and the component's lookup JSON entry.",
+      "propRules": [
+        "All prop names in Title Case — 'Show Icon' not 'show icon'",
+        "All prop values in Title Case — 'Default' not 'default'",
+        "Boolean props: True/False only — never On/Off or Yes/No",
+        "Arabic content: use (Ar) suffix props — never 'Arabic Title', always 'Title (Ar)'",
+        "Validate prop names against prop-lookup.json synonyms table before setting"
+      ],
+      "readFiles": ["references/prop-lookup.json"]
+    },
+    {
+      "step": 7,
+      "action": "bind-variables",
+      "instruction": "For any custom frames or elements (not library components): bind all fills, strokes, text styles, and effects to FDS Figma variables from the Foundation file. Never use hardcoded color, spacing, or shadow values.",
+      "variableBindingRules": {
+        "fills":    "Bind to brand color token variable (e.g. FBrandColorBackgroundPrimary)",
+        "strokes":  "Bind to brand border color token variable",
+        "text":     "Bind text style to FDS shared text style matching the brand type token",
+        "effects":  "Bind shadow/blur effect to brand shadow token variable",
+        "spacing":  "Auto Layout padding/gap must reference brand space token variables",
+        "forbidden": [
+          "Never bind to base-tier tokens (FBase*) in designs — those are code-only primitives",
+          "Never use local styles — always library or shared styles from Foundation file",
+          "Never detach a library component to override a variable"
+        ]
+      }
+    },
+    {
+      "step": 8,
+      "action": "validate",
+      "instruction": "Before committing, run through the validation checklist below. If any check fails: cancel transaction, fix the issue, restart from step 4.",
+      "checklist": [
+        "All components are library instances from the correct platform library",
+        "No detached components",
+        "Props set to canonical values (validated against prop-lookup.json)",
+        "Language=Arabic applied on components that need RTL layout — not manually mirrored",
+        "No hardcoded fills or strokes — all bound to Foundation variables",
+        "Icons are from flow-icons-v4 library at correct size (24px nav, 48px badge)",
+        "Spacing is token-bound in Auto Layout",
+        "No components cross-used between platforms (App in Web file or vice versa)"
+      ]
+    },
+    {
+      "step": 9,
+      "action": "commit-or-cancel",
+      "instruction": "Validation passed: call commit-editing-transaction. Any failures: call cancel-editing-transaction, report violations clearly (with component name, prop, and what was wrong), and fix before retrying.",
+      "onSuccess":  "commit-editing-transaction with the captured transaction ID",
+      "onFailure":  "cancel-editing-transaction, then log: component name + violation type + corrective action needed"
+    }
+  ],
+
+  "componentInsertionRules": {
+    "libraryFirst": "If a component exists in the FDS library, always insert it from the library. Never build a custom equivalent from primitives.",
+    "correctLibraryFile": "App designs → flow-app-v2. Web designs → flow-web-v2. Email → flow-email. Never mix.",
+    "defaultVariantFirst": "Always start from the defaultVariant in the component lookup JSON, then apply the specific Type/State/Size needed.",
+    "arabicComponents": "Set Language=Arabic prop. Do not manually flip, mirror, or rotate components for RTL.",
+    "sizeRestriction": "Never override the intrinsic width/height of a library component. Use Auto Layout and constraints for placement.",
+    "nestedComponents": "Sub-components within a parent must also be library instances. Example: Button inside a Card must be the library Button, not a custom rectangle with text.",
+    "iconSource": "Icons must always come from flow-icons-v4. Use the exact icon name from the lookup JSON. ic_nav_ at 24px, ic_badge_ at 48px.",
+    "stateManagement": "Variants represent States — do not manually modify a Default component to look like a Hover/Pressed state. Switch to the correct State variant instead."
+  },
+
+  "figmaVariableCollections": {
+    "source": "Foundation file — fileKey: 7D95UtZ3mvVWUvv1P3CGGW",
+    "collections": [
+      "Brand Color Tokens",
+      "Base Color Tokens",
+      "Space Tokens",
+      "Typography Tokens",
+      "Shadow Tokens",
+      "Motion Tokens",
+      "Border Tokens",
+      "Opacity Tokens"
+    ],
+    "note": "Always bind to Brand-tier tokens (FBrand*), not Base-tier (FBase*). Base tokens are raw primitives only used to compose brand tokens."
+  },
+
+  "doCheck": {
+    "beforeEveryCommit": [
+      "All components are library instances (check: no custom group/frame where a component exists)",
+      "Platform matches: App components in App designs, Web components in Web designs",
+      "Props use canonical names and values (Title Case, True/False booleans)",
+      "Arabic: Language=Arabic set on RTL components — not manual mirroring",
+      "No hardcoded fills/strokes — all variable-bound",
+      "Icons: from flow-icons-v4 library at 24px (nav) or 48px (badge)",
+      "Spacing: Auto Layout padding/gap uses space variables — no fixed numeric values",
+      "No detached library instances"
+    ]
+  },
+
+  "errorRecovery": {
+    "onTransactionFailure": "Call cancel-editing-transaction immediately. Do not leave a stale transaction open.",
+    "onValidationFailure": "List every failing check before cancelling. Fix all issues before restarting transaction.",
+    "onMissingComponent": "If a required component is not in the library lookup JSON: flag it as an FDS gap, do not create a custom substitute without flagging it explicitly to the user.",
+    "onMissingIcon": "If the required icon does not exist in flow-icons-v4: flag as 'Icon gap: [description] — recommend raising with DS team'. Never embed a custom SVG silently."
+  }
+}

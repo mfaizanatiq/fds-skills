@@ -1,105 +1,671 @@
 {
-  "skill_name": "flow-design-system",
+  "skill_name": "fds-design-system",
+  "version": "2.1.0",
+  "lastUpdated": "2026-03-31",
+  "description": "Comprehensive eval suite covering all skill capabilities: token lookup, component props, platform rules, do/don't guidance, Figma push, visual fetch, JSON routing, Arabic/RTL, cross-platform misuse, code generation, content guidelines, email rules, gap analysis, and MD vs JSON performance comparison.",
+
+  "categories": [
+    "A: JSON Lookup Routing",
+    "B: Component Props & Variants",
+    "C: Platform Rules Enforcement",
+    "D: Do's & Don'ts Guidance",
+    "E: Figma Push Workflow",
+    "F: Visual Fetch Protocol",
+    "G: Token Compliance & Chain",
+    "H: Icon Rules & Gap Protocol",
+    "I: Arabic & RTL Handling",
+    "J: Cross-Platform Misuse Detection",
+    "K: Code Generation (BEM + Tokens)",
+    "L: Content Guidelines",
+    "M: Gap Analysis",
+    "N: Multi-Component Layouts",
+    "O: Email Platform",
+    "P: MD vs JSON Performance Comparison"
+  ],
+
   "evals": [
+
     {
-      "id": 1,
+      "id": "A-01",
+      "category": "A: JSON Lookup Routing",
+      "prompt": "I need to find the nodeId, Figma link, and fallback URL for the App Button component. Where exactly do you look this up, and what is the nodeId?",
+      "expected_output": "Reads references/flow-app-v2.lookup.json, finds the 'buttons' entry, returns nodeId '5039:740', Figma link, and netlify fallback URL. Does NOT scan component-nodes.md first.",
+      "passCondition": "Uses references/flow-app-v2.lookup.json as the primary source. Correct nodeId returned."
+    },
+    {
+      "id": "A-02",
+      "category": "A: JSON Lookup Routing",
+      "prompt": "Where does the FDS skill look up which tokens a Web Input Field uses?",
+      "expected_output": "references/flow-web-v2.lookup.json → find 'input-field' entry → read tokens.background, tokens.border, tokens.text arrays. Falls back to references/design-tokens.md only if not in lookup JSON.",
+      "passCondition": "Names the correct JSON file and path. Does not say 'components-data.md' as the first answer."
+    },
+    {
+      "id": "A-03",
+      "category": "A: JSON Lookup Routing",
+      "prompt": "I want to know the canonical prop names for an FDS Accordion — where exactly do you find this and what are they?",
+      "expected_output": "Reads references/flow-app-v2.lookup.json or references/flow-web-v2.lookup.json accordion entry props.variants and props.booleans. Returns: Expanded (True/False), Language (English/Arabic), Show Icon, Show Badge, Title, Title (Ar).",
+      "passCondition": "Looks up lookup JSON first, not components-data.md first. Correct canonical prop names returned."
+    },
+    {
+      "id": "A-04",
+      "category": "A: JSON Lookup Routing",
+      "prompt": "What file do I read to find out if a component is allowed on App but not Web?",
+      "expected_output": "references/platform-rules.json — specifically the platforms.app.keyRules and platforms.web.forbiddenAppPatterns, or the platforms.web.keyRules listing web-only components.",
+      "passCondition": "Identifies references/platform-rules.json as the correct file, not SKILL.md inline text alone."
+    },
+    {
+      "id": "A-05",
+      "category": "A: JSON Lookup Routing",
+      "prompt": "I need the Figma file key for Flow Web V2. What file contains this and what is the key?",
+      "expected_output": "references/flow-web-v2.lookup.json → meta.fileKey = '6JoGJ2tuMzkJ0b5gnAX7UR'. Alternatively any lookup JSON meta.fileKey for the Web library.",
+      "passCondition": "Reads correct lookup JSON meta field. Returns the correct file key."
+    },
+
+    {
+      "id": "B-01",
+      "category": "B: Component Props & Variants",
+      "prompt": "What are all the valid Type values for the App Button component?",
+      "expected_output": "From references/flow-app-v2.lookup.json buttons entry: Primary, Secondary, White Outlined, CTA, Ghost, Destructive. All Title Case.",
+      "passCondition": "Reads lookup JSON. Returns correct values. All in Title Case."
+    },
+    {
+      "id": "B-02",
+      "category": "B: Component Props & Variants",
+      "prompt": "Someone sets a button's State to 'hover' on the App library. What is wrong with this?",
+      "expected_output": "Two violations: (1) 'hover' should be 'Hover' (Title Case required per prop-lookup.json). (2) App components do not have a Hover state — use Pressed instead. Hover is a Web/desktop-only concept.",
+      "passCondition": "Catches both the casing violation AND the platform-incorrect state. References prop-lookup.json for casing rule and platform-rules.json / lookup JSON for the App state list."
+    },
+    {
+      "id": "B-03",
+      "category": "B: Component Props & Variants",
+      "prompt": "What is the correct Arabic content prop pattern in FDS? Someone is using 'Arabic Title' — is that right?",
+      "expected_output": "'Arabic Title' is wrong. The correct pattern is 'Title (Ar)' — the English prop name with ' (Ar)' suffix (space before parenthesis). Defined in prop-lookup.json synonyms: 'Arabic Title' → 'Title (Ar)'.",
+      "passCondition": "Identifies wrong pattern. Returns correct (Ar) suffix pattern. References prop-lookup.json."
+    },
+    {
+      "id": "B-04",
+      "category": "B: Component Props & Variants",
+      "prompt": "A developer set a boolean prop to 'on' instead of 'true'. Is this valid in FDS?",
+      "expected_output": "Invalid. FDS boolean props use True/False only — never On/Off, Yes/No, 1/0. This is defined in prop-lookup.json and platform-rules.json crossPlatformComponents.alignmentRules.",
+      "passCondition": "Rejects 'on'. States True/False rule. References prop-lookup.json."
+    },
+    {
+      "id": "B-05",
+      "category": "B: Component Props & Variants",
+      "prompt": "What sub-components does the App Action Footer have, and what are their nodeIds?",
+      "expected_output": "Reads references/flow-app-v2.lookup.json, finds action-footer entry (or notes it's not yet populated and falls back to references/component-nodes.md). nodeId 5616:2411, sub-components: Action Footer Summary (5616:2453) and .Options (5617:2200).",
+      "passCondition": "Attempts lookup JSON first. Returns correct nodeIds from whichever source has them."
+    },
+    {
+      "id": "B-06",
+      "category": "B: Component Props & Variants",
+      "prompt": "Does the Web Button have a Viewport prop? What are the valid values?",
+      "expected_output": "Yes — Web components always have Viewport. Valid values: Desktop, Tablet, Mobile, mWeb. This is a Web-specific required prop that App components do not have.",
+      "passCondition": "Confirms Viewport on Web Button. Lists all 4 correct values. Notes App doesn't have this prop."
+    },
+    {
+      "id": "B-07",
+      "category": "B: Component Props & Variants",
+      "prompt": "What is the default variant that should be applied when first inserting the App Alert component into a Figma design?",
+      "expected_output": "From references/flow-app-v2.lookup.json alert.figmaPush.defaultVariant: Type=Informational, State=Default, Language=English.",
+      "passCondition": "Reads figmaPush.defaultVariant from lookup JSON. Returns correct three-prop default."
+    },
+
+    {
+      "id": "C-01",
+      "category": "C: Platform Rules Enforcement",
+      "prompt": "A designer wants to use the App Bottom Navigation Bar in a Web design file. Is this allowed?",
+      "expected_output": "Not allowed. App Bottom Navigation Bar is an App-only component. On Web, use Super Nav (top navigation) and/or Footer. This is listed in references/platform-rules.json platforms.web.forbiddenAppPatterns.",
+      "passCondition": "Rejects the cross-platform use. Names the correct Web alternatives. References platform-rules.json."
+    },
+    {
+      "id": "C-02",
+      "category": "C: Platform Rules Enforcement",
+      "prompt": "Can I use the Web Modal component in an iOS app design?",
+      "expected_output": "No. Web Modal is Web-only. On App, use Modal Alert (for simple dialogs) or Drawer (for bottom-sheet panels). This is in platform-rules.json platforms.app.forbiddenWebPatterns.",
+      "passCondition": "Rejects Web Modal on App. Names Modal Alert and Drawer as App alternatives."
+    },
+    {
+      "id": "C-03",
+      "category": "C: Platform Rules Enforcement",
+      "prompt": "Does the App platform need a Viewport prop on its components?",
+      "expected_output": "No. App components never have a Viewport prop — they are inherently mobile-sized. Viewport is Web-only (Desktop, Tablet, Mobile, mWeb). This is in platform-rules.json platforms.app.viewportProp: false.",
+      "passCondition": "Correctly states no Viewport on App. Explains it's Web-only."
+    },
+    {
+      "id": "C-04",
+      "category": "C: Platform Rules Enforcement",
+      "prompt": "I'm building an email template. Can I use the Web Input Field component in it?",
+      "expected_output": "No. Email components are a completely separate library. Never use App or Web components in email. Email has its own 42-component library (flow-email.lookup.json). Additionally, email cannot use the same CSS/HTML patterns as Web components.",
+      "passCondition": "Rejects Web component in email. States email is a separate library. References flow-email.lookup.json."
+    },
+    {
+      "id": "C-05",
+      "category": "C: Platform Rules Enforcement",
+      "prompt": "What is the difference between mWeb and the App Mobile platform?",
+      "expected_output": "mWeb is a browser viewport variant for Web components (responsive mobile web on qatarairways.com). App Mobile is a native iOS/Android screen. They are completely different: mWeb uses Web components at narrow viewport; App uses native App components. Never substitute one for the other.",
+      "passCondition": "Clearly distinguishes mWeb (browser) from App (native). Explains they cannot be interchanged."
+    },
+    {
+      "id": "C-06",
+      "category": "C: Platform Rules Enforcement",
+      "prompt": "What happens to the Status Bar component when building a Web page?",
+      "expected_output": "The Status Bar is an App-only component — it is an iOS/Android OS hardware element. It never appears in Web designs. This is explicitly listed in platform-rules.json platforms.web.forbiddenAppPatterns.",
+      "passCondition": "States Status Bar is App-only (OS hardware). Correctly rejects its use on Web."
+    },
+
+    {
+      "id": "D-01",
+      "category": "D: Do's & Don'ts Guidance",
+      "prompt": "What should I avoid when placing a Primary button on an App screen?",
+      "expected_output": "From references/flow-app-v2.lookup.json buttons.donts: (1) Do not place more than one Primary button in the same screen section. (2) Do not use Hover state — App uses Pressed. (3) Do not resize below 44px height (WCAG). (4) Do not hardcode colour — use tokens. (5) Do not use a button for list item navigation.",
+      "passCondition": "Reads lookup JSON donts array. Returns at least 3 of the correct don'ts for the App button."
+    },
+    {
+      "id": "D-02",
+      "category": "D: Do's & Don'ts Guidance",
+      "prompt": "What must I always do when showing an Error Message in an App Input Field?",
+      "expected_output": "Always pair Show Error Message=True with State=Error simultaneously. Both must be set together — never show the error message indicator without also setting the Error state.",
+      "passCondition": "Returns the paired State=Error + Show Error Message=True rule from input-field.dos array."
+    },
+    {
+      "id": "D-03",
+      "category": "D: Do's & Don'ts Guidance",
+      "prompt": "Can I nest accordions inside each other in FDS?",
+      "expected_output": "No — FDS accordion donts explicitly state: do not nest accordions more than one level deep. Source: references/flow-app-v2.lookup.json accordion.donts.",
+      "passCondition": "Returns the no-nesting rule from accordion donts."
+    },
+    {
+      "id": "D-04",
+      "category": "D: Do's & Don'ts Guidance",
+      "prompt": "Is it acceptable to show an FDS Alert with only a Title and no Description?",
+      "expected_output": "No. Alert donts state: 'Do not omit Description when Title is present' and 'Do not write vague messages'. Alert dos state: 'Always include a Description explaining what happened and what to do next.' A Title-only alert is against FDS guidelines.",
+      "passCondition": "Correctly rejects Title-only alert. References the dos/donts from alert entry in lookup JSON."
+    },
+    {
+      "id": "D-05",
+      "category": "D: Do's & Don'ts Guidance",
+      "prompt": "How many Primary buttons can I have in a single screen section on the App?",
+      "expected_output": "Exactly one. FDS button donts: 'Do not place more than one Primary button in the same screen section.' Multiple primary CTAs create visual hierarchy confusion.",
+      "passCondition": "Returns max one primary button rule. Sources it from buttons.donts in lookup JSON."
+    },
+
+    {
+      "id": "E-01",
+      "category": "E: Figma Push Workflow",
+      "prompt": "Walk me through the correct steps to push an FDS App Button component to a Figma design file using MCP.",
+      "expected_output": "9-step protocol from references/figma-push.json: (1) Look up nodeId from flow-app-v2.lookup.json, (2) get_screenshot to confirm visual, (3) platform check, (4) start-editing-transaction on TARGET file (not library), (5) perform-editing-operations to insert by nodeId, (6) set props from defaultVariant + override, (7) bind fills/spacing to Foundation variables, (8) validate checklist, (9) commit-editing-transaction or cancel on failure.",
+      "passCondition": "Reads references/figma-push.json. Returns correct MCP tool names. Notes transaction is on target file not library."
+    },
+    {
+      "id": "E-02",
+      "category": "E: Figma Push Workflow",
+      "prompt": "What MCP tool do I call to push a design operation to Figma?",
+      "expected_output": "perform-editing-operations (within a transaction). The full sequence is: start-editing-transaction → perform-editing-operations → commit-editing-transaction. Source: references/figma-push.json mcpTools.",
+      "passCondition": "Names all three correct MCP tools in the right sequence."
+    },
+    {
+      "id": "E-03",
+      "category": "E: Figma Push Workflow",
+      "prompt": "When pushing to Figma, can I use a hardcoded hex value for a button's background fill?",
+      "expected_output": "No. All fills must be bound to FDS Figma variables from the Foundation file (fileKey: 7D95UtZ3mvVWUvv1P3CGGW) — not hardcoded. Binding to FBrandColorBackgroundPrimary variable instead of #8E2157. Source: references/figma-push.json variableBindingRules.",
+      "passCondition": "Rejects hardcoded hex. Names Foundation file as source of variables. Explains variable binding."
+    },
+    {
+      "id": "E-04",
+      "category": "E: Figma Push Workflow",
+      "prompt": "A Figma push transaction fails validation. What should I do?",
+      "expected_output": "Call cancel-editing-transaction immediately with the captured transaction ID. Log every failing check (component name + prop + violation). Fix all issues before starting a new transaction. Do NOT leave a stale transaction open. Source: references/figma-push.json errorRecovery and workflow step 9.",
+      "passCondition": "Names cancel-editing-transaction. States all failures must be logged before retrying."
+    },
+    {
+      "id": "E-05",
+      "category": "E: Figma Push Workflow",
+      "prompt": "I want to push an App Accordion to a Figma file. What default variant props should it start with?",
+      "expected_output": "From references/flow-app-v2.lookup.json accordion.figmaPush.defaultVariant: Expanded=False, Language=English. Required props: Expanded. Variable scope: flow-app-v2.",
+      "passCondition": "Reads figmaPush.defaultVariant from accordion entry. Returns Expanded=False, Language=English."
+    },
+    {
+      "id": "E-06",
+      "category": "E: Figma Push Workflow",
+      "prompt": "Can I detach a library component instance in Figma to override one of its variables?",
+      "expected_output": "No. Detaching is explicitly forbidden in figma-push.json variableBindingRules.forbidden. If customisation is needed beyond what the component's props allow, raise an FDS gap request to the design system team.",
+      "passCondition": "Rejects detaching. Names the FDS gap process as the correct path."
+    },
+    {
+      "id": "E-07",
+      "category": "E: Figma Push Workflow",
+      "prompt": "What are the required props that must always be set when inserting a Web Button into Figma?",
+      "expected_output": "From references/flow-web-v2.lookup.json button.figmaPush.requiredProps: Type, State, Viewport. All three must always be set — Viewport is mandatory on all Web components.",
+      "passCondition": "Returns all three required props including Viewport. Sources from figmaPush.requiredProps."
+    },
+
+    {
+      "id": "F-01",
+      "category": "F: Visual Fetch Protocol",
+      "prompt": "I want to see what the App Alert component looks like. What is the exact sequence to fetch its visual?",
+      "expected_output": "(1) Look up references/flow-app-v2.lookup.json alert entry → get figma.nodeId and meta.fileKey. (2) Call Figma MCP get_screenshot(nodeId='5662:1964', fileKey='1fefe3u3ntgI9SfbU2gppC'). (3) On failure → fetch figma.fallback netlify URL. (4) On failure → FDS MCP inspect_frame. (5) On all failures → proceed text-only from props/tokens, flag it.",
+      "passCondition": "Uses lookup JSON for nodeId/fileKey. Correct 5-step fallback chain. Never uses local cache."
+    },
+    {
+      "id": "F-02",
+      "category": "F: Visual Fetch Protocol",
+      "prompt": "The Figma MCP get_screenshot call failed. What is the fallback URL for the App Accordion component?",
+      "expected_output": "From references/flow-app-v2.lookup.json accordion.figma.fallback: 'https://flow-ds-mcp.netlify.app/components/app/accordion.png'",
+      "passCondition": "Reads lookup JSON figma.fallback field. Returns correct netlify URL."
+    },
+    {
+      "id": "F-03",
+      "category": "F: Visual Fetch Protocol",
+      "prompt": "What file should I check first to find the nodeId and screenshot fallback for a Web Super Nav?",
+      "expected_output": "references/flow-web-v2.lookup.json — find the 'super-nav' entry in components[], read figma.nodeId and figma.fallback. This is the primary source before checking component-nodes.md.",
+      "passCondition": "Names the correct Web lookup JSON as primary source. Does not default to component-nodes.md first."
+    },
+
+    {
+      "id": "G-01",
+      "category": "G: Token Compliance & Chain",
       "prompt": "What are the exact CSS token names and hex values for all FDS warning state colors — text, background, border, and icon?",
-      "expected_output": "All four warning tokens listed with correct hex values from foundations.md and design-tokens.md"
+      "expected_output": "text-warning: #7A5E00; background-warning: (read from design-tokens.md); border-warning: #FCC500; icon-warning: #7A5E00. All four tokens exist as full sets.",
+      "passCondition": "Returns all four warning tokens. Correct hex values. Does NOT use #B68E00 for text-warning (common hallucination)."
     },
     {
-      "id": 2,
-      "prompt": "I'm building a loyalty tier badge component. What are the correct FDS background and text color tokens for all four loyalty tiers — Burgundy, Silver, Gold, and Platinum?",
-      "expected_output": "All 8 tokens (bg + text × 4 tiers) with correct hex values"
+      "id": "G-02",
+      "category": "G: Token Compliance & Chain",
+      "prompt": "Review this CSS: `.f-card { background: #F2F3FA; border: 1px solid #DBDEE8; border-radius: 8px; box-shadow: 0 2px 8px rgba(31,33,43,0.08); }` — list every FDS violation.",
+      "expected_output": "4 violations: (1) background #F2F3FA hardcoded — use var(--f-card-bg) → var(--f-brand-color-background-default). (2) border 1px hardcoded — use var(--f-brand-border-size-default). (3) border-color #DBDEE8 hardcoded — use var(--f-card-border-color) → var(--f-brand-color-border-default). (4) border-radius 8px hardcoded — use var(--f-brand-radius-base). (5) box-shadow literal value — use var(--f-brand-shadow-medium). (6) brand tokens used directly in rules — should go through component tokens.",
+      "passCondition": "Identifies all hardcoded values. Provides correct token replacements. Notes component token layer missing."
     },
     {
-      "id": 3,
-      "prompt": "What font family, size, and weight does FDS specify for a page title, body text, and caption? Give me the base type tokens and the brand role they map to.",
-      "expected_output": "Jotia for headings, Graphik for body; correct sizes from the 11-step type scale; brand role mapping"
+      "id": "G-03",
+      "category": "G: Token Compliance & Chain",
+      "prompt": "Can I use --f-base-color-solid-burgundy-400 directly in a component rule?",
+      "expected_output": "No. Base tokens are raw primitives and must never be used in components. The correct chain is: base → brand → component. In a component you use the component token (e.g. --f-button-bg), which maps to the brand token (--f-brand-color-background-primary), which references the base token. Base tokens are code-internal only.",
+      "passCondition": "Rejects base token in component. Explains 3-tier chain. Gives correct alternative."
     },
     {
-      "id": 4,
-      "prompt": "Show me how to apply FDS typography tokens correctly to an h1 heading and a paragraph. What composite token names do I use, and why should I never set font-size individually?",
-      "expected_output": "Uses font: var(--f-brand-type-*) composite shorthand; explains why individual properties break the system"
+      "id": "G-04",
+      "category": "G: Token Compliance & Chain",
+      "prompt": "What shadow token should I use for a sticky bottom action bar? What direction does the shadow go?",
+      "expected_output": "--f-brand-shadow-medium-n (upward shadow: 0 -2px 8px var(--f-brand-color-shadow-default)). The -n suffix means negative/upward, designed specifically for sticky bottom bars and bottom sheets.",
+      "passCondition": "Returns correct -n token. Explains upward direction. Does not use -medium or custom shadow."
     },
     {
-      "id": 5,
-      "prompt": "List all FDS spacing tokens from smallest to largest with their pixel values. Which brand aliases should I use in code?",
-      "expected_output": "Full spacing scale from --f-brand-space-2xs (4px) through --f-brand-space-6xl (80px) with brand aliases"
+      "id": "G-05",
+      "category": "G: Token Compliance & Chain",
+      "prompt": "I wrote this focus rule: `.f-button:focus-visible { outline: 2px solid #8E2157; outline-offset: 2px; }` — what's wrong?",
+      "expected_output": "Three violations: (1) 2px hardcoded — use var(--f-brand-border-size-focused). (2) #8E2157 burgundy is wrong for focus — focus ring must be dark: var(--f-brand-color-border-focused) = #1F212B, not burgundy. (3) outline-offset 2px hardcoded — must use a spacing token: var(--f-brand-space-xs).",
+      "passCondition": "Catches all 3 violations including the wrong focus color. Burgundy = CTA buttons only, not focus rings."
     },
     {
-      "id": 6,
-      "prompt": "I'm adding a hover transition to an FDS button. What motion duration and easing tokens should I use? What are the actual millisecond values for each duration?",
-      "expected_output": "instant=240ms, quick=480ms, gentle=960ms, generous=1200ms; correct easing token names"
+      "id": "G-06",
+      "category": "G: Token Compliance & Chain",
+      "prompt": "What spacing token do I use for 20px padding and 56px margin? Do brand aliases exist for these?",
+      "expected_output": "20px = --f-base-space-5. 56px = --f-base-space-14. Neither has a brand alias — they are exceptions. Use the base tokens directly: --f-base-space-5 and --f-base-space-14. This is one of the known gaps in the brand alias coverage.",
+      "passCondition": "Correctly identifies these two have NO brand aliases. Returns the base token names. Does not invent fake brand aliases."
     },
     {
-      "id": 7,
-      "prompt": "I need three FDS icons: one for luggage, one for a Visa payment method, and one Arabic RTL variant of the cart icon. What are the correct icon names, prefixes, and sizes?",
-      "expected_output": "ic_nav_luggage (24px), ic_payment_visa (48px), ic_nav_ar_cart (24px) or equivalent correct names"
+      "id": "G-07",
+      "category": "G: Token Compliance & Chain",
+      "prompt": "What is the correct hex for --f-brand-color-background-muted? Is it a light grey or a dark grey?",
+      "expected_output": "#4A525D — dark grey. This is a common trap: 'muted' sounds light but maps to a dark grey in FDS. It is NOT #EEEEF0 or similar light values. Source: design-tokens.md Brand Color Tokens.",
+      "passCondition": "Returns #4A525D. Explicitly states it is dark grey, not light. Flags it as a common mistake."
+    },
+
+    {
+      "id": "H-01",
+      "category": "H: Icon Rules & Gap Protocol",
+      "prompt": "What icon prefix and size should I use for the bottom navigation bar tabs on the App?",
+      "expected_output": "ic_nav_menu_ prefix at 32px. These are specifically designed for the Bottom Navigation Bar tab icons. Do not use ic_nav_ (24px) for this context. Source: references/flow-icons-v4.lookup.json sizingRules and platform-rules.json platforms.app.iconSizes.",
+      "passCondition": "Returns ic_nav_menu_ at 32px. Distinguishes from standard ic_nav_ 24px icons."
     },
     {
-      "id": 8,
-      "prompt": "What FDS shadow token should I use for a modal dialog versus a dropdown tooltip? What are the actual CSS values behind those tokens?",
-      "expected_output": "--f-brand-shadow-large for modal, --f-brand-shadow-medium for dropdown; correct shadow values"
+      "id": "H-02",
+      "category": "H: Icon Rules & Gap Protocol",
+      "prompt": "A designer needs an icon that doesn't exist in the FDS icon library. What is the correct protocol?",
+      "expected_output": "Icon gap protocol (from flow-icons-v4.lookup.json iconGapProtocol): (1) Flag: 'Icon gap: [description] — no FDS equivalent exists'. (2) Use the closest available FDS icon as a temporary placeholder. (3) Suggest a name following FDS convention (ic_nav_{name} or ic_badge_{name}). (4) Recommend raising with the FDS design system team. Never embed a custom SVG silently.",
+      "passCondition": "Returns all 4 steps of icon gap protocol. Forbids silent custom SVG use."
     },
     {
-      "id": 9,
-      "prompt": "What FDS border radius token gives a pill-shaped button, and what pixel value does it resolve to? Also what token gives the standard button/input corner rounding?",
-      "expected_output": "--f-brand-radius-rounded (64px) for pill; --f-brand-radius-base (8px) for standard"
+      "id": "H-03",
+      "category": "H: Icon Rules & Gap Protocol",
+      "prompt": "Can I resize an ic_nav_ icon to 32px to make it visually bigger?",
+      "expected_output": "No. FDS uses exactly two icon sizes: 24px for ic_nav_ and 48px for ic_badge_. You must never set font-size to any other value. If you need more visual space around the icon, adjust the wrapper container — not the icon itself. Source: flow-icons-v4.lookup.json rule_twoSizesOnly.",
+      "passCondition": "Rejects resizing. States 24px and 48px as the only two valid sizes. Says adjust wrapper not icon."
     },
     {
-      "id": 10,
+      "id": "H-04",
+      "category": "H: Icon Rules & Gap Protocol",
+      "prompt": "How do I display a Qatar Airways logo badge, a United Kingdom flag, and an Amex payment icon in HTML?",
+      "expected_output": "Qatar Airways: <i class='ic-badge-qr' aria-hidden='true'></i> (fds-code-share.css). UK flag: <i class='ic-nav-flag-gb' aria-hidden='true'></i> (fds-country-flags.css). Amex: <i class='ic-payment-amex' aria-hidden='true'></i> (fds-payment-badges.css). All three CSS files are self-contained with SVG data URIs.",
+      "passCondition": "Returns correct class patterns for all 3 icon types. Names the correct CSS files."
+    },
+
+    {
+      "id": "I-01",
+      "category": "I: Arabic & RTL Handling",
+      "prompt": "How do I switch an App Button to Arabic layout in Figma? Is it by flipping the frame or using a prop?",
+      "expected_output": "Always use the Language=Arabic variant prop on the component. Never manually flip, mirror, or apply CSS transform: scaleX(-1). The Language prop triggers the correct RTL layout that the design system team has built into the component. Manual mirroring is forbidden per platform-rules.json strictGlobalRules.arabicRequiresVariant.",
+      "passCondition": "Instructs Language=Arabic prop. Explicitly forbids manual mirroring. References platform-rules."
+    },
+    {
+      "id": "I-02",
+      "category": "I: Arabic & RTL Handling",
+      "prompt": "What font should I use for Arabic text in FDS?",
+      "expected_output": "Almarai (weight 300). For Farsi/Persian: Noto Sans Far. For standard Latin/English: Graphik Web. Jotia is NOT used for Arabic text. CSS: var(--f-base-type-family-arabic) resolves to Almarai, sans-serif.",
+      "passCondition": "Returns Almarai for Arabic. Notes Jotia is not for Arabic. Returns correct CSS variable."
+    },
+    {
+      "id": "I-03",
+      "category": "I: Arabic & RTL Handling",
+      "prompt": "A component has a Title prop. What Arabic prop should be paired with it and how is it named?",
+      "expected_output": "Title (Ar) — with a space before the parenthesis. The pattern is {English prop name} (Ar). So Title → Title (Ar), Label → Label (Ar), Description → Description (Ar). Never 'Arabic Title', never 'Title_AR', never 'TitleAr'. Source: prop-lookup.json arabicRules.",
+      "passCondition": "Returns 'Title (Ar)' with space. Rejects all wrong patterns. References prop-lookup.json."
+    },
+    {
+      "id": "I-04",
+      "category": "I: Arabic & RTL Handling",
+      "prompt": "Does every FDS component need a Language=Arabic variant?",
+      "expected_output": "No — only components that have structural RTL layout changes need a Language variant. 20 components in FDS use this prop. If only the text changes (no structural difference), a Language variant is not required. Adding dir=rtl in code handles text direction for components without a Language variant.",
+      "passCondition": "Clarifies that Language prop is for structural RTL changes only, not every component."
+    },
+
+    {
+      "id": "J-01",
+      "category": "J: Cross-Platform Misuse Detection",
+      "prompt": "A developer used the App Drawer component in a Web design instead of building a Sidesheet. What is wrong and what should they use?",
+      "expected_output": "Violation: App Drawer is App-only (opens from bottom). Web uses Sidesheet (opens from side — right or left). This cross-platform misuse is listed in platform-rules.json. Correct Web component: Sidesheet.",
+      "passCondition": "Identifies the violation. Explains functional difference (bottom vs side). Names Sidesheet as correct."
+    },
+    {
+      "id": "J-02",
+      "category": "J: Cross-Platform Misuse Detection",
+      "prompt": "A designer has placed an App Status Bar at the top of a Web homepage mockup. Identify the problem.",
+      "expected_output": "The Status Bar is an iOS/Android OS hardware element (shows carrier, time, battery). It must never appear in Web designs — it is App-only and represents an OS chrome element, not a UI component the Web team controls. Remove it from the Web design.",
+      "passCondition": "Identifies Status Bar as OS hardware element, App-only. Instructs removal from Web design."
+    },
+    {
+      "id": "J-03",
+      "category": "J: Cross-Platform Misuse Detection",
+      "prompt": "An App design is using the Web Calendar Picker component for a date selection flow. Is this correct?",
+      "expected_output": "No. Calendar Picker is Web-only. On App, date selection is handled through the Booking Widget sub-component 'Date Passenger Picker'. Source: platform-rules.json platforms.web.keyRules and App-only component list.",
+      "passCondition": "Rejects Web Calendar Picker on App. Names the correct App alternative."
+    },
+    {
+      "id": "J-04",
+      "category": "J: Cross-Platform Misuse Detection",
+      "prompt": "The team is using an Android Keyboard component in an iOS design. Is this a problem?",
+      "expected_output": "Yes. iOS Keyboard and Android Keyboard are separate components in the App library and must never be swapped. iOS designs must use the iOS Keyboard; Android designs must use the Android (Google) Keyboard. Source: platform-rules.json platforms.app.keyRules.",
+      "passCondition": "Identifies the OS keyboard mismatch. States they must not be interchanged."
+    },
+
+    {
+      "id": "K-01",
+      "category": "K: Code Generation (BEM + Tokens)",
       "prompt": "Build a complete FDS-compliant primary button and secondary button in HTML and CSS. Include the token map on the block, all interactive states (hover, focus-visible, disabled), and correct BEM class naming.",
-      "expected_output": ".f-button block with token map, .f-button--secondary modifier, all states using component tokens, composite font shorthand"
+      "expected_output": ".f-button block with token map on the block selector. Rules consume only --f-button-* tokens. .f-button--secondary modifier only reassigns tokens. Hover: background. Focus-visible: dark outline (#1F212B), NOT burgundy. Disabled: disabled tokens, not opacity. Composite font shorthand. No hardcoded values.",
+      "passCondition": "Correct BEM. Token map on block. 3-tier chain respected. Focus ring is dark not burgundy. Disabled uses tokens not opacity."
     },
     {
-      "id": 11,
-      "prompt": "How do I build an FDS text input field with default, focused, error, and disabled states? Show me the correct HTML structure, BEM naming, and all CSS tokens for each state.",
-      "expected_output": ".f-input BEM structure, token map on block, all 4 states using brand tokens, correct border and focus tokens"
+      "id": "K-02",
+      "category": "K: Code Generation (BEM + Tokens)",
+      "prompt": "Show me a BEM modifier that changes an FDS button to a white outlined variant. What component tokens does it reassign?",
+      "expected_output": ".f-button--white-outlined { --f-button-bg: transparent; --f-button-bg-hover: var(--f-brand-color-background-dark-40a); --f-button-text: var(--f-brand-color-text-light); --f-button-border-color: var(--f-brand-color-text-light); }. Modifier ONLY reassigns component tokens — adds no new CSS properties.",
+      "passCondition": "Modifier has zero new CSS properties. Only reassigns existing component tokens. All values are brand tokens."
     },
     {
-      "id": 12,
-      "prompt": "I need to implement an FDS flight status badge that shows Confirmed, Delayed, and Cancelled states. Use the correct color tokens, icon names, and BEM structure.",
-      "expected_output": "--f-brand-color-flight-status-confirmed (#34DB80), delayed (#FCC500), cancelled (#D95757); ic_flightindicator_ icons"
+      "id": "K-03",
+      "category": "K: Code Generation (BEM + Tokens)",
+      "prompt": "How do I build an FDS text input field with default, focused, error, and disabled states? Show correct HTML, BEM, and all CSS tokens.",
+      "expected_output": ".f-input block with token map. State modifiers or :focus-visible/:disabled pseudo-classes reassigning component tokens. Error state: --f-brand-color-border-error for border. Focused: --f-brand-color-border-focused (dark, not burgundy) with 2px. Disabled: --f-brand-color-background-disabled + text-disabled + cursor not-allowed. No opacity for disabled.",
+      "passCondition": "4 states correct. Focus border is dark not burgundy. Disabled uses tokens. BEM correct."
     },
     {
-      "id": 13,
-      "prompt": "Explain the FDS three-tier token system. Show me a concrete example of how base, brand, and component tokens chain together for a navigation link's active color.",
-      "expected_output": "Base → brand → component chain explained; example shows why you never use base tokens in components"
+      "id": "K-04",
+      "category": "K: Code Generation (BEM + Tokens)",
+      "prompt": "Why should I never set font-size, font-weight, and font-family individually in an FDS component?",
+      "expected_output": "FDS uses composite font shorthand tokens (--f-brand-type-*) that encode size/weight/line-height/family in one token. Setting properties individually (1) breaks the composite chain, (2) makes future type scale changes require hunting down individual properties, (3) is a BEM layer violation (brand tokens must not appear in rules, only in component token maps), (4) risks mismatched combinations.",
+      "passCondition": "Explains composite shorthand. Mentions 4-step component pattern. Explains chain benefits."
     },
     {
-      "id": 14,
-      "prompt": "Review this CSS for FDS compliance: `.search-bar { background: #F2F3FA; font-size: 16px; color: #1F212B; border: 1px solid #DBDEE8; border-radius: 8px; padding: 12px 16px; }` — list every violation and show the corrected version.",
-      "expected_output": "Identifies: hardcoded hex (4 violations), font-size not using composite shorthand, 1px not tokenised, 8px not tokenised, 12px/16px not tokenised"
+      "id": "K-05",
+      "category": "K: Code Generation (BEM + Tokens)",
+      "prompt": "What is the mandatory CSS file layer order in an FDS project?",
+      "expected_output": "Layer 1: FDS Core Tokens (:root --f-brand-* + --f-base-* from tokens.css). Layer 2: Component Tokens (--f-{component}-* on block selector). Layer 3: Component Rules (structural CSS consuming --f-{component}-* only). Layer 4: Custom/project-specific (must still use --f-brand-* tokens). Never mix layers.",
+      "passCondition": "Returns all 4 layers in correct order. States brand tokens are forbidden in Layer 3 rules."
+    },
+
+    {
+      "id": "L-01",
+      "category": "L: Content Guidelines",
+      "prompt": "Write three FDS-compliant error messages: a payment that failed, a passport photo that's too blurry, and a seat that was just taken.",
+      "expected_output": "All three: sentence case, active voice, specific about what happened, solution-focused (what to do next), empathetic but not over-apologetic. E.g. 'Your payment couldn't be processed. Please check your card details and try again.' Not: 'Payment error occurred.'",
+      "passCondition": "All in sentence case. All active voice. All specific with a solution. Tone is warm and helpful not robotic."
     },
     {
-      "id": 15,
-      "prompt": "I'm building a flight search form in FDS. What layout principles, field ordering rules, spacing guidelines, and validation behavior should I follow?",
-      "expected_output": "Single-column layout, labels above inputs, validate on blur, FDS spacing tokens, submit at bottom"
+      "id": "L-02",
+      "category": "L: Content Guidelines",
+      "prompt": "Is 'CONFIRM BOOKING' a valid FDS button label?",
+      "expected_output": "No — two violations: (1) All caps is not FDS copy style; use Sentence case: 'Confirm booking'. (2) Check if active voice is the best framing — 'Confirm booking' is acceptable. The FDS rule is sentence case for all UI text including buttons.",
+      "passCondition": "Catches all-caps violation. Returns sentence case version. References FDS content guidelines."
     },
     {
-      "id": 16,
-      "prompt": "What grid system and breakpoints does FDS define? How many columns at mobile, tablet, and desktop? What breakpoint token values should I use?",
-      "expected_output": "4 cols at xs-sm, 8 cols at tablet, 12 cols at desktop; correct breakpoint token values from foundations.md"
+      "id": "L-03",
+      "category": "L: Content Guidelines",
+      "prompt": "What are the loyalty tier names in FDS and what are their correct background color tokens?",
+      "expected_output": "Burgundy: --f-brand-color-background-loyalty-burgundy (#780044). Silver: --f-brand-color-background-loyalty-silver (#787878). Gold: --f-brand-color-background-loyalty-gold (#8C5617). Platinum: --f-brand-color-background-loyalty-platinum (#1A1A1A). Tier prop values match these names exactly.",
+      "passCondition": "Returns all 4 tiers. Correct token names. Correct hex values."
+    },
+
+    {
+      "id": "M-01",
+      "category": "M: Gap Analysis",
+      "prompt": "I need a 'typing indicator' component (three animated dots showing AI is responding) — does this exist in FDS?",
+      "expected_output": "FDS gap: f-typing-indicator. This component does not exist in the FDS library. Build it using FDS naming (f-typing-indicator), FDS motion tokens (--f-brand-motion-duration-quick for dot animation), FDS color tokens, and BEM structure. Flag to design system team: 'FDS gap: f-typing-indicator — animated loading state for AI/conversational UI. Candidate for formalisation.'",
+      "passCondition": "Correctly identifies it as an FDS gap. Builds using FDS conventions. Flags with correct format. Does NOT invent a fake library component."
     },
     {
-      "id": 17,
-      "prompt": "Write three FDS-compliant error messages: (1) a payment that couldn't be processed, (2) a passport photo that's too blurry to scan, (3) a selected seat that's just been taken by another passenger.",
-      "expected_output": "Sentence case, active voice, empathetic + solution-focused tone matching FDS content guidelines"
+      "id": "M-02",
+      "category": "M: Gap Analysis",
+      "prompt": "Is there an FDS icon for an AI sparkle/magic wand effect?",
+      "expected_output": "Icon gap: no FDS icon currently exists for AI sparkle/magic. Use the closest available (e.g. ic_nav_star or ic_nav_help as temporary placeholder). Suggest: ic_nav_ai-sparkle. Recommend raising with FDS design team. Never embed a third-party sparkle SVG silently.",
+      "passCondition": "Identifies as icon gap. Suggests a placeholder from existing set. Proposes FDS-style name. Flags to team."
+    },
+
+    {
+      "id": "N-01",
+      "category": "N: Multi-Component Layouts",
+      "prompt": "I'm building a login screen for the App. What FDS components should I include and in what order?",
+      "expected_output": "From references/patterns.md login/signup pattern: Status Bar (top, iOS) → Navigation Bar (back button, 'Sign in' title) → Input Field (email, password with password variant) → Helper Text (optional) → App Button (Primary 'Sign in') → Link (forgot password) → Divider → Social Media Buttons (Apple, Google) → Bottom Navigation Bar (if persistent nav). All from App library.",
+      "passCondition": "All components from App library. Correct vertical order. Includes Status Bar. Uses patterns.md."
     },
     {
-      "id": 18,
-      "prompt": "What are the FDS rules for UI copy casing, voice, and tone? Give me five examples of incorrect button labels and their corrected FDS-compliant versions.",
-      "expected_output": "Sentence case rule; active voice; warm/confident/premium tone; 5 before/after examples"
+      "id": "N-02",
+      "category": "N: Multi-Component Layouts",
+      "prompt": "What is a Build Manifest and when should one be generated?",
+      "expected_output": "A Build Manifest (build-manifest.md) is generated alongside code for every UI build. It is a human-readable plain-language document listing: (1) FDS library components used (name, platform, purpose). (2) New/custom components built on FDS foundations. (3) Icons used. (4) Icon gaps. The code stays pure FDS — the manifest is the human communication layer.",
+      "passCondition": "Explains purpose correctly. States it's generated alongside code always. Lists the 4 sections."
+    },
+
+    {
+      "id": "O-01",
+      "category": "O: Email Platform",
+      "prompt": "Can I use CSS Grid for layout in an FDS email template?",
+      "expected_output": "No. Email templates must use table-based layout only — not CSS Grid or Flexbox. Email clients (especially Outlook) do not reliably support modern CSS layout models. Source: references/flow-email.lookup.json platformRestrictions.noCSSGrid and platform-rules.json platforms.email.keyRules.",
+      "passCondition": "Rejects CSS Grid for email. States table-based layout only. References email restrictions."
     },
     {
-      "id": 19,
-      "prompt": "I need to build an FDS card component that supports both English LTR and Arabic RTL layouts. What icon variants do I need, what fonts change, what Figma prop controls the language switch, and what CSS considerations apply?",
-      "expected_output": "ic_nav_ar_ prefix for RTL icons; Almarai font for Arabic; Language: English/Arabic Figma prop; dir=rtl CSS"
+      "id": "O-02",
+      "category": "O: Email Platform",
+      "prompt": "Should I use Jotia font for headings in an FDS email template?",
+      "expected_output": "No. Jotia is NOT supported in most email clients. For email headings, use Graphik Bold weight with the email font stack: 'Graphik Web', Arial, sans-serif. This is specified in platform-rules.json platforms.email.keyRules and flow-email.lookup.json platformRestrictions.",
+      "passCondition": "Rejects Jotia for email. Returns correct Graphik Bold alternative with correct font stack."
     },
     {
-      "id": 20,
-      "prompt": "Build me a complete FDS QSuite tag component — the kind shown on flight search results to mark Qatar Airways' premium cabin. Include the correct color token, BEM structure, appropriate icon or label, and all interactive/display states.",
-      "expected_output": "--f-brand-color-tags-qsuite (#8E2157); correct BEM .f-tag block; appropriate token map; luxury/premium visual treatment"
+      "id": "O-03",
+      "category": "O: Email Platform",
+      "prompt": "Can I use CSS custom properties (CSS variables) in an FDS email template?",
+      "expected_output": "No. CSS custom properties (--f-brand-*) are not supported by most email clients. In email, all CSS must be inlined with literal values — not token references. Source: flow-email.lookup.json platformRestrictions.noCSSVariables.",
+      "passCondition": "Rejects CSS variables in email. Explains inline CSS with literal values required."
+    },
+    {
+      "id": "O-04",
+      "category": "O: Email Platform",
+      "prompt": "What is the maximum content width for an FDS email template?",
+      "expected_output": "600px. This is the standard max-width for email templates (flow-email.lookup.json emailSpec.maxWidth: 600). Desktop email clients render at this width; mobile email clients stack to single column via media queries.",
+      "passCondition": "Returns 600px. Notes single-column mobile stacking."
+    },
+
+    {
+      "id": "P-01",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[JSON route] What are the valid State values for an App Button? Look it up in the JSON lookup file only.",
+      "expected_output": "From references/flow-app-v2.lookup.json → buttons.props.variants.State: Default, Pressed, Focused, Disabled, Loading, Success. No Hover state listed. Single file read, no markdown scanning.",
+      "passCondition": "Reads only references/flow-app-v2.lookup.json. Returns exact State array. Zero .md file reads.",
+      "perfNote": "Baseline JSON route — one file, indexed key access."
+    },
+    {
+      "id": "P-02",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[MD route] What are the valid State values for an App Button? Look it up in components-data.md only.",
+      "expected_output": "From references/components-data.md Buttons section: scans table rows to find State column values — Default, Pressed, Focused, Disabled, Loading, Success. Requires linear scan of multi-thousand-line markdown file.",
+      "passCondition": "Returns same correct values as P-01. Notes that this required scanning a large markdown file vs indexed JSON lookup.",
+      "perfNote": "Baseline MD route — linear scan, same data. Compare accuracy and tool-call overhead vs P-01."
+    },
+    {
+      "id": "P-03",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[JSON route] What is the nodeId and Figma fallback URL for the App Alert component?",
+      "expected_output": "From references/flow-app-v2.lookup.json → alert.figma.nodeId = '5662:1964', fallback = netlify URL in same entry. Single read, direct key access.",
+      "passCondition": "Reads lookup JSON only. Returns correct nodeId and fallback URL. Does not open component-nodes.md.",
+      "perfNote": "JSON-first visual fetch route."
+    },
+    {
+      "id": "P-04",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[MD route] What is the nodeId for the App Alert component? Use only references/component-nodes.md.",
+      "expected_output": "Scans component-nodes.md App section to find Alert row, reads nodeId from the table. Returns the same nodeId value as P-03.",
+      "passCondition": "Returns same nodeId as P-03. Requires markdown table scan vs single JSON key access.",
+      "perfNote": "MD visual fetch route. Both should return the same nodeId — P-03 is faster due to indexed access."
+    },
+    {
+      "id": "P-05",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[JSON route] What do's and don'ts apply when using the App Bottom Navigation Bar?",
+      "expected_output": "From references/flow-app-v2.lookup.json → bottom-navigation-bar.dos[] and bottom-navigation-bar.donts[]. Returns structured list immediately — this data EXISTS ONLY in the JSON, not in any .md file.",
+      "passCondition": "Reads lookup JSON. Returns dos/donts arrays. Correctly notes this data has no .md equivalent.",
+      "perfNote": "JSON-exclusive data — no .md fallback exists. JSON wins by default."
+    },
+    {
+      "id": "P-06",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[MD route] What do's and don'ts apply when using the App Bottom Navigation Bar? Use only the .md files.",
+      "expected_output": "references/components-data.md does not contain structured do's/don'ts per component — only props, variants, and states. The skill cannot answer this question reliably from .md files alone. Must flag: 'Do/don't data is only in the JSON lookup file.'",
+      "passCondition": "Correctly acknowledges .md files lack do/don't data. Does not fabricate a list. Points to JSON as the correct source.",
+      "perfNote": "MD route fails on JSON-exclusive data. Confirms JSON is non-redundant for do/don't guidance."
+    },
+    {
+      "id": "P-07",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[JSON route] For the Figma push of a Web Modal, what is the defaultVariant and what variable scope does it use?",
+      "expected_output": "From references/flow-web-v2.lookup.json → modal.figmaPush.defaultVariant = {Type: 'Default', Viewport: 'Desktop', State: 'Default'}, modal.figmaPush.variableScope = 'Brand Color Tokens + Space Tokens'. Single file read.",
+      "passCondition": "Reads flow-web-v2.lookup.json. Returns correct defaultVariant and variableScope. No .md reads.",
+      "perfNote": "Figma push data is JSON-exclusive — no .md equivalent."
+    },
+    {
+      "id": "P-08",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[MD route] For the Figma push of a Web Modal, what is the defaultVariant? Use only .md files.",
+      "expected_output": "references/components-data.md contains component props and variants but NOT figmaPush instructions. The .md route cannot provide defaultVariant for Figma push. Must flag this gap and point to references/flow-web-v2.lookup.json.",
+      "passCondition": "Correctly identifies that figmaPush data is absent from .md files. Does not guess. Points to JSON.",
+      "perfNote": "MD route fails on figmaPush data. Another JSON-exclusive data category."
+    },
+    {
+      "id": "P-09",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[JSON route] What are the forbidden patterns for the Web platform?",
+      "expected_output": "From references/platform-rules.json → platforms.web.forbiddenPatterns[]. Returns 8 specific do-not patterns. Single file read, direct path access.",
+      "passCondition": "Reads platform-rules.json. Returns all 8 forbidden patterns. No SKILL.md inline scan needed.",
+      "perfNote": "platform-rules.json is the authoritative source; SKILL.md embeds a summary only."
+    },
+    {
+      "id": "P-10",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[MD route] What are the forbidden patterns for the Web platform? Use only SKILL.md.",
+      "expected_output": "SKILL.md Platform Guard Rules section contains a condensed version of the key rules but is NOT the authoritative list. It references platform-rules.json for full rules. Returns partial list — may miss edge cases present in the JSON.",
+      "passCondition": "Returns some correct forbidden patterns. Notes SKILL.md is summary-only and platform-rules.json is authoritative. Accuracy lower than P-09.",
+      "perfNote": "SKILL.md inline text is lossy summary. JSON is complete and machine-readable."
+    },
+    {
+      "id": "P-11",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[Fallback test] A designer asks for the props and variants of the FDS Web Carousel component. The JSON lookup file does not yet have this component populated. What do you do?",
+      "expected_output": "JSON lookup file checked first (references/flow-web-v2.lookup.json) — Carousel entry not found or empty. Falls back to references/components-data.md → find Web Carousel section → read props/variants from markdown table. Flags: 'Carousel not yet in lookup JSON — data sourced from components-data.md. Recommend exporting from dataset to populate JSON.'",
+      "passCondition": "Tries JSON first. Falls back to .md gracefully. Flags the gap. Does not fail silently.",
+      "perfNote": "Critical fallback path — .md files are STILL NEEDED for the 52 App + 84 Web components not yet in JSON."
+    },
+    {
+      "id": "P-12",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[Fallback test] A developer asks for the hex value of --f-brand-color-text-subtle. The lookup JSONs don't store hex values. What is the correct data source?",
+      "expected_output": "Hex values are not in lookup JSONs (they store token names, not raw values). Correct source: references/design-tokens.md or the colour token quick-reference in SKILL.md itself. Returns #6E7780. Notes the common wrong value #6B7280.",
+      "passCondition": "Correctly identifies that hex values live in design-tokens.md / SKILL.md, not lookup JSONs. Returns #6E7780. Does not look in flow-web-v2.lookup.json for this.",
+      "perfNote": ".md files remain the authoritative source for token hex values — NOT redundant yet."
+    },
+    {
+      "id": "P-13",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[Redundancy audit] Which .md reference files are fully covered by the new JSON files and which are still needed?",
+      "expected_output": "FULLY COVERED by JSON (candidates for deprecation once JSON is complete): component-nodes.md (superseded by figma.nodeId in each lookup JSON entry). PARTIALLY COVERED — still needed: components-data.md (needed for ~130 components not yet in lookup JSON), design-tokens.md (hex values + base-tier tokens not in lookup JSON), foundations.md (typography, spacing scale, grid — no JSON equivalent yet). NOT COVERED by JSON at all: content-guidelines.md, email-components.md, patterns.md — no replacement planned.",
+      "passCondition": "Correctly categorises component-nodes.md as nearest to redundant. Correctly flags that components-data.md is still needed as fallback. Does not mark design-tokens.md or foundations.md as redundant.",
+      "perfNote": "This is the MD redundancy audit. Only component-nodes.md can be deprecated after lookup JSONs are fully populated."
+    },
+    {
+      "id": "P-14",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[Routing discipline test] A developer asks: 'What is the subComponents list for the App Input Field?' Without being told which file to use, which source does the skill consult first?",
+      "expected_output": "Skill reads references/flow-app-v2.lookup.json first (JSON routing rule from SKILL.md pre-flight). Finds input-field.subComponents[]. Returns Label, Text Input, Helper Text, Icon (leading/trailing) with their nodeIds. Does NOT open components-data.md first.",
+      "passCondition": "Opens lookup JSON without being prompted. Returns correct subComponents list. Zero .md reads before JSON is checked.",
+      "perfNote": "Tests autonomous JSON-first routing discipline without explicit instruction."
+    },
+    {
+      "id": "P-15",
+      "category": "P: MD vs JSON Performance Comparison",
+      "prompt": "[Accuracy parity test] Compare: What token does the App Button primary background use — answer from JSON, then cross-check against design-tokens.md. Do the values agree?",
+      "expected_output": "JSON: references/flow-app-v2.lookup.json → buttons.tokens.background = '--f-brand-color-background-primary'. design-tokens.md: --f-brand-color-background-primary = #8E2157 (brand-tier, maps to base burgundy-400). Both sources agree on the token name. design-tokens.md adds the hex value the JSON does not store. Conclusion: JSON for token name, .md for hex value — complementary, not redundant.",
+      "passCondition": "Reads both sources. Both return same token name. Notes JSON gives semantic name, .md gives hex. Concludes they are complementary.",
+      "perfNote": "Parity test confirms JSON and .md are both correct but serve different query types."
+    }
+
+  ,
+
+    {
+      "id": "X-01",
+      "category": "K: Code Generation (BEM + Tokens)",
+      "prompt": "Build me a complete FDS QSuite tag component — correct color token, BEM structure, appropriate icon, and all display states.",
+      "expected_output": "--f-brand-color-tags-qsuite token used (read from design-tokens.md). .f-tag BEM block with .f-tag--qsuite modifier. Token map on block. ic_badge_qsuite icon at 48px for decorative use or ic_nav_ 24px for inline. All values through component tokens, no hardcoded hex.",
+      "passCondition": "Correct QSuite color token. BEM compliant. Tokens not hardcoded. Correct icon prefix and size."
+    },
+    {
+      "id": "X-02",
+      "category": "G: Token Compliance & Chain",
+      "prompt": "What is --f-brand-color-background-default? What hex value is it and what is a common wrong version?",
+      "expected_output": "#F2F3FA. Common wrong versions: 'subtle' (#F7F7F8) — that token does not exist in FDS. The correct token is --f-brand-color-background-default, NOT --f-brand-color-background-subtle.",
+      "passCondition": "Returns #F2F3FA. Names the -subtle trap. Returns correct token name."
+    },
+    {
+      "id": "X-03",
+      "category": "B: Component Props & Variants",
+      "prompt": "What does a _schemaDefinition in a lookup JSON file describe?",
+      "expected_output": "It is a documentation object inside the lookup JSON that defines the expected shape for each entry in the components[] array. It tells the figma-dataset-exporter tool what fields to populate (id, name, platform, figma, subComponents, props, tokens, dos, donts, figmaPush). Hand-authored fields (dos, donts, figmaPush) are preserved across re-exports.",
+      "passCondition": "Explains it as schema documentation for the exporter. Mentions hand-authored fields that persist."
+    },
+    {
+      "id": "X-04",
+      "category": "E: Figma Push Workflow",
+      "prompt": "When pushing an App Accordion with Language=Arabic, is it acceptable to manually flip the component frame in Figma?",
+      "expected_output": "No. Manual flipping or mirroring is explicitly forbidden in figma-push.json componentInsertionRules.arabicComponents and platform-rules.json strictGlobalRules.arabicRequiresVariant. Always set the Language=Arabic prop on the library instance — the component already has the correct RTL layout built in by the design system team.",
+      "passCondition": "Rejects manual flip. Returns Language=Arabic prop instruction. References both JSON files."
     }
   ]
 }

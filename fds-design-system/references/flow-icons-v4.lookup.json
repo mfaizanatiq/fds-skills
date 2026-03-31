@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "lookup.v2",
+  "meta": {
+    "libraryId":   "flow-icons-v4",
+    "libraryName": "Flow Icons V4",
+    "fileKey":     "yQr5ZzAh1bEQGdybc9tnAM",
+    "lastUpdated": null,
+    "source": {
+      "tool":               "figma-dataset-exporter",
+      "exportKind":         "AI_READY_LOOKUP",
+      "rawExportGeneratedAt": null
+    },
+    "counts": {
+      "total":     1254,
+      "nav":       739,
+      "badge":     294,
+      "payment":   100,
+      "flag":      236,
+      "codeShare": 190,
+      "inline":    null,
+      "alerts":    null
+    }
+  },
+
+  "sizingRules": {
+    "ic_nav_":             { "size": 24, "class": "icon icon-ic-nav-{name}",         "use": "All UI icons — interactive, navigation, actions. DEFAULT for all interface elements." },
+    "ic_badge_":           { "size": 48, "class": "icon icon-ic-badge-{name}",        "use": "Illustrative / feature / category icons. Decorative, larger contexts." },
+    "ic_nav_ar_":          { "size": 24, "class": "icon icon-ic-nav-ar-{name}",       "use": "RTL Arabic mirrored variants of nav icons. Use when dir=rtl." },
+    "ic_badge_ar_":        { "size": 48, "class": "icon icon-ic-badge-ar-{name}",     "use": "RTL Arabic mirrored variants of badge icons." },
+    "ic_nav_menu_":        { "size": 32, "class": "ic-nav-menu-{name}",               "use": "Bottom navigation bar tab icons. App only." },
+    "ic_badge_footer_":    { "size": 32, "class": "Ic_badge_footer_{name}",           "use": "Social footer icons." },
+    "ic_alerts_":          { "size": 12, "class": "icon icon-ic-alerts-{name}",       "use": "Inline status indicators (App 12px / Web 24px)." },
+    "ic_inline_":          { "size": 16, "class": "icon icon-ic-inline-{name}",       "use": "Icons inline with body text." },
+    "ic_payment_":         { "size": 48, "class": "ic-payment-{method}",              "use": "Payment method logos. Self-contained from fds-payment-badges.css." },
+    "ic_flightindicator_": { "size": 16, "class": "icon icon-ic-flightindicator-{name}", "use": "Flight status indicators." }
+  },
+
+  "rule_twoSizesOnly": "FDS uses exactly two icon sizes: 24px (nav) and 48px (badge). NEVER set font-size to any other value. Adjust wrapper/container for layout space — not the icon.",
+
+  "cssFiles": {
+    "fdsIcons":         { "file": "assets/icons/fds-icons/fds-icons.css",       "covers": "All ic_nav_, ic_badge_, ic_alerts_, ic_inline_, ic_flightindicator_ icons" },
+    "codeShare":        { "file": "assets/icons/fds-code-share.css",             "covers": "190 airline partner logos (.ic-badge-{iata}). SVGs inlined as data URIs." },
+    "countryFlags":     { "file": "assets/icons/fds-country-flags.css",          "covers": "236 country flags (.ic-nav-flag-{iso2}). SVGs inlined as data URIs." },
+    "paymentBadges":    { "file": "assets/icons/fds-payment-badges.css",         "covers": "100 payment method logos (.ic-payment-{method}). SVGs inlined as data URIs." }
+  },
+
+  "commonNavIcons": {
+    "search":          "ic_nav_search",
+    "profile":         "ic_nav_profile",
+    "language":        "ic_nav_language",
+    "aircraft":        "ic_nav_aircraft",
+    "stopover":        "ic_nav_stopover",
+    "manageBooking":   "ic_nav_manage-booking",
+    "flightInfo":      "ic_nav_flight-info-screen",
+    "checkIn":         "ic_nav_check-in",
+    "star":            "ic_nav_star",
+    "arrowRight":      "ic_nav_arrow-right",
+    "chevronDown":     "ic_nav_chevron-down",
+    "close":           "ic_nav_close",
+    "swapArrows":      "ic_nav_swap-full-arrows",
+    "add":             "ic_nav_add-plus",
+    "calendar":        "ic_nav_itinerary",
+    "menu":            "ic_nav_menu",
+    "share":           "ic_nav_share-social",
+    "luggage":         "ic_nav_luggage",
+    "location":        "ic_nav_location-navigation",
+    "info":            "ic_nav_information",
+    "filter":          "ic_nav_filter",
+    "edit":            "ic_nav_edit",
+    "delete":          "ic_nav_delete",
+    "download":        "ic_nav_download",
+    "upload":          "ic_nav_upload",
+    "phone":           "ic_nav_phone",
+    "email":           "ic_nav_email",
+    "home":            "ic_nav_home",
+    "settings":        "ic_nav_settings",
+    "notification":    "ic_nav_notification",
+    "back":            "ic_nav_back",
+    "forward":         "ic_nav_forward",
+    "check":           "ic_nav_check",
+    "error":           "ic_nav_error",
+    "warning":         "ic_nav_warning",
+    "success":         "ic_nav_success",
+    "external":        "ic_nav_external-link",
+    "copy":            "ic_nav_copy",
+    "share2":          "ic_nav_share",
+    "help":            "ic_nav_help",
+    "lock":            "ic_nav_lock",
+    "unlock":          "ic_nav_unlock",
+    "eye":             "ic_nav_eye",
+    "eyeOff":          "ic_nav_eye-off"
+  },
+
+  "iconGapProtocol": {
+    "instruction": "If no FDS icon exists for a required use case, NEVER use a third-party icon or emoji. Instead:",
+    "steps": [
+      "Flag: 'Icon gap: [description] — no FDS equivalent exists'",
+      "Use the closest available FDS icon as a temporary placeholder",
+      "Suggest a name following FDS naming convention (ic_nav_{name} or ic_badge_{name})",
+      "Recommend raising with the FDS design system team"
+    ]
+  },
+
+  "index": {
+    "byPrefix": {
+      "ic_nav_":             "See foundations.md §Iconography for full 739-icon catalogue",
+      "ic_badge_":           "See foundations.md §Iconography for full 294-icon catalogue",
+      "ic_payment_":         "fds-payment-badges.css — 100 methods",
+      "ic_nav_flag_":        "fds-country-flags.css — 236 ISO codes",
+      "ic-badge-{iata}":     "fds-code-share.css — 190 airline IATA codes"
+    }
+  },
+
+  "components": [],
+
+  "_note": "Icon components are not stored here as discrete component entries. Icons are identified by class name prefix + name. See commonNavIcons above for the most-used set. For the full catalogue, read foundations.md §Iconography."
+}

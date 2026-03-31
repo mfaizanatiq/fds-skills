@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "prop-lookup.v2",
+  "meta": {
+    "version": "2.0.0",
+    "lastUpdated": "2026-03-30"
+  },
+  "codeKeyStrategy": {
+    "type": "camelCase",
+    "preserveTokens": ["CTA", "RTL", "Mweb", "Read Only"],
+    "arabicSuffix": { "figma": " (Ar)", "code": "Ar" }
+  },
+  "categories": {
+    "visibility": {
+      "type": "boolean",
+      "pattern": "Show {Element}"
+    },
+    "content": {
+      "type": "string"
+    },
+    "state": {
+      "type": "boolean"
+    },
+    "behaviour": {
+      "type": "boolean"
+    },
+    "variant": {
+      "type": "enum"
+    },
+    "icon": {
+      "type": "instance"
+    }
+  },
+  "canonical": {
+    "visibility": [
+      "Show Icon",
+      "Show Leading Icon",
+      "Show Trailing Icon",
+      "Show Title",
+      "Show Description",
+      "Show Label",
+      "Show Helper Text",
+      "Show Error Message",
+      "Show CTA"
+    ],
+    "content": [
+      "Title",
+      "Description",
+      "Sub Heading",
+      "Label",
+      "Helper Text",
+      "Error Message",
+      "Text",
+      "Placeholder",
+      "Value"
+    ],
+    "state": [
+      "Disabled",
+      "Selected",
+      "Active",
+      "Focused",
+      "Expanded",
+      "Loading",
+      "Read Only",
+      "Required",
+      "Checked",
+      "Indeterminate",
+      "Invalid"
+    ],
+    "behaviour": ["Clickable", "Dismissible", "Editable", "Interactive"],
+    "variant": [
+      "Type",
+      "State",
+      "Size",
+      "Viewport",
+      "Language",
+      "Theme",
+      "Position",
+      "Placement"
+    ],
+    "icon": ["Icon", "Leading Icon", "Trailing Icon", "Action Icon", "Badge Icon", "Avatar Icon", "Status Icon", "Thumbnail Icon"]
+  },
+  "variantValues": {
+    "Language": ["English", "Arabic"],
+    "Theme": ["Light", "Dark"],
+    "Viewport": ["Desktop", "Tablet", "Mobile", "Mweb"],
+    "Size": ["Small", "Medium", "Large"]
+  },
+  "variantValuePolicy": {
+    "Type": {
+      "validation": "componentDataset",
+      "note": "Type values are component-specific; validate against the component lookup dataset rather than a global bank."
+    },
+    "State": {
+      "validation": "preferGlobalAllowListThenComponentDataset",
+      "note": "State values are mostly shared, but some components introduce additional states; warn when unknown and check component dataset."
+    }
+  },
+  "synonyms": [
+    { "input": "Show Icon Left", "mapsTo": "Show Leading Icon", "category": "visibility" },
+    { "input": "Show Icon Right", "mapsTo": "Show Trailing Icon", "category": "visibility" },
+    { "input": "Left Icon", "mapsTo": "Leading Icon", "category": "icon" },
+    { "input": "Right Icon", "mapsTo": "Trailing Icon", "category": "icon" },
+    { "input": "States", "mapsTo": "State", "category": "variant" },
+    { "input": "Arabic Title", "mapsTo": "Title (Ar)", "category": "content" },
+    { "input": "Arabic Description", "mapsTo": "Description (Ar)", "category": "content" },
+    { "input": "Focus", "mapsTo": "Focused", "category": "variantValue" },
+    { "input": "Is Dismissable", "mapsTo": "Dismissible", "category": "behaviour" }
+  ],
+  "validation": {
+    "titleCaseRequired": true,
+    "forbiddenTokens": ["Is", "Display", "Enable"],
+    "forbiddenTokenMatch": "wholeWordCaseInsensitive",
+    "visibilityPrefix": "Show",
+    "arabicOnlyOn": ["content"]
+  },
+  "arabicRules": {
+    "suffix": " (Ar)",
+    "requiresBaseProp": true,
+    "allowedCategories": ["content"],
+    "forbiddenPatterns": ["Arabic {Prop}", "{Prop} Arabic", "{Prop}_AR"]
+  },
+  "normalisation": {
+    "trimSpaces": true,
+    "enforceTitleCase": true,
+    "flagForbiddenTokens": true,
+    "applySynonyms": true
+  },
+  "libraryGuidance": {
+    "Viewport": {
+      "web": {
+        "note": "Web components commonly use Viewport. Use mWeb to indicate mobile web responsive variants (not Mobile) when applicable."
+      },
+      "app": {
+        "note": "App components typically do not use Viewport. If Viewport appears in App exports, treat as observed data (warn, do not error)."
+      }
+    }
+  },
+  "conflicts": [
+    {
+      "props": ["Leading Icon", "Left Icon"],
+      "rule": "synonymConflict"
+    },
+    {
+      "props": ["Trailing Icon", "Right Icon"],
+      "rule": "synonymConflict"
+    }
+  ],
+  "scoring": {
+    "weights": {
+      "invalidName": 10,
+      "forbiddenToken": 15,
+      "missingBaseProp": 20,
+      "unknownProp": 5,
+      "conflict": 15
+    },
+    "levels": {
+      "good": 90,
+      "warning": 70,
+      "critical": 50
+    }
+  }
+}

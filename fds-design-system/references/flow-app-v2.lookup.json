@@ -1,0 +1,4720 @@
+{
+  "schemaVersion": "lookup.v2",
+  "lastUpdated": "2026-03-31",
+  "source": "📱 Flow App • V2 — _Flow_App_V2_DataSet_31032026_062052.json",
+  "meta": {
+    "libraryId": "flow-app-v2",
+    "libraryName": "Flow App V2",
+    "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+    "platform": "app",
+    "families": 58,
+    "componentSets": 133,
+    "components": 14,
+    "total": 147
+  },
+  "_schemaDefinition": {
+    "id": "slugified family name — unique key",
+    "name": "clean display name from Figma page",
+    "platform": "app | web | email",
+    "library": "library id string",
+    "status": "stable | in-progress | review | blocked | unknown",
+    "figma": "nodeId (primary component set), fileKey, link, netlifyFallback",
+    "primaryComponent": "name of the component set selected as primary for this family",
+    "description": "component description from Figma",
+    "subComponents": "all component sets in this family — internal: true flags sub-slots",
+    "props": {
+      "variants": "VARIANT props — name, defaultValue, values[]",
+      "booleans": "BOOLEAN props — name, defaultValue",
+      "content": "TEXT props — name, defaultValue (truncated 80 chars)",
+      "slots": "INSTANCE_SWAP props — name, defaultValue nodeId"
+    },
+    "tokens": "brand tokens this component uses (hand-authored or from tokens.json)",
+    "dos": "hand-authored do list — preserved across re-exports",
+    "donts": "hand-authored dont list — preserved across re-exports",
+    "figmaPush": {
+      "defaultVariant": "auto-derived from props; override manually if needed",
+      "requiredProps": "props that must be explicitly set before commit",
+      "variableScope": "Foundation variable collections to bind"
+    }
+  },
+  "components": [
+    {
+      "id": "component-status-done-inprogress-marked-for-review-dependency",
+      "name": ".Component Status:  Done, 🟡 Inprogress,🔵 Marked for Review , 🔴 Dependency",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5039:2957",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5039%3A2957",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "_ComponentProgress",
+      "subComponents": [
+        {
+          "name": "_ComponentProgress",
+          "nodeId": "5039:2957",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Property 1",
+            "defaultValue": "In Progress",
+            "values": [
+              "Completed",
+              "Dependent",
+              "In Progress",
+              "In Review",
+              "Variant5"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Property 1": "In Progress"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "accordion",
+      "name": "Accordion",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5663:3603",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5663%3A3603",
+        "netlifyFallback": null
+      },
+      "description": "Expandable/collapsible sections for FAQs, menus, and content organization.\n\nKeywords: toggle, expand, collapse, disclosure",
+      "primaryComponent": "Accordion",
+      "subComponents": [
+        {
+          "name": "Accordion",
+          "nodeId": "5663:3603",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Accordion/.Content",
+          "nodeId": "5663:4397",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Accordion/.Accordion Title",
+          "nodeId": "5663:4404",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Outlined",
+              "White"
+            ]
+          },
+          {
+            "name": "Placement",
+            "defaultValue": "Start",
+            "values": [
+              "Last",
+              "Middle",
+              "Start"
+            ]
+          },
+          {
+            "name": "Show Content",
+            "defaultValue": "False",
+            "values": [
+              "False",
+              "True"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {
+        "border": [
+          "--f-brand-color-border-default",
+          "--f-brand-color-border-inner"
+        ],
+        "text": [
+          "--f-brand-color-text-default",
+          "--f-brand-color-text-muted"
+        ],
+        "icon": [
+          "--f-brand-color-icon-default"
+        ]
+      },
+      "dos": [
+        "Use Expanded=True/False to toggle state — never show/hide layers manually",
+        "Place all expanded content inside the .Content sub-component",
+        "Use for progressive disclosure — secondary details not all users need"
+      ],
+      "donts": [
+        "Do not use 'Collapsed' or 'Expanded' as the prop value — only 'True' or 'False'",
+        "Do not nest accordions more than one level deep",
+        "Do not use an Accordion for navigation — use a Drawer or List Item instead"
+      ],
+      "figmaPush": {
+        "insertAs": "component",
+        "defaultVariant": {
+          "Expanded": "False",
+          "Language": "English"
+        },
+        "requiredProps": [
+          "Expanded"
+        ],
+        "variableScope": "flow-app-v2"
+      }
+    },
+    {
+      "id": "action-card",
+      "name": "Action Card",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "6954:4732",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=6954%3A4732",
+        "netlifyFallback": null
+      },
+      "description": "A tappable card that presents a primary action or navigation target, combining an icon, title, and description to clearly communicate the destination or outcome. Use for high-level app navigation, feature selection, or as a prominent entry point to a multi-step flow, such as booking a flight, managing a profile, or accessing a service.\n\nKeywords: action card, feature card, navigation card, promo card, call-to-action card, button card, tile, action tile, card button, link card, selection card, promo tile",
+      "primaryComponent": "Action Card",
+      "subComponents": [
+        {
+          "name": "Action Card",
+          "nodeId": "6954:4732",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "State",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Disabled"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Title",
+            "defaultValue": "Card title"
+          },
+          {
+            "name": "Description",
+            "defaultValue": "description"
+          }
+        ],
+        "slots": [
+          {
+            "name": "Icon",
+            "defaultValue": "11832:10161"
+          }
+        ]
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "State": "Default"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "action-footer",
+      "name": "Action Footer",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5616:2411",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5616%3A2411",
+        "netlifyFallback": null
+      },
+      "description": "A bottom-attached panel that displays a summary of costs and actions, often used in checkout flows to confirm selections and proceed to payment. It can expand to show a detailed breakdown and includes configurable call-to-action buttons, a handle bar for dragging, and an optional home indicator for mobile interfaces.\n\nKeywords: action footer, bottom sheet, checkout footer, summary panel, sticky footer, payment footer, cart summary, bottom bar, action bar, expandable panel, modal sheet, bottom navigation",
+      "primaryComponent": "Action Footer",
+      "subComponents": [
+        {
+          "name": "Action Footer",
+          "nodeId": "5616:2411",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Action Footer Summary",
+          "nodeId": "5616:2453",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Action Footer/.Options",
+          "nodeId": "5617:2200",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Primary",
+            "values": [
+              "CTA with Link",
+              "CTA with Pay with Avios",
+              "Pay with Avios",
+              "Primary",
+              "Two CTAs",
+              "Two CTAs with Link"
+            ]
+          },
+          {
+            "name": "Expandable",
+            "defaultValue": "True",
+            "values": [
+              "False",
+              "True"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Summary",
+            "defaultValue": true
+          },
+          {
+            "name": "Show CTA",
+            "defaultValue": true
+          },
+          {
+            "name": "Show Home Indicator",
+            "defaultValue": true
+          }
+        ],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Primary",
+          "Expandable": "True"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "alert",
+      "name": "Alert",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "6829:1897",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=6829%3A1897",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Alert / Passive",
+      "subComponents": [
+        {
+          "name": "Alert / Passive",
+          "nodeId": "6829:1897",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Alert / Permanent",
+          "nodeId": "5662:1964",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Information",
+            "values": [
+              "Error",
+              "General",
+              "Information",
+              "Success",
+              "Warning"
+            ]
+          },
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          },
+          {
+            "name": "Dismissible",
+            "defaultValue": "False",
+            "values": [
+              "False",
+              "True"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Title",
+            "defaultValue": false
+          },
+          {
+            "name": "Show Undo",
+            "defaultValue": false
+          }
+        ],
+        "content": [
+          {
+            "name": "↳ Title",
+            "defaultValue": "Title"
+          },
+          {
+            "name": "Description",
+            "defaultValue": "Primary message that explains the banner's purpose. This text should be clear an"
+          },
+          {
+            "name": "Arabic Description",
+            "defaultValue": "الرسالة الأساسية التي تشرح غرض الشريط. يجب أن يكون هذا النص واضحًا وموجزًا، عادة"
+          },
+          {
+            "name": "↳ Arabic Title",
+            "defaultValue": "عنوان"
+          }
+        ],
+        "slots": [
+          {
+            "name": "Alert Icon",
+            "defaultValue": "11832:3964"
+          }
+        ]
+      },
+      "tokens": {
+        "border": [
+          "--f-brand-color-border-error",
+          "--f-brand-color-border-success",
+          "--f-brand-color-border-warning"
+        ],
+        "text": [
+          "--f-brand-color-text-error",
+          "--f-brand-color-text-success",
+          "--f-brand-color-text-warning"
+        ],
+        "icon": [
+          "--f-brand-color-icon-error",
+          "--f-brand-color-icon-success",
+          "--f-brand-color-icon-warning"
+        ]
+      },
+      "dos": [
+        "Always include a Description explaining what happened and what to do next",
+        "Use Type=Error for validation failures and failed API calls",
+        "Use Type=Success after a positive action completes (booking confirmed, saved)",
+        "Use Type=Warning for non-blocking issues the user should be aware of",
+        "Set Show Close Button=False for permanent/persistent alerts"
+      ],
+      "donts": [
+        "Do not write vague alert messages ('Something went wrong') — be specific",
+        "Do not use Type=Error for warnings — respect the semantic hierarchy",
+        "Do not use Alert for navigation — use an action sheet or a link",
+        "Do not stack more than 2 alerts without prioritising which is more urgent",
+        "Do not omit Description when Title is present"
+      ],
+      "figmaPush": {
+        "insertAs": "component",
+        "defaultVariant": {
+          "Type": "Informational",
+          "State": "Default",
+          "Language": "English"
+        },
+        "requiredProps": [
+          "Type",
+          "State"
+        ],
+        "variableScope": "flow-app-v2"
+      }
+    },
+    {
+      "id": "app-tutorial",
+      "name": "App Tutorial",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "10416:2917",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=10416%3A2917",
+        "netlifyFallback": null
+      },
+      "description": "A modal dialog that interrupts the user to announce important information, such as a new feature, tutorial, or system update, requiring acknowledgment before continuing. Use for onboarding flows, feature announcements, or critical updates where user attention is mandatory.\n\nKeywords: announcement modal, dialog, popup, overlay, alert dialog, feature announcement, tutorial modal, onboarding, interstitial, lightbox, modal window",
+      "primaryComponent": "Announcement Modal",
+      "subComponents": [
+        {
+          "name": "Announcement Modal",
+          "nodeId": "10416:2917",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "_Inline Message Banner",
+          "nodeId": "10110:1048",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Steps",
+          "nodeId": "10110:1063",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Image",
+            "values": [
+              "Full Image",
+              "Icon",
+              "Image"
+            ]
+          },
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Slot Content",
+            "defaultValue": false
+          },
+          {
+            "name": "Show Icon",
+            "defaultValue": true
+          },
+          {
+            "name": "Show Secondary Action",
+            "defaultValue": false
+          }
+        ],
+        "content": [
+          {
+            "name": "Title",
+            "defaultValue": "Tutorial title"
+          },
+          {
+            "name": "Description",
+            "defaultValue": "This description explains the feature clearly and concisely. Please ensure it do"
+          },
+          {
+            "name": "Title (Ar)",
+            "defaultValue": "عنوان الدرس"
+          },
+          {
+            "name": "Description (Ar)",
+            "defaultValue": "توضح هذه الوصف الميزة بوضوح وإيجاز. يرجى التأكد من عدم تجاوزها ثلاث سطور. اجعل ر"
+          }
+        ],
+        "slots": [
+          {
+            "name": "↳ Slot",
+            "defaultValue": "10416:2904"
+          }
+        ]
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Image",
+          "Language": "English"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "avatar",
+      "name": "Avatar",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5081:6620",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5081%3A6620",
+        "netlifyFallback": null
+      },
+      "description": "A visual representation of a user, typically using an image, initials, or a placeholder.\nKeywords: avatar, profile, user, picture, icon, initials, status, tier",
+      "primaryComponent": "Avatar",
+      "subComponents": [
+        {
+          "name": "Avatar",
+          "nodeId": "5081:6620",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Avatar/Status",
+          "nodeId": "6976:22215",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Avatar Profile",
+          "nodeId": "9407:3884",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Profile Image",
+            "values": [
+              "Initials",
+              "Neutral",
+              "Profile Image"
+            ]
+          },
+          {
+            "name": "Size",
+            "defaultValue": "Large",
+            "values": [
+              "Large",
+              "Medium"
+            ]
+          },
+          {
+            "name": "Show Border",
+            "defaultValue": "False",
+            "values": [
+              "False",
+              "True"
+            ]
+          },
+          {
+            "name": "Tier",
+            "defaultValue": "None",
+            "values": [
+              "Burgundy",
+              "Gold",
+              "None",
+              "Platinum",
+              "Silver"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Disabled",
+            "defaultValue": true
+          },
+          {
+            "name": "Show Indicator",
+            "defaultValue": false
+          }
+        ],
+        "content": [
+          {
+            "name": "Initials",
+            "defaultValue": "MF"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Profile Image",
+          "Size": "Large",
+          "Show Border": "False",
+          "Tier": "None"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "badge",
+      "name": "Badge",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5076:2911",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5076%3A2911",
+        "netlifyFallback": null
+      },
+      "description": "A compact, non-interactive indicator that visually communicates a user's loyalty status or membership tier, often using color, text, and iconography. Use in user profiles, account dashboards, or next to avatars to quickly convey status and unlock visual recognition.\nKeywords: loyalty badge, status badge, membership badge, tag, chip, lozenge, pill, indicator, label, status indicator, tier badge",
+      "primaryComponent": "Loyalty Badge",
+      "subComponents": [
+        {
+          "name": "Badge/Master Badge",
+          "nodeId": "5076:2868",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Loyalty Badge",
+          "nodeId": "5076:2911",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Flight Badge",
+          "nodeId": "5076:2928",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Add to Wallet",
+          "nodeId": "11389:4285",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Tier",
+            "defaultValue": "Burgundy",
+            "values": [
+              "Burgundy",
+              "Gold",
+              "Platinum",
+              "Silver"
+            ]
+          },
+          {
+            "name": "Size",
+            "defaultValue": "Medium",
+            "values": [
+              "Large",
+              "Medium"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Size": "Small",
+          "Color": "White",
+          "Type": "No Icon"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "booking-widget",
+      "name": "Booking Widget",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "11282:2425",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=11282%3A2425",
+        "netlifyFallback": null
+      },
+      "description": "A card that displays a single flight segment within a multi-city booking, showing departure and destination cities, airport codes, and dates, with a close button for removal. Use in multi-step flight booking flows to let travellers review, edit, or delete individual legs of their itinerary.\n\nKeywords: multi-city card, flight segment, itinerary card, booking step, leg card, trip builder, flight summary, booking widget, travel, journey",
+      "primaryComponent": "Booking Widget/ Multi City Card",
+      "subComponents": [
+        {
+          "name": "Booking Widget/ Multi City Card",
+          "nodeId": "11282:2425",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Booking Widget/Search Widget",
+          "nodeId": "11322:3338",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "_Booking Widget/City Selector",
+          "nodeId": "11322:3752",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "_Booking Widget/Arabic City Selector",
+          "nodeId": "11322:3796",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Booking Widget/Date Passenger Picker",
+          "nodeId": "11322:4410",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Booking Widget/Class",
+          "nodeId": "11322:4512",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          },
+          {
+            "name": "State",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Selected"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Close",
+            "defaultValue": true
+          }
+        ],
+        "content": [
+          {
+            "name": "Flight Number",
+            "defaultValue": "Flight 1"
+          },
+          {
+            "name": "Flight Number (Ar)",
+            "defaultValue": "الرحلة 1"
+          },
+          {
+            "name": "Departure",
+            "defaultValue": "London"
+          },
+          {
+            "name": "Destination",
+            "defaultValue": "Doha"
+          },
+          {
+            "name": "↳ Departure Code",
+            "defaultValue": "LHR"
+          },
+          {
+            "name": "↳ Destination Code",
+            "defaultValue": "DOH"
+          },
+          {
+            "name": "Departure (Ar)",
+            "defaultValue": "لندن"
+          },
+          {
+            "name": "Destination (Ar)",
+            "defaultValue": "الدوحة"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Language": "English",
+          "State": "Default"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "bottom-navigation-bar",
+      "name": "Bottom Navigation Bar",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5459:13228",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5459%3A13228",
+        "netlifyFallback": null
+      },
+      "description": "Overview:\nThis component is a navigation tab bar designed for an airline app, featuring five key sections: Home, Book, Stopover, My Trips, and Profile. Each tab is represented by an icon and label, with the active tab highlighted for user clarity. This design enhances user experience by providing quick access to essential features, following best practices for intuitive navigation.\n\nKeywords:\ntab bar, bottom navigation, navbar, navigation bar, mobile tabs, app navigation, UI component, menu bar, tab navigation",
+      "primaryComponent": "Bottom Navigation Bar",
+      "subComponents": [
+        {
+          "name": "Bottom Navigation Bar/.Tab Bar Item",
+          "nodeId": "5082:7188",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Bottom Navigation Bar",
+          "nodeId": "5459:13228",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "No of Tabs",
+            "defaultValue": "5",
+            "values": [
+              "4",
+              "5"
+            ]
+          },
+          {
+            "name": "Active Tab",
+            "defaultValue": "Home",
+            "values": [
+              "Book",
+              "Home",
+              "My Trips",
+              "Profile",
+              "Stopover"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {
+        "background": [
+          "--f-brand-color-background-light"
+        ],
+        "icon": [
+          "--f-brand-color-icon-primary",
+          "--f-brand-color-icon-muted"
+        ],
+        "shadow": [
+          "--f-brand-shadow-medium-n"
+        ]
+      },
+      "dos": [
+        "Use ic_nav_menu_ icons at 32px for all tab icons",
+        "Maximum 5 tabs — never exceed",
+        "Always include Home Indicator below in full-screen iPhone frames",
+        "Set Active Tab variant — do not change icon colour manually"
+      ],
+      "donts": [
+        "Do not use ic_nav_ (24px) icons — use ic_nav_menu_ (32px) for this component",
+        "Do not add more than 5 tabs",
+        "Do not use Web Super Nav or Footer as a replacement on App",
+        "Do not custom-build a tab bar — always use this library component"
+      ],
+      "figmaPush": {
+        "insertAs": "component",
+        "defaultVariant": {
+          "Active Tab": "Tab 1"
+        },
+        "requiredProps": [
+          "Active Tab"
+        ],
+        "variableScope": "flow-app-v2"
+      }
+    },
+    {
+      "id": "bullet-list",
+      "name": "Bullet List",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5089:4205",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5089%3A4205",
+        "netlifyFallback": null
+      },
+      "description": "A single item in a bulleted or checklist, containing a symbol and descriptive text.\nKeywords: bullet, list, item, checklist, point, symbol, description, text, unordered list",
+      "primaryComponent": "Bullet List Item",
+      "subComponents": [
+        {
+          "name": "Bullet List Item",
+          "nodeId": "5089:4205",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Default",
+            "values": [
+              "Check",
+              "Default"
+            ]
+          },
+          {
+            "name": "Size",
+            "defaultValue": "Medium",
+            "values": [
+              "Medium",
+              "Small"
+            ]
+          },
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Label",
+            "defaultValue": "Bullet point description text goes here...."
+          },
+          {
+            "name": "Label (Ar)",
+            "defaultValue": "نص وصف النقاط الرئيسية هنا...."
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Default",
+          "Size": "Medium",
+          "Language": "English"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "buttons",
+      "name": "Buttons",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5039:740",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5039%3A740",
+        "netlifyFallback": null
+      },
+      "description": "Button Component\nA versatile button component that supports various states, styles, and sizes to accommodate different user interface needs.\n\nOverview\nButtons allow users to trigger actions or events with a single click. They communicate clickable elements of the interface and can contain text labels and/or icons.\n\nComponent Variations\n\nType Variants\nPrimary (Solid background)\nSecondary (Outlined)\nWhite - Outlined\nWhite - Filled\n\nStates\nDefault\nHover\nPressed/Active\nFocused\nDisabled\nLoading\n\nSizes\nMedium (Default)\nLarge (Extended)\n\n\nKeywords: button, cta, call to action, primary, secondary, outlined, filled, icon button, toggle, click, trigger, action, submit, form, interactive",
+      "primaryComponent": "Button",
+      "subComponents": [
+        {
+          "name": "Button",
+          "nodeId": "5039:740",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Payment Button / Apple Pay",
+          "nodeId": "5041:10441",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Payment Button / Google Pay",
+          "nodeId": "5041:10462",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Payment Button / We Chat Pay",
+          "nodeId": "5041:10511",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Payment Button / PayPal",
+          "nodeId": "5041:10532",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Social Media Button / Apple",
+          "nodeId": "5078:4106",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Social Media Button / Google",
+          "nodeId": "5078:4125",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Social Media Button / Facebook",
+          "nodeId": "5078:4152",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Payment Button/Pay with Avios",
+          "nodeId": "5804:3546",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Action Button",
+          "nodeId": "9464:2209",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Primary",
+            "values": [
+              "Primary",
+              "Secondary",
+              "White Filled",
+              "White Outlined"
+            ]
+          },
+          {
+            "name": "State",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Disabled",
+              "Focused",
+              "Loading",
+              "Pressed"
+            ]
+          },
+          {
+            "name": "Size",
+            "defaultValue": "Medium",
+            "values": [
+              "Large",
+              "Medium",
+              "Small"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Start Icon",
+            "defaultValue": false
+          },
+          {
+            "name": "Show End Icon",
+            "defaultValue": false
+          },
+          {
+            "name": "Show Label",
+            "defaultValue": false
+          }
+        ],
+        "content": [
+          {
+            "name": "Label",
+            "defaultValue": "Button Label"
+          }
+        ],
+        "slots": [
+          {
+            "name": "Start Icon",
+            "defaultValue": "11832:3964"
+          },
+          {
+            "name": "End Icon",
+            "defaultValue": "11832:3964"
+          }
+        ]
+      },
+      "tokens": {
+        "background": [
+          "--f-brand-color-background-primary",
+          "--f-brand-color-background-primary-hover",
+          "--f-brand-color-background-disabled"
+        ],
+        "text": [
+          "--f-brand-color-text-light",
+          "--f-brand-color-text-primary",
+          "--f-brand-color-text-disabled"
+        ],
+        "border": [
+          "--f-brand-color-border-primary",
+          "transparent"
+        ]
+      },
+      "dos": [
+        "Use Type=Primary for the single most important CTA on a screen section",
+        "Use State=Loading when the button action is processing — prevents double-tap",
+        "Always set a Label prop value — never icon-only without accessible context",
+        "Use Size=Small in dense layouts; Size=Large for hero CTAs",
+        "Set Language=Arabic when the button is in an Arabic-language context"
+      ],
+      "donts": [
+        "Do not place more than one Primary button in the same screen section",
+        "Do not use State=Hover — App uses Pressed instead (Hover is Web/desktop only)",
+        "Do not resize the button below 44px height — WCAG 2.1 touch target minimum",
+        "Do not hardcode button colour — use tokens through the component variant",
+        "Do not use a button for navigation within a list — use a List Item with arrow"
+      ],
+      "figmaPush": {
+        "insertAs": "component",
+        "defaultVariant": {
+          "Type": "Primary",
+          "State": "Default",
+          "Size": "Medium",
+          "Language": "English"
+        },
+        "requiredProps": [
+          "Type",
+          "State"
+        ],
+        "variableScope": "flow-app-v2"
+      }
+    },
+    {
+      "id": "carousel-arrows",
+      "name": "Carousel Arrows",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "10434:1500",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=10434%3A1500",
+        "netlifyFallback": null
+      },
+      "description": "Horizontal scrolling UI for images, cards, or promotions.\n\nKeywords: slider, gallery, swipe, media",
+      "primaryComponent": "Carousel Arrows",
+      "subComponents": [
+        {
+          "name": "Carousel Arrows",
+          "nodeId": "10434:1500",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Direction",
+            "defaultValue": "Right",
+            "values": [
+              "Down",
+              "Left",
+              "Right",
+              "Up"
+            ]
+          },
+          {
+            "name": "State",
+            "defaultValue": "Active",
+            "values": [
+              "Active",
+              "Disabled",
+              "Focused"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Direction": "Right",
+          "State": "Active"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "cart-recovery-card",
+      "name": "Cart Recovery Card",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5839:5664",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5839%3A5664",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Cart Recovery Card",
+      "subComponents": [
+        {
+          "name": ".Badges",
+          "nodeId": "5737:2607",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Cart Recovery Card",
+          "nodeId": "5839:5664",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Cart Recovery Card/.Action Footer",
+          "nodeId": "5839:12488",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Trip Type",
+            "defaultValue": "Return",
+            "values": [
+              "One-way",
+              "Return"
+            ]
+          },
+          {
+            "name": "Badge",
+            "defaultValue": "1 badge",
+            "values": [
+              "1 badge",
+              "2 badges",
+              "No badge"
+            ]
+          },
+          {
+            "name": "CTA",
+            "defaultValue": "Default",
+            "values": [
+              "Default"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "From",
+            "defaultValue": "DOH"
+          },
+          {
+            "name": "To",
+            "defaultValue": "LHR"
+          },
+          {
+            "name": "From Date",
+            "defaultValue": "2 Feb 2024"
+          },
+          {
+            "name": "To Date",
+            "defaultValue": "11 Mar 2024"
+          },
+          {
+            "name": "Passengers",
+            "defaultValue": "1 Passenger"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Trip Type": "Return",
+          "Badge": "1 badge",
+          "CTA": "Default"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "chips",
+      "name": "Chips",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "6268:56024",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=6268%3A56024",
+        "netlifyFallback": null
+      },
+      "description": "A compact element representing an input, attribute, or action, often used for selected filters or tags.\n\nKeywords:\ntag, pill, token, filter tag, label chip, selection pill, badge",
+      "primaryComponent": "Passenger Chip",
+      "subComponents": [
+        {
+          "name": "General Chip",
+          "nodeId": "5086:788",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Passenger Chip",
+          "nodeId": "6268:56024",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Initials"
+            ]
+          },
+          {
+            "name": "State",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Disabled",
+              "Focused",
+              "Hover",
+              "Selected"
+            ]
+          },
+          {
+            "name": "Size",
+            "defaultValue": "Medium",
+            "values": [
+              "Large",
+              "Medium"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Dismissible",
+            "defaultValue": false
+          }
+        ],
+        "content": [
+          {
+            "name": "Label",
+            "defaultValue": "Chip Label"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Size": "Small",
+          "State": "Default"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "content-card",
+      "name": "Content Card",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "review",
+      "figma": {
+        "nodeId": "7085:14592",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=7085%3A14592",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Card/Content Card",
+      "subComponents": [
+        {
+          "name": "Card/Content Card",
+          "nodeId": "7085:14592",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Show Content",
+            "defaultValue": "True",
+            "values": [
+              "False",
+              "True"
+            ]
+          },
+          {
+            "name": "Show Footer",
+            "defaultValue": "False",
+            "values": [
+              "False",
+              "True"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Title",
+            "defaultValue": "Title show here, min 1 line, max 2 lines"
+          },
+          {
+            "name": "Description",
+            "defaultValue": "Body text and description will show here, min 1 line, max 3 lines"
+          }
+        ],
+        "slots": [
+          {
+            "name": "Icon",
+            "defaultValue": "11832:3967"
+          }
+        ]
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Show Content": "True",
+          "Show Footer": "False"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "controls",
+      "name": "Controls",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5074:1648",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5074%3A1648",
+        "netlifyFallback": null
+      },
+      "description": "A control that allows users to toggle between selected, unselected, and indeterminate states, commonly used in forms, lists, and data tables to enable multiple selection or acknowledge terms. Use when users need to make binary choices, select multiple items from a set, or indicate a mixed state for parent-child relationships.\nKeywords: checkbox, check box, tick box, selection control, toggle, form field, input, indeterminate, tri-state, Material Checkbox, HIG Checkbox, Fluent Checkbox, Polaris Choice List, Carbon Checkbox, Switch alternative",
+      "primaryComponent": "Checkbox",
+      "subComponents": [
+        {
+          "name": "Checkbox",
+          "nodeId": "5074:1648",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Toggle",
+          "nodeId": "5074:1701",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Radio Button",
+          "nodeId": "5075:1582",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Add Button",
+          "nodeId": "5075:1612",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "State",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Disabled",
+              "Error",
+              "Focused",
+              "Pressed"
+            ]
+          },
+          {
+            "name": "Type",
+            "defaultValue": "Unchecked",
+            "values": [
+              "Indeterminate",
+              "Selected",
+              "Unchecked"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "State": "Default",
+          "Type": "Unchecked"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "conversational-header",
+      "name": "Conversational Header",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "6225:3079",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=6225%3A3079",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Conversational Header",
+      "subComponents": [
+        {
+          "name": "Conversational Header",
+          "nodeId": "6225:3079",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Destination",
+              "Linked Account"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Destination",
+            "defaultValue": "Americas"
+          },
+          {
+            "name": "Name",
+            "defaultValue": "Mrs Doe,"
+          },
+          {
+            "name": "Title",
+            "defaultValue": "Destinations around the world for you to discover."
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Default"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "destination-card",
+      "name": "Destination Card",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "6981:4700",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=6981%3A4700",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Destination Card",
+      "subComponents": [
+        {
+          "name": "Destination Card",
+          "nodeId": "6981:4700",
+          "kind": "COMPONENT",
+          "internal": false
+        },
+        {
+          "name": ".Destination Card/.Eyebrows",
+          "nodeId": "5839:5245",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [],
+        "booleans": [
+          {
+            "name": "Show Badge",
+            "defaultValue": true
+          }
+        ],
+        "content": [
+          {
+            "name": "Desintation",
+            "defaultValue": "Sydney"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {},
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "divider",
+      "name": "Divider",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5084:7820",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5084%3A7820",
+        "netlifyFallback": null
+      },
+      "description": "A thin line or rule used to visually separate content, sections, or list items within a layout to improve readability and information hierarchy. Use between cards, form fields, menu items, or any adjacent elements that need clear visual distinction without adding excess space.\n\nKeywords: divider, separator, rule, line, hairline, border, section divider, list divider, horizontal rule, hr",
+      "primaryComponent": "Divider",
+      "subComponents": [
+        {
+          "name": "Divider",
+          "nodeId": "5084:7820",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Spacing",
+            "defaultValue": "0",
+            "values": [
+              "0",
+              "12",
+              "16",
+              "24"
+            ]
+          },
+          {
+            "name": "Type",
+            "defaultValue": "Outer",
+            "values": [
+              "Inner",
+              "Outer"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Spacing": "0",
+          "Type": "Outer"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "drawers",
+      "name": "Drawers",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5671:1781",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5671%3A1781",
+        "netlifyFallback": null
+      },
+      "description": "A sliding panel that appears from the edge of the screen to reveal supplementary content, actions, or navigation. Use for mobile-first interfaces to present contextual information, settings, or multi-step workflows without navigating away from the main view.\nKeywords: drawer, side panel, sheet, bottom sheet, modal sheet, overlay, sidebar, slide-out panel, navigation drawer, action sheet",
+      "primaryComponent": "Drawer",
+      "subComponents": [
+        {
+          "name": "Drawer",
+          "nodeId": "5671:1781",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Payment Summary/.Payment List Item",
+          "nodeId": "5671:2345",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": ".Payment Summary",
+          "nodeId": "5671:2356",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Navigation/.Title Bar",
+          "nodeId": "5671:2362",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Drawer/.Content",
+          "nodeId": "5671:2501",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": ".Content Template",
+          "nodeId": "10322:3060",
+          "kind": "COMPONENT",
+          "internal": true
+        },
+        {
+          "name": ".Swappable Component",
+          "nodeId": "10322:3193",
+          "kind": "COMPONENT",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Size",
+            "defaultValue": "None",
+            "values": [
+              "Full",
+              "Medium",
+              "None"
+            ]
+          },
+          {
+            "name": "Show Header",
+            "defaultValue": "False",
+            "values": [
+              "False",
+              "True"
+            ]
+          },
+          {
+            "name": "Show Footer",
+            "defaultValue": "False",
+            "values": [
+              "False",
+              "True"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Size": "None",
+          "Show Header": "False",
+          "Show Footer": "False"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "dropdown",
+      "name": "Dropdown",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5377:9632",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5377%3A9632",
+        "netlifyFallback": null
+      },
+      "description": "A form field that reveals a list of selectable options when clicked, allowing users to choose one item from a predefined set. Use in forms, filters, and settings where space is limited and the full list should remain hidden until needed.\n\nKeywords: dropdown, select, combobox, picker, menu button, selection list, form field, input, choice",
+      "primaryComponent": "Dropdown",
+      "subComponents": [
+        {
+          "name": "Dropdown",
+          "nodeId": "5377:9632",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "State",
+            "defaultValue": "Default",
+            "values": [
+              "Active",
+              "Default",
+              "Disabled",
+              "Error",
+              "Focused"
+            ]
+          },
+          {
+            "name": "Filled",
+            "defaultValue": "False",
+            "values": [
+              "False",
+              "True"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Icons",
+            "defaultValue": false
+          }
+        ],
+        "content": [
+          {
+            "name": "Label",
+            "defaultValue": "Label Text"
+          },
+          {
+            "name": "Description",
+            "defaultValue": "Description Filled"
+          }
+        ],
+        "slots": [
+          {
+            "name": "Icon",
+            "defaultValue": "11832:3964"
+          }
+        ]
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "State": "Default",
+          "Filled": "False"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "fare-card",
+      "name": "Fare Card",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5646:2681",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5646%3A2681",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Fare Card",
+      "subComponents": [
+        {
+          "name": "Benefit List Item",
+          "nodeId": "5646:2584",
+          "kind": "COMPONENT",
+          "internal": false
+        },
+        {
+          "name": "Fare Card",
+          "nodeId": "5646:2681",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Economy  Convenience",
+            "values": [
+              "Business  Elite",
+              "Economy  Comfort",
+              "Economy  Convenience",
+              "First  Elite"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Promo Fare",
+            "defaultValue": false
+          },
+          {
+            "name": "Show Promo Disclaimer",
+            "defaultValue": false
+          },
+          {
+            "name": "Show Discounted Price",
+            "defaultValue": false
+          }
+        ],
+        "content": [
+          {
+            "name": "Price",
+            "defaultValue": "3,770"
+          },
+          {
+            "name": "Discounted Price",
+            "defaultValue": "QAR 3,999"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Economy  Convenience"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "flight-card",
+      "name": "Flight Card",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5758:19048",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5758%3A19048",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Flights Details",
+      "subComponents": [
+        {
+          "name": "Flights Details",
+          "nodeId": "5758:19048",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Flight Card/.Operators",
+          "nodeId": "5758:19081",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Flight Card/.Badges",
+          "nodeId": "5758:19170",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Flight Card / General",
+          "nodeId": "5758:19180",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Fare Card/.Footer",
+          "nodeId": "10902:1172",
+          "kind": "COMPONENT",
+          "internal": true
+        },
+        {
+          "name": "Seats",
+          "nodeId": "10902:1175",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Flight Card / Trip Summary",
+          "nodeId": "10902:1188",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Flight Card / Review",
+          "nodeId": "10902:1333",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Time",
+            "values": [
+              "City",
+              "Time"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "From Time",
+            "defaultValue": "00:00"
+          },
+          {
+            "name": "To Time",
+            "defaultValue": "00:00"
+          },
+          {
+            "name": "From Code",
+            "defaultValue": "DOH"
+          },
+          {
+            "name": "To Code",
+            "defaultValue": "LHR"
+          },
+          {
+            "name": "From Name",
+            "defaultValue": "Doha"
+          },
+          {
+            "name": "To Name",
+            "defaultValue": "London"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Operators": "1"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "general-card",
+      "name": "General Card",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "9047:17501",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=9047%3A17501",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "General Card",
+      "subComponents": [
+        {
+          "name": "General Card",
+          "nodeId": "9047:17501",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "General Card/.Footer",
+          "nodeId": "5876:4630",
+          "kind": "COMPONENT",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Size",
+            "defaultValue": "Large",
+            "values": [
+              "Large",
+              "Medium"
+            ]
+          },
+          {
+            "name": "Show Description",
+            "defaultValue": "On",
+            "values": [
+              "Off",
+              "On"
+            ]
+          },
+          {
+            "name": "Show Footer",
+            "defaultValue": "On",
+            "values": [
+              "Off",
+              "On"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Badge",
+            "defaultValue": true
+          }
+        ],
+        "content": [
+          {
+            "name": "Title",
+            "defaultValue": "Premium Membership Benefits"
+          },
+          {
+            "name": "Description",
+            "defaultValue": "Explore our latest features designed to streamline your workflow."
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Size": "Large",
+          "Show Description": "On",
+          "Show Footer": "On"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "general-list",
+      "name": "General List",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5569:5435",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5569%3A5435",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "General List",
+      "subComponents": [
+        {
+          "name": "General List",
+          "nodeId": "5569:5435",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Hamburger Menu",
+          "nodeId": "11245:918",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          },
+          {
+            "name": "Type",
+            "defaultValue": "Title",
+            "values": [
+              "Card List",
+              "General List",
+              "Image",
+              "Multiline",
+              "Title"
+            ]
+          },
+          {
+            "name": "Content",
+            "defaultValue": "Default",
+            "values": [
+              "Add Button",
+              "Checkbox",
+              "Default",
+              "Link",
+              "Radio Button",
+              "Toggle",
+              "With Icon"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Chevron Icon",
+            "defaultValue": true
+          },
+          {
+            "name": "Show Subtitle",
+            "defaultValue": false
+          }
+        ],
+        "content": [
+          {
+            "name": "Item Text",
+            "defaultValue": "Title Name"
+          },
+          {
+            "name": "Eyebrow Text",
+            "defaultValue": "Subtitle"
+          },
+          {
+            "name": "Description",
+            "defaultValue": "Long description goes here..."
+          },
+          {
+            "name": "Item Text (Ar)",
+            "defaultValue": "اسم العنوان"
+          },
+          {
+            "name": "Description (Ar)",
+            "defaultValue": "تذهب الوصف الطويل هنا..."
+          },
+          {
+            "name": "Eyebrow Text (Ar)",
+            "defaultValue": "ترجمة"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Language": "English",
+          "Type": "Title",
+          "Content": "Default"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "handle-bar",
+      "name": "Handle Bar",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5616:2404",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5616%3A2404",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Handle Bar",
+      "subComponents": [
+        {
+          "name": "Handle Bar",
+          "nodeId": "5616:2404",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Handle Bar",
+            "values": [
+              "Expandable",
+              "Expanded",
+              "Handle Bar"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Handle Bar"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "helper-text",
+      "name": "Helper Text",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5086:4262",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5086%3A4262",
+        "netlifyFallback": null
+      },
+      "description": "A small, contextual text block that provides supporting information, validation feedback, or status for a related input or section. Use below form fields, in dialogs, or alongside controls to clarify requirements, confirm success, or explain errors without interrupting the user.\n\nKeywords: helper text, supporting text, caption, hint text, validation message, form text, status text, input description, assistive text, error message, success message",
+      "primaryComponent": "Helper Text",
+      "subComponents": [
+        {
+          "name": "Helper Text",
+          "nodeId": "5086:4262",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Information",
+            "values": [
+              "Bullet",
+              "Bullet Error",
+              "Error",
+              "Information",
+              "Success"
+            ]
+          },
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Icon",
+            "defaultValue": true
+          }
+        ],
+        "content": [
+          {
+            "name": "Error Text",
+            "defaultValue": "Error Description goes here..."
+          },
+          {
+            "name": "Helper Text",
+            "defaultValue": "Optional additional context goes here..."
+          },
+          {
+            "name": "Success Text",
+            "defaultValue": "Success Description goes here..."
+          },
+          {
+            "name": "Helper Text (Ar)",
+            "defaultValue": "سياق إضافي اختياري هنا..."
+          },
+          {
+            "name": "Error Text (Ar)",
+            "defaultValue": "وصف الخطأ هنا..."
+          },
+          {
+            "name": "Success Text (Ar)",
+            "defaultValue": "وصف النجاح هنا..."
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Information",
+          "Language": "English"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "home-banner",
+      "name": "Home Banner",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "in-progress",
+      "figma": {
+        "nodeId": "6673:493",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=6673%3A493",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Banner/.large",
+      "subComponents": [
+        {
+          "name": "Banner/.large",
+          "nodeId": "6673:493",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Banner/.medium",
+          "nodeId": "6673:1245",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Banner/.small",
+          "nodeId": "6673:1213",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Property 1",
+            "defaultValue": "Default",
+            "values": [
+              "Default"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show CTA",
+            "defaultValue": true
+          }
+        ],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Property 1": "Default"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "home-indicator",
+      "name": "Home Indicator",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5082:7608",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5082%3A7608",
+        "netlifyFallback": null
+      },
+      "description": "A thin, system-level visual bar that indicates the presence of a software home button or gesture area on modern touchscreen devices. Use at the bottom of full-screen mobile app views to maintain platform familiarity and signal the edge of the interactive screen area.\n\nKeywords: home indicator, home bar, gesture bar, navigation indicator, system bar, iPhone bar, iPad bar, touch affordance, safe area, bottom indicator",
+      "primaryComponent": "Home Indicator",
+      "subComponents": [
+        {
+          "name": "Home Indicator",
+          "nodeId": "5082:7608",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Device",
+            "defaultValue": "iPhone",
+            "values": [
+              "iPad",
+              "iPhone"
+            ]
+          },
+          {
+            "name": "Orientation",
+            "defaultValue": "Portrait",
+            "values": [
+              "Landscape",
+              "Portrait"
+            ]
+          },
+          {
+            "name": "Theme",
+            "defaultValue": "Light",
+            "values": [
+              "Dark",
+              "Light"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Device": "iPhone",
+          "Orientation": "Portrait",
+          "Theme": "Light"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "image-card",
+      "name": "Image Card",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5716:2637",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5716%3A2637",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Image Card",
+      "subComponents": [
+        {
+          "name": "Image Card",
+          "nodeId": "5716:2637",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Size",
+            "defaultValue": "Medium",
+            "values": [
+              "Large",
+              "Medium"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Badge",
+            "defaultValue": false
+          }
+        ],
+        "content": [
+          {
+            "name": "Title",
+            "defaultValue": "Title"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Size": "Medium"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "image-container",
+      "name": "Image Container",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5103:7749",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5103%3A7749",
+        "netlifyFallback": null
+      },
+      "description": "A container that displays an icon with a label, typically used to represent a category, feature, or action in a compact, visually scannable format. Use in settings menus, feature lists, or navigation cards where a clear icon-and-text pairing helps users quickly identify options.\n\nKeywords: image container, icon label, feature tile, category card, icon button, pictogram, visual indicator, menu item, navigation item, action tile",
+      "primaryComponent": "Image Container",
+      "subComponents": [
+        {
+          "name": "Image Container",
+          "nodeId": "5103:7749",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Size",
+            "defaultValue": "24",
+            "values": [
+              "24",
+              "32"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": [
+          {
+            "name": "Icon",
+            "defaultValue": "11832:3964"
+          },
+          {
+            "name": "Large Icon",
+            "defaultValue": "11832:3965"
+          }
+        ]
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Size": "24"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "inline-messages",
+      "name": "Inline Messages",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5093:5517",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5093%3A5517",
+        "netlifyFallback": null
+      },
+      "description": "A compact, inline status message that appears within a form or input area to provide contextual feedback, validation, or guidance without interrupting the user flow. Use to show field-specific errors, warnings, success confirmations, or helpful hints directly next to the relevant input.\n\nKeywords: inline message, inline alert, field message, validation message, helper text, status text, form feedback, input hint, error text, Material Design helper text, Fluent field message, Polaris inline error",
+      "primaryComponent": "Inline Message",
+      "subComponents": [
+        {
+          "name": "Inline Message",
+          "nodeId": "5093:5517",
+          "kind": "COMPONENT",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Label",
+            "defaultValue": "Inline message goes here..."
+          }
+        ],
+        "slots": [
+          {
+            "name": "Instance",
+            "defaultValue": "11832:3964"
+          }
+        ]
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {},
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "input-field",
+      "name": "Input Field",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5075:1954",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5075%3A1954",
+        "netlifyFallback": null
+      },
+      "description": "A form field that allows users to enter and edit text, with visual states for interaction, validation, and helper text. Use in forms, search bars, settings, and any interface where user input is required, such as entering passenger details, search queries, or payment information.\n\nKeywords: input field, text field, form field, text input, input box, search field, Material Design TextField, Fluent TextBox, Apple HIG Text Field, form control, data entry",
+      "primaryComponent": "Input Field",
+      "subComponents": [
+        {
+          "name": "Input Field",
+          "nodeId": "5075:1954",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Input Field/Password",
+          "nodeId": "5076:1749",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Text Area",
+          "nodeId": "5076:2494",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "State",
+            "defaultValue": "Default",
+            "values": [
+              "Active",
+              "Default",
+              "Disabled",
+              "Error",
+              "Focused"
+            ]
+          },
+          {
+            "name": "Filled",
+            "defaultValue": "False",
+            "values": [
+              "False",
+              "True"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Label",
+            "defaultValue": "Label Text"
+          },
+          {
+            "name": "Description",
+            "defaultValue": "Description"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {
+        "background": [
+          "--f-brand-color-background-light",
+          "--f-brand-color-background-disabled"
+        ],
+        "border": [
+          "--f-brand-color-border-default",
+          "--f-brand-color-border-focused",
+          "--f-brand-color-border-error"
+        ],
+        "text": [
+          "--f-brand-color-text-default",
+          "--f-brand-color-text-subtle",
+          "--f-brand-color-text-disabled",
+          "--f-brand-color-text-error"
+        ]
+      },
+      "dos": [
+        "Always pair Show Error Message=True with State=Error — both must be set together",
+        "Use Helper Text to guide formatting (e.g. 'Enter 6-digit code')",
+        "Use State=Read Only for pre-filled values the user cannot change",
+        "Use State=Disabled when the field is not applicable in the current form state",
+        "Use Leading Icon to reinforce input type (ic_nav_search for search fields)"
+      ],
+      "donts": [
+        "Do not show Error Message without also setting State=Error",
+        "Do not confuse Read Only (visible, uneditable) with Disabled (unavailable)",
+        "Do not use Text Area for short single-line inputs — use Input Field",
+        "Do not hardcode placeholder colour — use --f-brand-color-text-subtle via the variant",
+        "Do not place more than one trailing icon unless the component explicitly supports it"
+      ],
+      "figmaPush": {
+        "insertAs": "component",
+        "defaultVariant": {
+          "State": "Default",
+          "Language": "English"
+        },
+        "requiredProps": [
+          "State"
+        ],
+        "variableScope": "flow-app-v2"
+      }
+    },
+    {
+      "id": "keyboard",
+      "name": "Keyboard",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5039:7836",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5039%3A7836",
+        "netlifyFallback": null
+      },
+      "description": "A software keyboard component that displays alphabetic keys, suggestions, and system buttons (space, shift, return) for text input on touchscreen devices. Use in mobile apps and web forms where a native on-screen keyboard is required, such as search fields, messaging, or data entry.\n\nKeywords: keyboard, soft keyboard, virtual keyboard, on-screen keyboard, input method, text input, keypad, alphabetic, iOS keyboard, suggestion bar, predictive text",
+      "primaryComponent": "iOS - Alpha",
+      "subComponents": [
+        {
+          "name": "iOS - Alpha",
+          "nodeId": "5039:7836",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "iOS - Numeric",
+          "nodeId": "5039:8141",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Google - Alpha",
+          "nodeId": "6011:13684",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Google - Numeric",
+          "nodeId": "6011:14221",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Android Bottom Nabbar",
+          "nodeId": "6013:6662",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "iOS Bottom Nabbar",
+          "nodeId": "6013:9899",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": ".Keypad Buttons",
+          "nodeId": "11661:583",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          },
+          {
+            "name": "Theme",
+            "defaultValue": "Light",
+            "values": [
+              "Dark",
+              "Light"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Suggestion Bar",
+            "defaultValue": true
+          }
+        ],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Language": "English",
+          "Theme": "Light"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "link",
+      "name": "Link",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5077:4004",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5077%3A4004",
+        "netlifyFallback": null
+      },
+      "description": "A text-based interactive control that navigates the user to another page, view, or section, or triggers a secondary action, with visual states for hover, press, and focus. Use inline within paragraphs, in navigation menus, or as a standalone call-to-action where a button would be too prominent.\n\nKeywords: link, anchor, hyperlink, text link, inline link, navigation, action, button link, call-to-action, CTA, Material, HIG, Fluent, Polaris",
+      "primaryComponent": "Link",
+      "subComponents": [
+        {
+          "name": "Link",
+          "nodeId": "5077:4004",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Theme",
+            "defaultValue": "Light",
+            "values": [
+              "Dark",
+              "Light"
+            ]
+          },
+          {
+            "name": "Type",
+            "defaultValue": "Underline",
+            "values": [
+              "No Underline",
+              "Underline"
+            ]
+          },
+          {
+            "name": "State",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Disabled",
+              "Focused",
+              "Pressed"
+            ]
+          },
+          {
+            "name": "Size",
+            "defaultValue": "Small",
+            "values": [
+              "Medium",
+              "Small"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Label",
+            "defaultValue": "Stand-alone Link"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Theme": "Light",
+          "Type": "Underline",
+          "State": "Default",
+          "Size": "Small"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "list-headers",
+      "name": "List Headers",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5860:8856",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5860%3A8856",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "List Header",
+      "subComponents": [
+        {
+          "name": "List Header",
+          "nodeId": "5860:8856",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "With Icon"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Link",
+            "defaultValue": true
+          },
+          {
+            "name": "Show Eyebrow",
+            "defaultValue": true
+          }
+        ],
+        "content": [
+          {
+            "name": "Header Title",
+            "defaultValue": "Header Title"
+          },
+          {
+            "name": "↳ Eyebrow Text",
+            "defaultValue": "Eyebrow"
+          },
+          {
+            "name": "↳ Link Text",
+            "defaultValue": "Meta"
+          }
+        ],
+        "slots": [
+          {
+            "name": "Action Icon",
+            "defaultValue": "11832:10161"
+          }
+        ]
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Default"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "main-menu",
+      "name": "Main Menu",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "9591:110",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=9591%3A110",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Main Menu",
+      "subComponents": [
+        {
+          "name": "Main Menu",
+          "nodeId": "9591:110",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Type2"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Default"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "membership-cards",
+      "name": "Membership Cards",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5719:4080",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5719%3A4080",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Membership Card",
+      "subComponents": [
+        {
+          "name": "Membership Card",
+          "nodeId": "5719:4080",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Tier",
+            "defaultValue": "Silver",
+            "values": [
+              "Burgundy",
+              "Family",
+              "Gold",
+              "Platinum",
+              "Silver",
+              "Student Club"
+            ]
+          },
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Member Name",
+            "defaultValue": "Anna Johnson"
+          },
+          {
+            "name": "Member Number",
+            "defaultValue": "100004951"
+          },
+          {
+            "name": "Qpoints",
+            "defaultValue": "180 "
+          },
+          {
+            "name": "Points to Next tier",
+            "defaultValue": "+120"
+          },
+          {
+            "name": "Member Name (Ar)",
+            "defaultValue": "نادي الامتياز"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Tier": "Silver",
+          "Language": "English"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "membership-progress-bar",
+      "name": "Membership Progress Bar",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5093:6237",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5093%3A6237",
+        "netlifyFallback": null
+      },
+      "description": "A horizontal bar that visually represents a user's progress towards the next loyalty tier, using a gradient fill to indicate the current tier and distance traveled. Use in account dashboards, loyalty program pages, or onboarding flows to motivate continued engagement.\n\nKeywords: membership progress bar, loyalty progress, tier indicator, status bar, progress indicator, level bar, achievement tracker, linear progress, determinate progress, loyalty program, gamification",
+      "primaryComponent": "Membership Progress Bar",
+      "subComponents": [
+        {
+          "name": ".Progress Bar",
+          "nodeId": "5093:6217",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Membership Progress Bar",
+          "nodeId": "5093:6237",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Tier",
+            "defaultValue": "Burgundy",
+            "values": [
+              "Burgundy",
+              "Gold",
+              "Platinum",
+              "Silver"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Tier": "Burgundy"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "membership-progress-circles",
+      "name": "Membership Progress Circles",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5744:8789",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5744%3A8789",
+        "netlifyFallback": null
+      },
+      "description": "A circular progress indicator that visually represents a user's progress towards the next loyalty tier, using a segmented or filled arc to show status. Use in account dashboards, loyalty program hubs, or profile cards to motivate engagement by showing how close a member is to achieving Silver, Gold, or Platinum status.\n\nKeywords: membership progress circle, loyalty progress, tier indicator, radial progress, circular progress, status ring, achievement tracker, loyalty dashboard, progress bar, gauge, meter",
+      "primaryComponent": "Membership Progress Circle",
+      "subComponents": [
+        {
+          "name": ".Progress Circle",
+          "nodeId": "5744:8776",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Membership Progress Circle",
+          "nodeId": "5744:8789",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Tier",
+            "defaultValue": "Burgundy",
+            "values": [
+              "Burgundy",
+              "Gold",
+              "Platinum",
+              "Silver"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Tier": "Burgundy"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "modal-alert",
+      "name": "Modal Alert",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5084:7738",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5084%3A7738",
+        "netlifyFallback": null
+      },
+      "description": "A modal dialog that interrupts the user to present an important message, request confirmation, or prompt a decision, requiring an explicit action to dismiss. Use for critical alerts, confirmations, or blocking tasks where user attention is mandatory, such as confirming a booking change or acknowledging a system error.\n\nKeywords: modal alert, dialog, modal, alert, confirmation, popup, overlay, prompt, action sheet, banner, message box, blocking dialog",
+      "primaryComponent": "Modal Alert",
+      "subComponents": [
+        {
+          "name": "Modal Alert",
+          "nodeId": "5084:7738",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "1",
+            "values": [
+              "1",
+              "2",
+              "2 - Side by Side",
+              "3"
+            ]
+          },
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Description",
+            "defaultValue": true
+          }
+        ],
+        "content": [
+          {
+            "name": "Description",
+            "defaultValue": "A message should be a short,\ncomplete sentence."
+          },
+          {
+            "name": "Title",
+            "defaultValue": "A Short Title Is Best"
+          },
+          {
+            "name": "Primary Action",
+            "defaultValue": "Primary"
+          },
+          {
+            "name": "Secondary Action",
+            "defaultValue": "Secondary"
+          },
+          {
+            "name": "Tertiary Action",
+            "defaultValue": "Tertiary"
+          },
+          {
+            "name": "Title (Ar)",
+            "defaultValue": "أفضل عنوان قصير"
+          },
+          {
+            "name": "Description (Ar)",
+            "defaultValue": "يجب أن تكون الرسالة جملة قصيرة وكاملة."
+          },
+          {
+            "name": "Secondary Action (Ar)",
+            "defaultValue": "ثانوي"
+          },
+          {
+            "name": "Tertiary Action (Ar)",
+            "defaultValue": "ثانوي"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "1",
+          "Language": "English"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "navigation-bar",
+      "name": "Navigation Bar",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "6144:1967",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=6144%3A1967",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "General Navigation Bar",
+      "subComponents": [
+        {
+          "name": "General Navigation Bar",
+          "nodeId": "6144:1967",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Flight Navigation Bar",
+          "nodeId": "6225:2745",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Style",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Filled",
+              "Transparent"
+            ]
+          },
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Back",
+            "defaultValue": true
+          },
+          {
+            "name": "Show Close",
+            "defaultValue": true
+          }
+        ],
+        "content": [
+          {
+            "name": "Title",
+            "defaultValue": "Navigation Title"
+          },
+          {
+            "name": "Arabic Title",
+            "defaultValue": "عنوان التنقل"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Style": "Default",
+          "Language": "English"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "number-stepper",
+      "name": "Number Stepper",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "10429:617",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=10429%3A617",
+        "netlifyFallback": null
+      },
+      "description": "Incremental number input with plus/minus buttons.\n\nKeywords: input, quantity, counter, increase",
+      "primaryComponent": "Number Stepper",
+      "subComponents": [
+        {
+          "name": "Number Stepper",
+          "nodeId": "10429:617",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Stepper - Number/.Stepper Button",
+          "nodeId": "10429:648",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Position",
+            "defaultValue": "Middle",
+            "values": [
+              "End",
+              "Middle",
+              "Start"
+            ]
+          },
+          {
+            "name": "Mode",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Interactive"
+            ]
+          },
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Value",
+            "defaultValue": "1"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Position": "Middle",
+          "Mode": "Default",
+          "Language": "English"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "otp-input",
+      "name": "OTP Input",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5417:11670",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5417%3A11670",
+        "netlifyFallback": null
+      },
+      "description": "A One-Time Password (OTP) input component composed of multiple individual digit fields. Used for verification codes, PINs, and other short numeric inputs.\n\nKeywords: OTP, one-time password, PIN input, verification code, code input, digit field, multi-digit input, security code, authentication input, numeric code, passcode, Material OTP, Fluent PIN input, HIG verification field",
+      "primaryComponent": "OTP",
+      "subComponents": [
+        {
+          "name": "OTP Input/.Input",
+          "nodeId": "5081:5427",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "OTP",
+          "nodeId": "5417:11670",
+          "kind": "COMPONENT",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "State": "Default"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "offers-card",
+      "name": "Offers Card",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5724:3446",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5724%3A3446",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Offers Card",
+      "subComponents": [
+        {
+          "name": "Offers Card",
+          "nodeId": "5724:3446",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Action",
+            "values": [
+              "Action",
+              "Description"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Action"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "pagination",
+      "name": "Pagination",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "6058:18627",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=6058%3A18627",
+        "netlifyFallback": null
+      },
+      "description": "A dot indicator used in pagination components to show current position and available pages. Keywords: pagination, dot, indicator, page, nav, navigation, stepper, progress",
+      "primaryComponent": "Pagination Dot",
+      "subComponents": [
+        {
+          "name": "Pagination / Dots",
+          "nodeId": "5081:5128",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Pagination Dot",
+          "nodeId": "6058:18627",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "State",
+            "defaultValue": "Horizontal Active",
+            "values": [
+              "Horizontal Active",
+              "Inactive",
+              "Vertical Active"
+            ]
+          },
+          {
+            "name": "Theme",
+            "defaultValue": "Light",
+            "values": [
+              "Dark",
+              "Light"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Count": "2",
+          "Theme": "Light",
+          "Orientation": "Vertical"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "profile-card",
+      "name": "Profile Card",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "6939:29449",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=6939%3A29449",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Profile Card",
+      "subComponents": [
+        {
+          "name": "Profile Card",
+          "nodeId": "6939:29449",
+          "kind": "COMPONENT",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Name",
+            "defaultValue": "Full name of the user"
+          },
+          {
+            "name": "Email Address",
+            "defaultValue": "username@qatarairways.com.qa"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {},
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "progress-stepper",
+      "name": "Progress Stepper",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "9280:883",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=9280%3A883",
+        "netlifyFallback": null
+      },
+      "description": "Multi-step navigation or process indicator.\n\nKeywords: progress, steps, form, wizard",
+      "primaryComponent": "Stepper",
+      "subComponents": [
+        {
+          "name": "Stepper 1/2",
+          "nodeId": "9280:823",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Stepper 1/3",
+          "nodeId": "9280:832",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Stepper 1/4",
+          "nodeId": "9280:845",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Stepper 1/5",
+          "nodeId": "9280:862",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Stepper",
+          "nodeId": "9280:883",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Number Of Steps",
+            "defaultValue": "2",
+            "values": [
+              "2",
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Step": "1/2"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "salutations",
+      "name": "Salutations",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "9416:6314",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=9416%3A6314",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Salutation",
+      "subComponents": [
+        {
+          "name": "Salutation",
+          "nodeId": "9416:6314",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "With CTA"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Timer",
+            "defaultValue": true
+          },
+          {
+            "name": "Show CTA",
+            "defaultValue": true
+          },
+          {
+            "name": "Show Brand",
+            "defaultValue": true
+          }
+        ],
+        "content": [
+          {
+            "name": "Title",
+            "defaultValue": "Title salutations \ngoes here..."
+          },
+          {
+            "name": "Sub title",
+            "defaultValue": "Subtitle text here..."
+          },
+          {
+            "name": "Footer Text",
+            "defaultValue": "Footer text, one line max"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Default"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "search-list",
+      "name": "Search List",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5098:7432",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5098%3A7432",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Search List Item",
+      "subComponents": [
+        {
+          "name": "Search List Item",
+          "nodeId": "5098:7432",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Search List/ Search Header",
+          "nodeId": "5860:10680",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Type",
+            "defaultValue": "Icon",
+            "values": [
+              "Badge",
+              "Icon",
+              "Image"
+            ]
+          },
+          {
+            "name": "Show Subtitle",
+            "defaultValue": "Off",
+            "values": [
+              "Off",
+              "On"
+            ]
+          },
+          {
+            "name": "Show Tertiary",
+            "defaultValue": "Off",
+            "values": [
+              "Off",
+              "On"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Title",
+            "defaultValue": "Title Name"
+          },
+          {
+            "name": "Subtitle",
+            "defaultValue": "Subtitle"
+          },
+          {
+            "name": "Tertiary Title",
+            "defaultValue": "Tertiary Title"
+          }
+        ],
+        "slots": [
+          {
+            "name": "Icon",
+            "defaultValue": "11832:3964"
+          },
+          {
+            "name": "Badge",
+            "defaultValue": "11832:3967"
+          }
+        ]
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Type": "Icon",
+          "Show Subtitle": "Off",
+          "Show Tertiary": "Off"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "status-bar",
+      "name": "Status Bar",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5039:483",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5039%3A483",
+        "netlifyFallback": null
+      },
+      "description": "A fixed bar at the top of the iPhone screen that displays system status information like time, battery level, Wi‑Fi, and cellular signal strength. Use to mirror the native iOS status bar in mobile app prototypes, ensuring visual consistency and accurate representation of device state.\n\nKeywords: status bar, iPhone, system bar, top bar, battery indicator, time display, signal strength, Wi‑Fi icon, mobile UI, iOS, device chrome, prototype fidelity",
+      "primaryComponent": "Status Bar - iPhone",
+      "subComponents": [
+        {
+          "name": "Status Bar - iPhone",
+          "nodeId": "5039:483",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Status Bar - iPhone X",
+          "nodeId": "5417:12701",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Theme",
+            "defaultValue": "Light",
+            "values": [
+              "Dark",
+              "Light"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Background",
+            "defaultValue": true
+          }
+        ],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Theme": "Light"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "tab-bar",
+      "name": "Tab Bar",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5095:6496",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5095%3A6496",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Tab Bar",
+      "subComponents": [
+        {
+          "name": "Tab Bar Item",
+          "nodeId": "5095:6481",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Tab Bar",
+          "nodeId": "5095:6496",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Tabs",
+            "defaultValue": "2",
+            "values": [
+              "2",
+              "3"
+            ]
+          },
+          {
+            "name": "Is Multline",
+            "defaultValue": "False",
+            "values": [
+              "False",
+              "True"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Tabs": "2",
+          "Is Multline": "False"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "task-card",
+      "name": "Task Card",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "6931:16189",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=6931%3A16189",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Task Card",
+      "subComponents": [
+        {
+          "name": "Task Card/.Media",
+          "nodeId": "6931:16029",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Task Card",
+          "nodeId": "6931:16189",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "State",
+            "defaultValue": "Default",
+            "values": [
+              "Default",
+              "Disabled"
+            ]
+          },
+          {
+            "name": "Type",
+            "defaultValue": "Image",
+            "values": [
+              "Badge",
+              "Image"
+            ]
+          },
+          {
+            "name": "Action Footer",
+            "defaultValue": "Off",
+            "values": [
+              "Off",
+              "On"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Subtitle",
+            "defaultValue": true
+          },
+          {
+            "name": "Show Action Icon",
+            "defaultValue": true
+          }
+        ],
+        "content": [
+          {
+            "name": "Title",
+            "defaultValue": "Title Name"
+          },
+          {
+            "name": "Subtitle",
+            "defaultValue": "Subtitle"
+          }
+        ],
+        "slots": [
+          {
+            "name": "Action Icon",
+            "defaultValue": "11465:10799"
+          }
+        ]
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "State": "Default",
+          "Type": "Image",
+          "Action Footer": "Off"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "tooltip",
+      "name": "Tooltip",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5086:376",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5086%3A376",
+        "netlifyFallback": null
+      },
+      "description": "A small pop-up that provides additional context or information when a user hovers over or focuses on an element.\n\nKeywords: tooltip, popover, hint, info, description, help, overlay, balloon",
+      "primaryComponent": "Tooltip",
+      "subComponents": [
+        {
+          "name": "Tooltip",
+          "nodeId": "5086:376",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Tip Direction",
+            "defaultValue": "Top",
+            "values": [
+              "Bottom",
+              "Left",
+              "Right",
+              "Top"
+            ]
+          },
+          {
+            "name": "Alignment",
+            "defaultValue": "Start",
+            "values": [
+              "Center",
+              "End",
+              "Start"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Close Button",
+            "defaultValue": false
+          },
+          {
+            "name": "Show Alert Icon",
+            "defaultValue": false
+          },
+          {
+            "name": "Show Action",
+            "defaultValue": false
+          },
+          {
+            "name": "Show Tip",
+            "defaultValue": true
+          }
+        ],
+        "content": [
+          {
+            "name": "Label",
+            "defaultValue": "Tooltip description text"
+          }
+        ],
+        "slots": [
+          {
+            "name": "Instance",
+            "defaultValue": "11779:18182"
+          }
+        ]
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Tip Direction": "Top",
+          "Alignment": "Start"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "trip-action-cards",
+      "name": "Trip Action Cards",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5703:66",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5703%3A66",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Trip Action Card",
+      "subComponents": [
+        {
+          "name": "Trip Action Card",
+          "nodeId": "5703:66",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Trip Action Card/Boarding Card",
+          "nodeId": "5704:2822",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Action Card/Confirmation Cards",
+          "nodeId": "5718:3348",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Trip Action Card/Upgrade Cards",
+          "nodeId": "5708:358",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Trip Action Card/Offers Cards",
+          "nodeId": "5708:465",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Trip Action Card/Login Cards",
+          "nodeId": "5713:11371",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "My Trip Cards/.Icon Placeholder",
+          "nodeId": "5703:2553",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Options",
+            "defaultValue": "Edit you trip",
+            "values": [
+              "Check In",
+              "Edit you trip",
+              "On Hold Booking",
+              "eBagTag"
+            ]
+          },
+          {
+            "name": "Tiers",
+            "defaultValue": "Burgundy",
+            "values": [
+              "Burgundy",
+              "Gold",
+              "Platinum",
+              "Silver"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Options": "Edit you trip",
+          "Tiers": "Burgundy"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "walktrough-modal",
+      "name": "Walktrough Modal",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "11200:4981",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=11200%3A4981",
+        "netlifyFallback": null
+      },
+      "description": "",
+      "primaryComponent": "Walkthrough Modal",
+      "subComponents": [
+        {
+          "name": "Walkthrough Modal",
+          "nodeId": "11200:4981",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Steps",
+            "defaultValue": "First",
+            "values": [
+              "First",
+              "None",
+              "Second",
+              "Third"
+            ]
+          },
+          {
+            "name": "Show Hero",
+            "defaultValue": "True",
+            "values": [
+              "False",
+              "True"
+            ]
+          },
+          {
+            "name": "Language",
+            "defaultValue": "English",
+            "values": [
+              "Arabic",
+              "English"
+            ]
+          }
+        ],
+        "booleans": [
+          {
+            "name": "Show Icon",
+            "defaultValue": true
+          }
+        ],
+        "content": [
+          {
+            "name": "Title",
+            "defaultValue": "Tutorial title in two lines, min 1 line"
+          },
+          {
+            "name": "Description",
+            "defaultValue": "A brief description, no more than four lines, outlining the tutorial's purpose a"
+          },
+          {
+            "name": "Arabic Title",
+            "defaultValue": "عنوان الدرس في سطرين، الحد الأدنى سطر واحد"
+          },
+          {
+            "name": "Arabic Description",
+            "defaultValue": "وصف موجز، لا يزيد عن أربعة أسطر، يوضح الغرض من البرنامج التعليمي والقيمة التي سي"
+          }
+        ],
+        "slots": [
+          {
+            "name": "↳ Icon",
+            "defaultValue": "11832:3830"
+          }
+        ]
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Steps": "First",
+          "Show Hero": "True",
+          "Language": "English"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    },
+    {
+      "id": "ios-notifications",
+      "name": "iOS Notifications",
+      "platform": "app",
+      "library": "flow-app-v2",
+      "status": "stable",
+      "figma": {
+        "nodeId": "5086:4698",
+        "fileKey": "1fefe3u3ntgI9SfbU2gppC",
+        "link": "https://www.figma.com/design/1fefe3u3ntgI9SfbU2gppC?node-id=5086%3A4698",
+        "netlifyFallback": null
+      },
+      "description": "A message that appears in a fixed position on screen to inform users of system events, updates, or status changes without interrupting their current task. Use for non-critical alerts like flight status updates, booking confirmations, or promotional messages that should be noticed but don't require immediate action.\n\nKeywords: notification, alert, banner, toast, snackbar, message bar, status message, system alert, inline notification, feedback",
+      "primaryComponent": "Notification",
+      "subComponents": [
+        {
+          "name": "Notification/Notification - List",
+          "nodeId": "5086:4693",
+          "kind": "COMPONENT",
+          "internal": false
+        },
+        {
+          "name": "Notification",
+          "nodeId": "5086:4698",
+          "kind": "COMPONENT_SET",
+          "internal": false
+        },
+        {
+          "name": "Notification/.Notification Backgrounds",
+          "nodeId": "5086:4723",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "Notification/.Notification Backgrounds Stack",
+          "nodeId": "5086:4754",
+          "kind": "COMPONENT_SET",
+          "internal": true
+        },
+        {
+          "name": "_Custom",
+          "nodeId": "5086:4831",
+          "kind": "COMPONENT",
+          "internal": true
+        }
+      ],
+      "props": {
+        "variants": [
+          {
+            "name": "Stack",
+            "defaultValue": "1",
+            "values": [
+              "1",
+              "2",
+              "3"
+            ]
+          },
+          {
+            "name": "Theme",
+            "defaultValue": "Light",
+            "values": [
+              "Dark",
+              "Light"
+            ]
+          }
+        ],
+        "booleans": [],
+        "content": [
+          {
+            "name": "Title",
+            "defaultValue": "Title"
+          },
+          {
+            "name": "Description",
+            "defaultValue": "Description"
+          }
+        ],
+        "slots": []
+      },
+      "tokens": {},
+      "dos": [],
+      "donts": [],
+      "figmaPush": {
+        "defaultVariant": {
+          "Stack": "1",
+          "Theme": "Light"
+        },
+        "requiredProps": [],
+        "variableScope": "Brand Color Tokens + Space Tokens"
+      }
+    }
+  ]
+}

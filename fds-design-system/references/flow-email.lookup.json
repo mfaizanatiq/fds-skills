@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "lookup.v2",
+  "meta": {
+    "libraryId":   "flow-email",
+    "libraryName": "✉️ Flow Email",
+    "fileKey":     null,
+    "lastUpdated": null,
+    "source": {
+      "tool":               "figma-dataset-exporter",
+      "exportKind":         "AI_READY_LOOKUP",
+      "rawExportGeneratedAt": null,
+      "notes": [
+        "Email is a standalone library — never cross-reference App or Web components.",
+        "42 email components: headers, bodies, footers, promotional, informational, CTA.",
+        "All components have English + Arabic language variants.",
+        "Responsive: 600px max-width, single-column stack on mobile.",
+        "Table-based layout only — no CSS Grid or Flexbox.",
+        "Per-component entries are populated by the figma-dataset-exporter tool.",
+        "Do's/donts and emailPush are hand-authored per component — preserve on re-export."
+      ]
+    },
+    "counts": {
+      "componentFamilies": 42,
+      "componentSets":     null,
+      "total":             null
+    }
+  },
+
+  "_schemaDefinition": {
+    "description": "Expected shape for each entry in components[]. Email components have fewer variants than App/Web. No Viewport prop — email responsive is handled via media queries, not component variants.",
+    "fields": {
+      "id":       "string — kebab-case unique ID",
+      "name":     "string — exact Figma component set name (Title Case)",
+      "platform": "string — always 'email' for this file",
+      "library":  "string — always 'flow-email' for this file",
+      "status":   "enum — stable | draft | in-progress | unknown",
+      "figma": {
+        "nodeId":   "string — Figma node ID 'XXXX:XXXX'",
+        "link":     "string — Figma design URL",
+        "fallback": "string — Netlify fallback URL"
+      },
+      "subComponents": "array — each has name, nodeId, link, fallback",
+      "props": {
+        "variants": "array — { name, values[] } — Language and Type are most common",
+        "booleans": "array — { name, default: boolean }",
+        "content":  "array — { name, type, arabic?, pairsWith? }"
+      },
+      "emailSpec": {
+        "maxWidth":     "number — max-width in px (usually 600)",
+        "layout":       "string — always 'table-based'",
+        "inlineCSS":    "boolean — always true for production",
+        "vmlFallback":  "boolean — true for CTA buttons (Outlook compatibility)",
+        "altRequired":  "boolean — true for image components"
+      },
+      "dos":    "array — correct usage guidance",
+      "donts":  "array — incorrect usage to avoid",
+      "emailPush": {
+        "htmlStructure": "string — brief description of the HTML table structure to use",
+        "inlineStyles":  "array — CSS property:value pairs to inline (not token names)",
+        "outlookFallback": "string — VML or MSO conditional comments if needed"
+      }
+    }
+  },
+
+  "platformRestrictions": {
+    "noAppComponents":  "Never use App or Web components in email. Email has its own component library.",
+    "noJavaScript":     "No JavaScript — email clients will strip or block it.",
+    "noCSSGrid":        "No CSS Grid or Flexbox — use table-based layout only.",
+    "noCSSVariables":   "No CSS custom properties — email clients do not support them.",
+    "noSVGInline":      "Use PNG/GIF for icons in email — inline SVG is not widely supported.",
+    "noJotia":          "Do not use Jotia in email — use Graphik Bold weight for headings instead.",
+    "fontStack":        "'Graphik Web', Arial, sans-serif",
+    "imageRequirements":"Always include alt text, explicit width and height attributes on all images."
+  },
+
+  "index": {
+    "byName":   {},
+    "byNodeId": {}
+  },
+
+  "components": []
+}
