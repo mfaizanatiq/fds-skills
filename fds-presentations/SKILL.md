@@ -350,7 +350,7 @@ Applied to `.deck[data-theme="light"]` or a dedicated light deck.
 
 ```css
 [data-theme="light"] {
-  --slide-bg:        #EFEFF4;   /* minimum gray — cool barely-off-white */
+  --slide-bg:        #F2F3FA;   /* brand background-default — base of the gradient */
   --surface-01:      #FFFFFF;   /* elevated cards — pure white */
   --surface-02:      #F7F7FB;   /* slightly lifted, second elevation */
   --surface-03:      #EEEEF5;   /* inset areas, icon bg */
@@ -380,63 +380,34 @@ Applied to `.deck[data-theme="light"]` or a dedicated light deck.
 }
 ```
 
-### Light background — center halo
+### Light background — top-to-bottom gradient
 
-The background is the minimum gray (`#EFEFF4`). A wide, soft radial glow sits at
-the center of every slide — like light coming from behind the slide surface, brightest
-in the middle and fading gently toward the corners. The halo is white, not cream.
-It should read as natural, ambient — not spotlight, not neon.
+Sourced from Flow Foundations V1 (node 5540:46). A clean vertical linear gradient:
+pure white at the top, transitioning to `#F2F3FA` (`--f-brand-color-background-default`)
+by 37.13%, then holding solid from there to the bottom. No halo, no radial layers.
 
 ```css
 [data-theme="light"] .slide {
-  background-color: var(--slide-bg);
-  background-image:
-    /* Center halo — primary white bloom */
-    radial-gradient(ellipse 1600px 1000px at 50% 50%,
-      rgba(255,255,255,0.95) 0%,
-      rgba(255,255,255,0.70) 25%,
-      rgba(255,255,255,0.35) 50%,
-      rgba(255,255,255,0.08) 68%,
-      transparent 80%),
-    /* Wide secondary ring — softens the edge falloff */
-    radial-gradient(ellipse 2400px 1400px at 50% 50%,
-      rgba(255,255,255,0.30) 0%,
-      rgba(255,255,255,0.10) 45%,
-      transparent 70%),
-    /* Corner vignette — very subtle, keeps corners warm gray */
-    radial-gradient(ellipse 2800px 1600px at 50% 50%,
-      transparent 55%,
-      rgba(220,220,228,0.20) 85%,
-      rgba(210,210,220,0.35) 100%);
-}
-
-/* Halo bloom blur layer — ::before */
-[data-theme="light"] .slide::before {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 1800px; height: 1200px;
-  background: radial-gradient(ellipse 55% 55% at 50% 50%,
-    rgba(255,255,255,0.65) 0%,
-    rgba(255,255,255,0.28) 40%,
-    rgba(255,255,255,0.06) 60%,
-    transparent 75%
+  background: linear-gradient(
+    180deg,
+    #ffffff           0%,
+    #F2F3FA        37.13%
   );
-  pointer-events: none; z-index: 1;
-  filter: blur(80px);
 }
 ```
 
-**RULE — Halo is white, not warm.**
-Use pure `rgba(255,255,255,...)`. Do not add cream/yellow tint to the light halo —
-that's a dark theme convention. The light theme's warmth comes from the gray base,
-not the glow.
+Token reference:
+- `0%` → `--f-brand-color-background-light` = `#ffffff`
+- `37.13%` → `--f-brand-color-background-default` = `#F2F3FA`
+
+**RULE — no pseudo-layer effects.** Do not add `::before` blur or radial overlays on
+top of this gradient. The surface is intentionally flat and clean.
 
 ### Light card surface table
 
 | Layer | Colour | Use |
 |-------|--------|-----|
-| Slide bg | `#EFEFF4` | Gray base |
+| Slide bg | `#F2F3FA` → `#ffffff` (gradient top) | Linear gradient top-to-bottom |
 | Surface 01 | `#FFFFFF` | Default cards — white lifts off gray |
 | Surface 02 | `#F7F7FB` | Subtle second elevation |
 | Surface 03 | `#EEEEF5` | Icon bg, inset wells |
