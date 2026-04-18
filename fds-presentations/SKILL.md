@@ -793,6 +793,24 @@ When given a presentation request, this skill:
 
 ## HOW TO OPERATE
 
+### Step 0 — Presentation mode screener (ask this first)
+
+Before designing a single slide, ask: **"Is this a Keynote or a Product Board presentation?"**
+
+| | Keynote | Product Board |
+|---|---|---|
+| **Theme** | Dark — PS5 caustic `#111218` | Light — Flow Foundations `#F2F3FA` |
+| **Mood** | Flashy, dramatic, cinematic | Clean, structured, professional |
+| **Cover style** | Full-bleed atmospheric photo or bold type hero | White card on light background, presenter names, B2C logo |
+| **Card surfaces** | `--surface-01/02/03` (dark tinted) | Always white `#FFFFFF` — never tinted |
+| **Burgundy** | `#E53E8D` (vibrant for dark screens) | `#8E2157` (deep brand colour) |
+| **Typography feel** | Large ghost numerals, oversized Jotia titles, high contrast | Precise hierarchy, generous whitespace, restrained scale |
+| **Typical use** | Company all-hands, conference keynote, product launch event | Weekly product review, stakeholder update, design critique |
+
+**If the user does not specify:** infer from context clues — "pitch", "launch", "event" → Keynote. "review", "update", "board", "sync" → Product Board.
+
+---
+
 ### Starting a brand-new deck
 
 1. Ask (or infer): What is the **deck type**? What is the **theme** (dark / light)?
@@ -884,10 +902,12 @@ When the user shares a screenshot from Apple, Google, or any other source:
 | `--text-muted` | `rgba(255,255,255,0.55)` | `rgba(13,14,20,0.55)` |
 | `--text-subtle` | `rgba(255,255,255,0.35)` | `rgba(13,14,20,0.35)` |
 
-> **Burgundy rule:** `--burgundy` has two theme-split values because the brand colour must remain legible.
-> `#E53E8D` is bright enough to read on `#111218` dark backgrounds.
-> `#8E2157` is deep enough to read on `#F2F3FA` light backgrounds.
-> Always use `var(--burgundy)` — never hardcode either hex directly. The theme switch handles it.
+> **Burgundy rule — brand vs presentation:**
+> The Qatar Airways brand burgundy is `#8E2157`. That is the canonical brand token used in product UI.
+> In presentations, `--burgundy` is **theme-split** for screen legibility:
+> - Dark theme (keynote): `#E53E8D` — bright, vibrant, legible on `#111218`
+> - Light theme (product board): `#8E2157` — deep, on-brand, legible on `#F2F3FA`
+> Always use `var(--burgundy)` — the CSS theme switch resolves the correct value automatically. Never hardcode either hex directly in slide CSS.
 
 Title gradient — dark: `linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0.60) 100%)`  
 Title gradient — light: `linear-gradient(180deg, #0D0E14 0%, rgba(13,14,20,0.55) 100%)`
