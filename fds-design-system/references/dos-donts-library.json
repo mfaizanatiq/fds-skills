@@ -1,0 +1,333 @@
+{
+  "schemaVersion": "dos-donts.v1",
+  "lastUpdated": "2026-04-18",
+  "description": "Category-level dos and donts for all FDS components. Used as fallback when a component entry in the platform lookup JSON has empty dos[] / donts[] arrays. Always check component-specific entries first — this file fills the gap where they are absent.",
+  "usage": "1. Read component entry in flow-{platform}.lookup.json. 2. If dos[] is empty, find the matching category here by checking appliesTo[]. 3. Apply all entries in dos[] and donts[] for that category. 4. Global don'ts (at the bottom) always apply regardless of category.",
+
+  "categories": {
+
+    "buttons": {
+      "appliesTo": ["Buttons", "Button", "Action Button", "Payment Button", "Floating Button", "Action Footer"],
+      "dos": [
+        "Use Primary (Filled) for the single most important action on a screen — one per viewport at a time",
+        "Use Secondary (Outlined) for supporting actions that sit alongside a primary button",
+        "Use Tertiary (Text/Ghost) for low-priority or destructive actions where visual weight should be minimal",
+        "Maintain minimum 44×44px touch target on all button sizes — use padding to meet this, never shrink the button",
+        "Keep button labels to 1–3 words in sentence case — 'Book now', not 'BOOK NOW' or 'Proceed to booking'",
+        "Show a loading spinner inside the button when an async action is in progress — never leave the button in a static state during submission",
+        "Use the disabled state (not opacity) when a button action is unavailable — set aria-disabled='true' and remove pointer events",
+        "Space adjacent buttons at minimum 8px gap to prevent mis-taps on touch devices"
+      ],
+      "donts": [
+        "Never place two Primary (Filled) buttons side-by-side — one action must be primary, the other secondary",
+        "Never use icon-only buttons without a tooltip or accessible aria-label — icons alone are ambiguous",
+        "Never resize buttons below 36px height — the minimum functional height is 36px; 44px is the WCAG-compliant minimum",
+        "Never use a button for navigation to another page — use a Link component instead",
+        "Never hardcode button colours — always use --f-button-bg, --f-button-text component tokens",
+        "Never use opacity to signal a disabled button — use the disabled color tokens so child elements are not affected",
+        "Never skip the loading state on form submission — every async action needs feedback within 100ms",
+        "Never use Hover state on App platform buttons — App has no hover; use Pressed/Active state only"
+      ]
+    },
+
+    "form-inputs": {
+      "appliesTo": ["Input Field", "Text Area", "Search Bar", "OTP Input", "Number Stepper", "Slider", "Counter"],
+      "dos": [
+        "Always pair an input with a visible label — never rely on placeholder text as the only label",
+        "Show Helper Text below the input for format guidance (e.g. 'DD/MM/YYYY') — use the Helper Text component, not inline text",
+        "Show error state with both border colour change (--f-brand-color-border-error) and an error message below — never colour alone",
+        "Use success state after validation completes to confirm the input is accepted",
+        "Set autocomplete attributes on common fields: autocomplete='email', 'given-name', 'family-name', 'tel'",
+        "Keep input height at the FDS standard (48px on Web, 56px on App) — never shrink for density",
+        "Use the Disabled state for pre-filled read-only values that should not be edited — add aria-disabled='true'",
+        "Place error messages immediately below the field they relate to — never at the top of the form only"
+      ],
+      "donts": [
+        "Never use placeholder text as a label — it disappears when the user types and fails WCAG 1.3.1",
+        "Never trigger validation on every keystroke for format errors — validate on blur or on submit",
+        "Never show more than one error per field at a time — show the most critical error first",
+        "Never stack multiple inputs without 16px gap (--f-brand-space-md) between them",
+        "Never use a custom keyboard on Web — only override inputmode for numeric/phone inputs",
+        "Never truncate long user input — the input should scroll, not clip",
+        "Never use red border alone to signal an error — always pair with an error message (WCAG 1.4.1)",
+        "Never disable browser autofill unless there is a specific security reason (e.g. OTP, card CVV)"
+      ]
+    },
+
+    "selection-controls": {
+      "appliesTo": ["Checkbox", "Radio Button", "Toggle", "Chips", "Segment Control", "Salutations", "Controls"],
+      "dos": [
+        "Use Checkbox for multi-select — multiple items can be selected simultaneously",
+        "Use Radio Button for single-select from a mutually exclusive set — only one option at a time",
+        "Use Toggle for binary on/off settings that take immediate effect — no 'Save' button needed",
+        "Keep Chip labels concise (1–3 words) — chips are filters or compact selectors, not full sentences",
+        "Show the selected state clearly with both colour and an icon — never colour alone",
+        "Group related checkboxes and radio buttons under a shared visible label for the group",
+        "Use Segment Control for 2–4 equally weighted view switches (not for more than 4 options)",
+        "Maintain 44×44px touch target on all selection controls — the visual element can be smaller but the tap area must meet minimum"
+      ],
+      "donts": [
+        "Never use a Toggle for an action that requires a save/confirm — Toggles are immediate; use a button for actions that need confirmation",
+        "Never use Radio Buttons for a list of more than 7 items — use a Dropdown instead",
+        "Never pre-select a default that costs the user money or data without explicit confirmation",
+        "Never use Chips for primary navigation — Chips are for filtering and tagging within a screen",
+        "Never group checkboxes and radio buttons together in the same form group — they signal different selection models",
+        "Never use Hover state on App selection controls — App has no hover",
+        "Never show a Segment Control with 5 or more options — it becomes unreadable on mobile",
+        "Never change the value of a Toggle or Checkbox without a user action — no programmatic toggling without user intent"
+      ]
+    },
+
+    "navigation": {
+      "appliesTo": ["Tab Bar", "Bottom Navigation Bar", "Super Nav", "Navigation Bar", "Breadcrumbs", "Link", "Footer", "Quick Links", "Main Menu", "Conversational Header", "List Headers"],
+      "dos": [
+        "Limit Bottom Navigation Bar to 3–5 destinations — fewer requires direct access; more causes cognitive load",
+        "Always highlight the active destination with the burgundy active state in the Bottom Navigation Bar",
+        "Use Breadcrumbs for content 3+ levels deep — do not show breadcrumbs for root or one-level-deep pages",
+        "Link text must describe the destination — 'Manage booking' not 'Click here' or 'Learn more'",
+        "Super Nav should remain sticky at the top — it is always accessible regardless of scroll position",
+        "Include aria-current='page' on the active navigation item for screen readers",
+        "Use the Language prop to switch the Navigation Bar to Arabic when dir='rtl' — never manually mirror",
+        "Keep Bottom Navigation Bar icons to ic_nav_menu_ prefix at 32px — never use ic_nav_ icons here"
+      ],
+      "donts": [
+        "Never use more than 5 items in the Bottom Navigation Bar",
+        "Never put action buttons (Book, Pay) inside navigation components — navigation is for wayfinding, not CTAs",
+        "Never use the App Bottom Navigation Bar component on Web — use Super Nav + Footer instead",
+        "Never hide the active state — the user always needs to know where they are",
+        "Never use 'Click here' or 'Read more' as link text — it is inaccessible and meaningless out of context",
+        "Never build custom dropdown menus when the Dropdown component covers the need",
+        "Never change nav icon sizes — ic_nav_menu_ icons are always 32px; ic_nav_ icons are always 24px",
+        "Never put more than 7 items in Breadcrumbs — collapse middle items with an ellipsis"
+      ]
+    },
+
+    "cards": {
+      "appliesTo": ["General Card", "Fare Card", "Flight Card", "Content Card", "Destination Card", "Action Card", "Offers Card", "Profile Card", "Task Card", "Trip Action Cards", "Image Card", "Avios Card", "Membership Cards", "Cart Recovery Card", "Marketplace Card", "Section Card", "Icon Card", "Information Card", "Booking Widget"],
+      "dos": [
+        "Make the entire card tappable/clickable when it has a single primary action — use a single <a> or <button> wrapping the card",
+        "Use --f-brand-shadow-medium for card elevation — the subtle shadow signals interactivity without heavy visual weight",
+        "Include a clear primary CTA inside the card (button or chevron) so the action is obvious without hover",
+        "Maintain consistent card heights within a row — use CSS Grid or Flexbox, not fixed px heights",
+        "Show a loading skeleton (skeleton-shimmer pattern) while card data is fetching — never show an empty card frame",
+        "Use --f-brand-radius-base (8px) for standard cards and --f-brand-radius-outer (20px) for featured/hero cards",
+        "Always include alt text on card images — the alt text describes the visual content",
+        "On Fare Card: always show the lowest available price prominently and the cabin class clearly"
+      ],
+      "donts": [
+        "Never nest interactive elements (buttons, links) inside a tappable card — it creates unreachable keyboard targets and broken touch areas",
+        "Never use more than one primary CTA button per card — use secondary or ghost for additional actions",
+        "Never show empty states inside a card frame — either show skeleton or remove the card from the layout",
+        "Never truncate prices or essential booking information — if the card is too small, stack the layout",
+        "Never use Fare Card for non-fare content — it has a specific visual contract with the user",
+        "Never use a card's elevation shadow for decorative purposes — shadow signals clickability and elevation only",
+        "Never mix card types in the same list/grid without a clear visual hierarchy reason",
+        "Never animate card content independently from the card container — animate the whole card as a unit"
+      ]
+    },
+
+    "overlays": {
+      "appliesTo": ["Modal", "Modal Alert", "Drawers", "Sidesheet", "Tooltip", "Lightbox", "Walktrough Modal", "App Tutorial", "Interstitials", "PC Login Pop-up"],
+      "dos": [
+        "Always trap focus inside an open modal/drawer — Tab must cycle only through the overlay's interactive elements",
+        "Always provide a visible close button (ic_nav_close) in the top-right corner of modals and drawers",
+        "Dismiss on Escape key and on backdrop click for informational overlays — confirmations should require an explicit button",
+        "Use Modal Alert (App) or Modal (Web) for destructive confirmations — never fire-and-forget delete/cancel actions",
+        "Return focus to the trigger element when an overlay closes",
+        "Add aria-modal='true', role='dialog', and aria-labelledby pointing to the overlay title",
+        "Use Drawer for supplementary content (details, filters) — use Modal for actions that block the flow",
+        "Show the overlay entrance animation (modal-entrance or drawer-slide from micro-interactions.json) for spatial context"
+      ],
+      "donts": [
+        "Never stack more than 2 overlays — it creates impossible navigation and confuses users",
+        "Never put critical navigation inside a modal — users should be able to deep-link to important content",
+        "Never auto-dismiss a confirmation modal — the user must always take an explicit action to proceed",
+        "Never use a Tooltip as the only source of essential information — tooltips are supplementary",
+        "Never use App Drawer on Web — use Sidesheet instead (they are different components with different behaviors)",
+        "Never use Web Sidesheet on App — use Drawer instead",
+        "Never block the back navigation gesture on App with a modal that has no Escape/close path",
+        "Never open a Modal without scroll management — the background page must not scroll while the modal is open"
+      ]
+    },
+
+    "feedback": {
+      "appliesTo": ["Alert", "Badge", "Helper Text", "Inline Messages", "Bench Alert", "Loading", "iOS Notifications", "Feedback Banner"],
+      "dos": [
+        "Use Alert / Passive for inline informational messages that don't require action",
+        "Use Alert with the correct type: Info (blue), Success (green), Warning (amber), Error (red) — never use colour without semantic meaning",
+        "Include an actionable message in error alerts — 'Something went wrong. Try again.' not just 'Error'",
+        "Show a Loading state immediately (within 100ms) when any async process begins — never leave the UI frozen",
+        "Use Badge to display count — keep counts to 99+ max; beyond that show '99+'",
+        "Position Inline Messages directly below the relevant field or action",
+        "Dismiss success alerts automatically after 4–5 seconds; error and warning alerts persist until dismissed by the user",
+        "Animate alert entrance with the notification-slide or modal-entrance pattern from micro-interactions.json"
+      ],
+      "donts": [
+        "Never use red colour for anything other than errors — using red for branding or decorative purposes trains users to ignore it",
+        "Never show a loading skeleton for content that loads in under 300ms — it creates more anxiety than a spinner",
+        "Never use Alert for promotional content — Alert is a system component, not a marketing component; use Feedback Banner instead",
+        "Never auto-dismiss error alerts — the user needs time to read and act on errors",
+        "Never stack more than 3 active alerts on screen at once — queue them",
+        "Never show a Badge count without aria-label describing what the count refers to",
+        "Never use the Loading component as a placeholder for content that has failed — show an error state instead",
+        "Never use vague error messages: 'There was a problem' — always tell the user what happened and what to do next"
+      ]
+    },
+
+    "layout-display": {
+      "appliesTo": ["Accordion", "Carousel", "Carousel Arrows", "Divider", "Bullet List", "General List", "Gallery", "Table", "Images", "Image Container", "Pagination", "Scroll Bar", "Ticker Banner"],
+      "dos": [
+        "Use Accordion for FAQs and long-form content where users need selective access — default all items to collapsed",
+        "Use the grid-template-rows trick (0fr → 1fr) for accordion expand — never animate height directly",
+        "Add clear Previous/Next controls to Carousel and keyboard arrow support — never rely on swipe-only",
+        "Use Pagination for lists of 10+ items — lazy loading is an alternative for feeds but not for searchable lists",
+        "Show total page count in Pagination: '3 of 12' not just '3'",
+        "Use Divider to separate content sections — do not use margin alone for section separation",
+        "Provide alt text for all images — decorative images get alt=''",
+        "Apply stagger entrance animation (60ms × index) when a list of items enters the viewport"
+      ],
+      "donts": [
+        "Never use Carousel for content the user needs to compare — carousel hides content from view",
+        "Never auto-play a carousel without user consent — auto-advance causes accessibility failures (WCAG 2.2.2)",
+        "Never paginate fewer than 10 items — use a single-page list instead",
+        "Never use tables for layout — tables are for tabular data only",
+        "Never animate layout properties (height, width, padding) — use transform and opacity only",
+        "Never use Accordion for a single collapsible item — use a disclosure pattern instead",
+        "Never create a custom scroll bar — use the FDS Scroll Bar component on Web",
+        "Never show Carousel dots without also showing Previous/Next buttons on desktop"
+      ]
+    },
+
+    "booking-travel": {
+      "appliesTo": ["Booking Widget", "Booking Wizard", "Fare Block", "Fare Card", "Fare Itinerary", "7-day calendar", "Calendar Picker", "Calendar", "Progress Stepper", "Flight Card", "Flight summary card", "Progress Tracker", "Trip Summary"],
+      "dos": [
+        "Show the current step clearly in Progress Stepper — completed, active, and upcoming states must be visually distinct",
+        "Use the correct date format for the user's locale — Arabic markets use different calendar systems",
+        "Pre-fill known information (passenger names, passport) when available — reduce user effort",
+        "Show the total price including taxes before the final payment step — never reveal fees at checkout only",
+        "Use the Flight Card component for flight search results — never build a custom flight result card",
+        "Validate travel dates in real time — departure must be before return; dates must not be in the past",
+        "Show fare class labels consistently using the FDS fare naming conventions (Economy, Business, First)",
+        "Support keyboard date entry in Calendar Picker alongside the calendar UI"
+      ],
+      "donts": [
+        "Never present fare prices without the currency and the basis (per person / total)",
+        "Never show a booking widget without all required fields visible — do not hide fields behind 'advanced' options for core inputs",
+        "Never skip a Progress Stepper step — users must complete each step before proceeding, or allow going back",
+        "Never use a custom calendar component when the FDS Calendar Picker covers the need",
+        "Never disable the back button mid-booking without saving state — users will lose their selections",
+        "Never show availability without a date selection — it creates misleading results",
+        "Never show technical fare codes (Y, C, J) to end users — use human-readable cabin names",
+        "Never pre-check insurance, seat upgrades, or add-ons by default — opt-in only (dark pattern avoidance)"
+      ]
+    },
+
+    "media-banners": {
+      "appliesTo": ["Hero Block", "Home Banner", "Feature Banner", "Promotional Banner", "Ticker Banner", "Interstitials", "Brand", "Generic Block", "Content Module", "Destination Block", "Video Block", "Images", "Gallery", "Lightbox"],
+      "dos": [
+        "Use a text overlay with sufficient contrast on all hero/banner images — test with WCAG 4.5:1 ratio",
+        "Provide a text alternative for all decorative images and a descriptive alt for informational images",
+        "Use lazy loading (loading='lazy') on all below-the-fold images",
+        "Keep hero headline to 5–8 words maximum — punchy, destination-focused, sentence case",
+        "Always show a CTA button on Hero Block and Promotional Banner — never a banner without a next step",
+        "On Interstitials: always provide a clearly labelled skip/close option — users must be able to exit",
+        "On Video Block: autoplay is muted-only; provide full controls; respect prefers-reduced-motion",
+        "Use --f-brand-color-background-dark-70a (#1F212BB2) for image overlay backgrounds to ensure text contrast"
+      ],
+      "donts": [
+        "Never use animated GIFs or auto-playing video with audio — battery drain and motion sensitivity",
+        "Never put critical information only inside an image — it's inaccessible to screen readers",
+        "Never use text embedded in images — text must be HTML/CSS for accessibility and localisation",
+        "Never use a Promotional Banner as a primary navigation element — it is a marketing surface",
+        "Never use parallax scrolling on mobile — causes motion sickness and performance issues",
+        "Never place a Ticker Banner (auto-scrolling) without a pause mechanism (WCAG 2.2.2)",
+        "Never use glass/blur effects (glassmorphism) on large banner surfaces — GPU-intensive on mobile",
+        "Never stretch or crop destination images — use object-fit: cover with a defined aspect ratio"
+      ]
+    },
+
+    "forms-complex": {
+      "appliesTo": ["Dropdown", "Booking Autocomplete Dropdown", "List Items Dropdown", "Passenger Picker", "Passenger Details", "Search List"],
+      "dos": [
+        "Use Dropdown for 5–10 options — fewer options work better as Radio Buttons; more may need Autocomplete",
+        "Support keyboard navigation in Dropdown: arrow keys to move, Enter to select, Escape to close",
+        "Show a search/filter input inside Dropdown when there are more than 10 options",
+        "Use Booking Autocomplete Dropdown for airport and city search — it supports partial matching and IATA codes",
+        "Display selected values clearly in the closed Dropdown state — never show placeholder again after selection",
+        "Close the Dropdown when the user clicks/taps outside it or presses Escape",
+        "On Passenger Picker: show age range labels for each passenger type (Adult 12+, Child 2–11, Infant under 2)",
+        "Validate passenger combinations in real time — flag invalid combinations (e.g. lap infant without adult)"
+      ],
+      "donts": [
+        "Never use native <select> when the FDS Dropdown component covers the need — native select cannot be styled to FDS spec",
+        "Never open a Dropdown that requires scroll to see all options without a built-in scroll area",
+        "Never auto-submit a form when a Dropdown value changes — always require an explicit submit action",
+        "Never show airport codes without airport names — IATA codes alone are unclear to most passengers",
+        "Never combine Passenger Picker and cabin selection in the same control — keep them separate",
+        "Never require more than 3 steps to complete a Passenger Picker selection",
+        "Never show a Dropdown without a label — the placeholder alone does not satisfy WCAG 1.3.1",
+        "Never close a Dropdown when the user is scrolling through options — differentiate scroll from dismiss"
+      ]
+    },
+
+    "loyalty-profile": {
+      "appliesTo": ["Membership Cards", "Membership Progress Bar", "Membership Progress Circles", "Avios Card", "Profile Card", "Avatar", "Avatar Group"],
+      "dos": [
+        "Use the exact tier colour tokens for Privilege Club tiers — Burgundy, Silver, Gold, Platinum each have dedicated tokens",
+        "Show the Avios balance prominently with the ic_badge_avios icon at 48px",
+        "Use Avatar with the correct size for context — 32px for lists, 48px for profile headers, 64px for profile pages",
+        "Show progress toward next tier clearly — use both the Membership Progress Bar and a text label (e.g. '2,400 Qpoints to Gold')",
+        "Display 'Platinum' tier at the highest visual prominence — it is Qatar Airways' most prestigious tier",
+        "Use the ic_nav_menu_profile_* icons for the Bottom Navigation Bar profile item based on tier",
+        "Always mask card numbers — show only the last 4 digits of membership numbers"
+      ],
+      "donts": [
+        "Never use generic card components for Privilege Club membership — always use the Membership Card component",
+        "Never show expired or incorrect tier status — validate against the API response before displaying",
+        "Never downgrade a tier display without a clear notification to the user",
+        "Never place two Avatar images directly adjacent without minimum 4px overlap using negative spacing tokens",
+        "Never show Avios balance without confirming the data is fresh — show a loading state if the balance is being fetched",
+        "Never truncate the member name on the Membership Card — use ellipsis only if unavoidable, never clip mid-character",
+        "Never use colours other than the FDS tier tokens for loyalty tiers — custom colours break the tier visual language"
+      ]
+    },
+
+    "system-native": {
+      "appliesTo": ["Status Bar", "Home Indicator", "Keyboard", "Handle Bar", "iOS Notifications"],
+      "dos": [
+        "Include Status Bar at the top of every App screen — it occupies 44px (or device-specific safe area) and must not be overlapped",
+        "Include Home Indicator at the bottom of every App screen on devices with home indicator — it is a hardware element, not a design choice",
+        "Use Handle Bar at the top of every Drawer — it signals draggability and gives users a touch target",
+        "Respect the safe area insets using env(safe-area-inset-*) on iOS — never place interactive elements in the safe area",
+        "Use the correct Status Bar style (light/dark content) to contrast with the screen's background"
+      ],
+      "donts": [
+        "Never place the Status Bar on Web — it is an iOS hardware element",
+        "Never place the Home Indicator on Web — it is a device hardware element",
+        "Never overlap the Home Indicator with interactive elements",
+        "Never show a custom Keyboard on App — iOS/Android manages the keyboard; never override the system keyboard",
+        "Never use Status Bar or Home Indicator components for decorative or layout purposes — they represent real device hardware"
+      ]
+    }
+  },
+
+  "globalDonts": [
+    "No custom component when a library equivalent exists — always check the decision tree first",
+    "No third-party icons — FDS icon libraries only (ic_nav_, ic_badge_, ic_payment_, etc.)",
+    "No Google Fonts, Adobe Fonts, or external CDN fonts — FDS assets only (Jotia, Graphik, Almarai)",
+    "No hardcoded hex colour values — all colours via --f-brand-* tokens",
+    "No hardcoded px spacing values — all spacing via --f-brand-space-* tokens",
+    "No hardcoded animation durations — all motion via --f-brand-motion-duration-* tokens",
+    "No Hover state on App platform — use Pressed/Active state",
+    "No missing Viewport prop on Web components that have a Viewport variant",
+    "No Arabic text via CSS transform: scaleX(-1) mirroring — use Language=Arabic prop or dir=rtl properly",
+    "No detached Figma component instances — always maintain library link",
+    "No base-tier tokens (--f-base-*) used directly in component rules",
+    "No new CSS properties in modifiers — modifiers only reassign component-level CSS variables",
+    "No spring or elastic easing curves — FDS motion is confident and unhurried, never bouncy",
+    "No glassmorphism (backdrop-filter blur) on large surfaces — GPU-intensive on mobile",
+    "No auto-playing media with audio — always muted autoplay, always user-controlled audio",
+    "No pre-checked insurance, upgrades, or add-ons — opt-in only",
+    "No fire-and-forget destructive actions — always require confirmation or provide undo"
+  ]
+}

@@ -34,7 +34,7 @@ Source datasets: `_Flow_App_V2_DataSet_23032026`, `_Flow_Web_V2_DataSet_23032026
 | Task | Primary source | Secondary source | Visual source |
 |---|---|---|---|
 | Component props / variants | `flow-{platform}.lookup.json` → `props` | `components-data.md` | Figma MCP screenshot |
-| Component dos & don'ts | `flow-{platform}.lookup.json` → `dos` / `donts` | — | — |
+| Component dos & don'ts | `flow-{platform}.lookup.json` → `dos` / `donts` | `dos-donts-library.json` → match `appliesTo[]` | — |
 | Component node ID / Figma link | `flow-{platform}.lookup.json` → `figma` | `component-nodes.md` | — |
 | Token name → hex / iOS / Android | `tokens.json` → `css` / `ios` / `android` | `design-tokens.md` | — |
 | Token intent / usage / relationships | `tokens.json` → `usage`, `relationships`, `keywords` | `design-tokens.md` | — |
@@ -68,7 +68,7 @@ Source datasets: `_Flow_App_V2_DataSet_23032026`, `_Flow_Web_V2_DataSet_23032026
 | `references/flow-app-v2.lookup.json` | iOS / Android | 58 component families: nodeId, figmaLink, props, subComponents, tokens, dos, donts, figmaPush |
 | `references/flow-web-v2.lookup.json` | Web (desktop/tablet/mobile) | 88 component families: same schema + Viewport prop |
 | `references/flow-email.lookup.json` | Email templates | Email component schema + platform constraints |
-| `references/flow-icons-v4.lookup.json` | All platforms | Icon prefix/size rules, 1,254 icon names, gap protocol |
+| `references/flow-icons-v4.lookup.json` | All platforms | Full icon catalogue: 1,245 icons with names, descriptions, keywords, node IDs. Index by prefix. 43 common icon CSS names. |
 
 #### Token and foundation files
 
@@ -86,6 +86,7 @@ Source datasets: `_Flow_App_V2_DataSet_23032026`, `_Flow_Web_V2_DataSet_23032026
 | `references/figma-push.json` | Full Figma push workflow: MCP tool names, 9-step protocol, variable binding rules |
 | `references/prop-lookup.json` | Canonical prop naming: Title Case rules, synonyms, Arabic (Ar) suffix |
 | `references/new-component-protocol.json` | Full decision tree: use library vs create new, BEM scaffold, quality gates, UX principles, trend guidance |
+| `references/dos-donts-library.json` | Category-level dos/donts for all 146 components — fallback when lookup JSON entries are empty. 13 categories + 17 global don'ts |
 
 ---
 
@@ -155,7 +156,9 @@ For each UI element needed, run the AUTONOMOUS COMPONENT DECISION TREE above.
 For every identified component, run the VISUAL CONTEXT PROTOCOL above.
 
 **Step 4 — Check dos & don'ts**
-Read `dos[]` and `donts[]` from the component's lookup JSON entry. These override all general patterns.
+1. Read `dos[]` and `donts[]` from the component's lookup JSON entry.
+2. If the arrays are empty → open `references/dos-donts-library.json` → find the category whose `appliesTo[]` includes this component name → apply all dos and donts from that category.
+3. Always apply `globalDonts[]` from `dos-donts-library.json` regardless of component or category.
 
 **Step 5 — Resolve tokens**
 For every color, spacing, typography, shadow, and motion value:
@@ -197,13 +200,16 @@ Run through the FDS compliance checklist at the bottom of this file before decla
 | What props/variants a component accepts | `flow-{platform}.lookup.json` → `props.variants` |
 | What boolean props a component has | `flow-{platform}.lookup.json` → `props.booleans` |
 | What content/text props a component has | `flow-{platform}.lookup.json` → `props.content` |
-| What to do / avoid with a component | `flow-{platform}.lookup.json` → `dos` / `donts` |
+| What to do / avoid with a component | `flow-{platform}.lookup.json` → `dos` / `donts` → if empty: `dos-donts-library.json` → match `appliesTo[]` |
 | What tokens a component uses | `flow-{platform}.lookup.json` → `tokens` |
 | How to push this component to Figma | `flow-{platform}.lookup.json` → `figmaPush` + `figma-push.json` |
 | All sub-components in a family | `flow-{platform}.lookup.json` → `subComponents[]` |
 | Whether a component is on App vs Web | `platform-rules.json` → `platforms.app` / `platforms.web` |
 | Canonical prop name / Arabic naming rules | `prop-lookup.json` |
-| What icon to use | `flow-icons-v4.lookup.json` → `commonNavIcons` or `sizingRules` |
+| What icon to use for a purpose | `flow-icons-v4.lookup.json` → `allIcons[]` → search by `keywords[]` or `description` |
+| Exact CSS class name for an icon | `flow-icons-v4.lookup.json` → `allIcons[].name` |
+| Quick lookup of 43 most-used icons | `flow-icons-v4.lookup.json` → `commonNavIcons` (semantic key → CSS name) |
+| All icons of a prefix type | `flow-icons-v4.lookup.json` → `index.byPrefix[prefix].names[]` |
 | Token name → hex / iOS / Android | `tokens.json` → `css` / `ios` / `android` |
 | Token intent / usage / keywords | `tokens.json` → `usage`, `relationships`, `keywords` |
 | Full token hex values (legacy fallback) | `design-tokens.md` |
