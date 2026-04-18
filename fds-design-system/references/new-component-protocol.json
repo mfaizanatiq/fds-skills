@@ -1,0 +1,184 @@
+{
+  "schemaVersion": "ncp.v1",
+  "lastUpdated": "2026-04-17",
+  "description": "Autonomous protocol for deciding when to use a library component vs creating a new one, and how to create new components that are FDS-compliant, delightful, and presentation-ready.",
+
+  "decisionTree": {
+    "step1_searchLibrary": {
+      "action": "Search platform lookup JSON (flow-{platform}.lookup.json) by component name and functional purpose",
+      "lookupKeys": ["id", "name"],
+      "result_found": "→ Use library component. STOP. Do not build custom.",
+      "result_notFound": "→ Proceed to step2"
+    },
+    "step2_searchFallback": {
+      "action": "Search references/components-data.md (broader fallback list covering all 118 families)",
+      "result_found": "→ Use it. Note it needs a JSON entry. STOP.",
+      "result_notFound": "→ Proceed to step3"
+    },
+    "step3_checkRelatives": {
+      "action": "Check if a close relative in the library covers the need with a different prop combination",
+      "examples": [
+        "Need 'inline alert' → use Alert / Passive with appropriate type prop",
+        "Need 'loading button' → use Button with State=Loading prop",
+        "Need 'icon-only button' → use Action Button component"
+      ],
+      "result_found": "→ Use relative + document adaptation in build manifest. STOP.",
+      "result_notFound": "→ Proceed to step4 (create new)"
+    },
+    "step4_createNew": {
+      "action": "Create new component per FDS foundations",
+      "mandatory": [
+        "Fetch visual context via Figma MCP if any related component exists",
+        "Follow BEM + token map pattern (4 steps — see SKILL.md)",
+        "Apply at least one micro-interaction from micro-interactions.json",
+        "Pass all quality gates below",
+        "Add to build manifest as 'New components'",
+        "Flag as FDS gap"
+      ]
+    }
+  },
+
+  "visualContextProtocol": {
+    "rule": "Always attempt to get a visual reference before building. Never guess layout.",
+    "step1": "Check lookup JSON for figma.nodeId + meta.fileKey",
+    "step2": "Call Figma MCP get_screenshot(nodeId, fileKey) — primary",
+    "step3": "On fail: fetch figma.netlifyFallback URL from lookup JSON",
+    "step4": "On fail: call FDS MCP inspect_frame(nodeId) if available",
+    "step5": "On fail: tell the designer → 'Please share a screenshot of [component name] from the [Flow App V2 / Flow Web V2] Figma file. Node ID: [nodeId]. Alternatively open: [figma link]'",
+    "never": "Never guess visual layout from props alone. Always seek visual confirmation."
+  },
+
+  "namingProtocol": {
+    "block": ".f-{descriptive-name}",
+    "element": ".f-{name}__{element}",
+    "modifier": ".f-{name}--{modifier}",
+    "rules": [
+      "Name describes function, not appearance — f-route-card not f-dark-wide-card",
+      "Use nouns for blocks — f-message-bubble, f-price-matrix",
+      "Use adjectives/states for modifiers — f-message-bubble--outgoing",
+      "Never use layout words as names — f-left-panel, f-top-row are forbidden",
+      "Token: --f-{component}-{property} matching the block name"
+    ],
+    "examples": {
+      "ai-chat-message": "f-ai-message",
+      "seat-map-cell": "f-seat-cell",
+      "trip-progress-tracker": "f-trip-tracker",
+      "loyalty-tier-badge": "f-loyalty-badge",
+      "price-breakdown-row": "f-price-row"
+    }
+  },
+
+  "mandatoryStructure": {
+    "step1_HTML": "BEM HTML — block (.f-name), semantic elements (__), state/variant modifiers (--)",
+    "step2_tokenMap": "All component variables defined on the block selector. Every visual property aliased to a brand token. Every state pre-mapped.",
+    "step3_rules": "CSS rules consume ONLY --f-{component}-* vars. Never reference --f-brand-* in rules.",
+    "step4_modifiers": "Modifiers ONLY reassign component vars already on the block. Never add new CSS properties in modifiers.",
+    "step5_states": "All states covered: default, hover (web only), focus-visible, active/pressed, disabled, loading (if async), error (if validating), success (if completing)",
+    "step6_motion": "At least one micro-interaction from micro-interactions.json. Token-sourced timing + easing. prefers-reduced-motion handled."
+  },
+
+  "tokenMapTemplate": {
+    "description": "Minimum required token map for any new interactive component",
+    "css": ".\f-{name} {\n  /* Color */\n  --f-{name}-bg:           var(--f-brand-color-background-{semantic});\n  --f-{name}-bg-hover:     var(--f-brand-color-background-{semantic}-hover);\n  --f-{name}-text:         var(--f-brand-color-text-{semantic});\n  --f-{name}-border:       var(--f-brand-color-border-{semantic});\n  --f-{name}-icon:         var(--f-brand-color-icon-{semantic});\n  /* Sizing */\n  --f-{name}-radius:       var(--f-brand-radius-{size});\n  --f-{name}-padding-v:    var(--f-brand-space-{size});\n  --f-{name}-padding-h:    var(--f-brand-space-{size});\n  --f-{name}-gap:          var(--f-brand-space-{size});\n  /* Typography */\n  --f-{name}-font:         var(--f-brand-type-{style});\n  /* Motion */\n  --f-{name}-duration:     var(--f-brand-motion-duration-{speed});\n  --f-{name}-easing:       var(--f-brand-motion-easing-{curve});\n  /* Shadow */\n  --f-{name}-shadow:       var(--f-brand-shadow-{level});\n  /* States */\n  --f-{name}-bg-disabled:  var(--f-brand-color-background-disabled);\n  --f-{name}-text-disabled:var(--f-brand-color-text-disabled);\n}"
+  },
+
+  "qualityGates": {
+    "accessibility": {
+      "contrast_text":      "WCAG 2.1 AA — 4.5:1 minimum between text and background",
+      "contrast_large":     "WCAG 2.1 AA — 3:1 for text >18px regular or >14px bold",
+      "contrast_ui":        "WCAG 2.1 AA — 3:1 for all UI components and focus indicators",
+      "touchTarget":        "Minimum 44×44px on all interactive elements (iOS HIG + WCAG 2.5.5)",
+      "touchGap":           "Minimum 8px between adjacent interactive targets",
+      "focusRing":          "Visible :focus-visible ring — 2px solid --f-brand-color-border-focused + var(--f-brand-space-xs) offset",
+      "ariaRoles":          "All interactive elements have correct ARIA roles, labels, and states",
+      "keyboard":           "Full keyboard operability — Tab, Enter/Space, Escape, arrow keys where applicable"
+    },
+    "tokenCompliance": {
+      "noHardcodedHex":     "Zero hardcoded hex values — 100% token-sourced colors",
+      "noPxValues":         "Zero hardcoded px for spacing — all via --f-brand-space-* tokens",
+      "noHardcodedDuration":"Zero hardcoded ms/s for animations — all via --f-brand-motion-duration-*",
+      "noBaseTokensInRules":"base-tier tokens (--f-base-*) never appear in component rules",
+      "cssFallback":        "Every var() has a cssFallback: var(--f-brand-*, #fallback)"
+    },
+    "typography": {
+      "noExternalFonts":    "Zero Google Fonts, Adobe Fonts, or CDN font links",
+      "compositeShorthand": "font: var(--f-brand-type-*) always — never individual font-size/weight/family",
+      "approvedNames":      "Only token names from design-tokens.md §Typography Styles — no invented names"
+    },
+    "motion": {
+      "oneMicroInteraction": "At least one micro-interaction from micro-interactions.json applied",
+      "tokenSourcingOnly":   "All durations and easings via motion tokens — never hardcoded",
+      "reducedMotion":       "@media (prefers-reduced-motion: reduce) disables all non-essential animations",
+      "gpuOnly":             "Only transform and opacity animated — never layout properties"
+    },
+    "platform": {
+      "noHover_onApp":       "No :hover states on App components",
+      "viewport_onWeb":      "Web components that scale must include Viewport variant handling",
+      "arabicRTL":           "Text-containing components must not break at dir=rtl",
+      "iconSizing":          "Icons are only 24px (ic_nav_) or 48px (ic_badge_) — never other sizes"
+    }
+  },
+
+  "uxPrinciples": {
+    "affordance":    "Visual affordance must be clear without hover — color, shape, and size alone indicate interactivity",
+    "feedback":      "Every user action gets feedback within 100ms — if response takes longer, show a loading state immediately",
+    "forgiveness":   "Destructive actions require confirmation or undo. Never fire-and-forget destructive operations",
+    "consistency":   "New components behave identically to existing FDS components in the same category",
+    "progression":   "Complex interactions are progressively disclosed — default state is always the simplest",
+    "luxury":        "Qatar Airways is premium travel. Interactions feel confident, unhurried, and intentional. Never playful or cartoonish.",
+    "clarity":       "If a user needs to think for more than 2 seconds about what to do next, the design has failed",
+    "localization":  "English and Arabic are equal — every component must support both scripts without visual degradation"
+  },
+
+  "trendGuidance": {
+    "year": 2026,
+    "approved": [
+      "Fluid typography with clamp() — use FDS type scale as min/max bounds to stay within system",
+      "Container queries for component-level responsiveness — better than media queries for reusable components",
+      "CSS scroll-driven animations for reveal effects (with prefers-reduced-motion fallback)",
+      "View Transition API for page transitions (progressive enhancement — graceful fallback if unsupported)",
+      "content-visibility: auto on long lists and off-screen sections — improves paint performance",
+      "CSS :has() for parent-based state styling — e.g. form:has(:invalid) to style entire form on error",
+      "Logical properties (padding-inline, margin-block) for automatic LTR/RTL support"
+    ],
+    "avoid": [
+      "Glassmorphism backdrop-filter blur on large surfaces — GPU-intensive, poor performance on mobile",
+      "Neumorphism — low contrast, fails accessibility",
+      "Scroll jacking / overriding native scroll behaviour",
+      "Auto-playing video backgrounds — battery drain, motion sensitivity",
+      "Parallax on mobile — causes motion sickness for many users",
+      "Skeleton loading for content loading < 300ms — causes more anxiety than a spinner",
+      "Dark patterns — deceptive UI, pre-ticked boxes, hidden unsubscribe",
+      "Spring/elastic overshoot animations — too playful for Qatar Airways brand",
+      "3D perspective transforms — not part of FDS visual language",
+      "Excessive micro-interactions — one per component maximum"
+    ]
+  },
+
+  "buildManifestEntry": {
+    "section": "New components",
+    "requiredFields": {
+      "componentName":          "f-{descriptive-name} — BEM block class",
+      "usedFor":                "One sentence describing the use case",
+      "closestFDSEquivalent":   "Nearest existing FDS component name, or 'None'",
+      "microInteractionsApplied": "List of patterns from micro-interactions.json applied",
+      "qualityGates":           "pass | partial (list what passed/failed) | fail",
+      "figmaGapFlag":           "FDS gap: f-{name} — [what it does]. Candidate for DS team to formalise in Figma."
+    },
+    "example": {
+      "componentName":          "f-ai-message",
+      "usedFor":                "Chat bubble for AI-generated responses in the assistant interface",
+      "closestFDSEquivalent":   "Alert / Passive (closest visual relative)",
+      "microInteractionsApplied": ["skeleton-shimmer (while streaming)", "success-pulse (on completion)"],
+      "qualityGates":           "pass",
+      "figmaGapFlag":           "FDS gap: f-ai-message — AI chat response container. Candidate for design system."
+    }
+  },
+
+  "escalationProtocol": {
+    "iconGap": "Flag: 'Icon gap: [description] — no FDS icon exists for this. Recommend raising with design team. Placeholder: ic_nav_[nearest-semantic-name]'",
+    "componentGap": "Flag: 'FDS gap: f-[name] — [description]. Built on FDS foundations. Candidate for Figma formalisation.'",
+    "tokenGap": "Flag: 'Token gap: No FDS token for [use case]. Using nearest: [token name]. Recommend raising with DS team.'",
+    "designerNeeded": "Flag: 'Visual context needed — please share screenshot of [component] from [Figma file]. Link: [figma link]'"
+  }
+}

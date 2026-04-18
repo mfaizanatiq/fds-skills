@@ -1,0 +1,245 @@
+{
+  "schemaVersion": "micro-interactions.v1",
+  "lastUpdated": "2026-04-17",
+  "description": "FDS micro-interaction library. Every interactive component must implement at least one pattern from this file. Patterns are token-sourced, luxury-grade, and never decorative.",
+
+  "rule": "Every new interactive component MUST apply at least one of these patterns. Choose based on component category. All CSS uses only FDS tokens — zero hardcoded values.",
+
+  "patterns": {
+
+    "button-press": {
+      "category": "button",
+      "description": "Tactile press feedback — scale down + slight opacity drop on activation. Signals physical press to the user.",
+      "trigger": ":active (mousedown / touchstart)",
+      "platforms": "both",
+      "duration": "120ms (--f-base-duration-120)",
+      "easing": "var(--f-brand-motion-easing-default)",
+      "css": ".f-button:active { transform: scale(0.97); opacity: 0.92; transition: transform 120ms var(--f-brand-motion-easing-default), opacity 120ms var(--f-brand-motion-easing-default); } .f-button { transition: background var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-default), transform 120ms var(--f-brand-motion-easing-default), opacity 120ms var(--f-brand-motion-easing-default); }",
+      "reducedMotion": "Disable transform + opacity transition; keep background color transition only"
+    },
+
+    "button-hover-lift": {
+      "category": "button",
+      "description": "Button lifts 1px off the surface on hover, shadow deepens. Signals interactivity before click.",
+      "trigger": ":hover",
+      "platforms": "web only — NEVER on App",
+      "duration": "var(--f-brand-motion-duration-instant)",
+      "easing": "var(--f-brand-motion-easing-entry)",
+      "css": ".f-button:hover { transform: translateY(-1px); box-shadow: var(--f-brand-shadow-medium); } .f-button { transition: background var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-default), transform var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-entry), box-shadow var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-entry); }",
+      "reducedMotion": "Remove entirely — no transform, no shadow change on hover"
+    },
+
+    "card-hover-lift": {
+      "category": "card",
+      "description": "Card rises 2px off the page, shadow jumps to large. Transforms a static surface into a clear call-to-action.",
+      "trigger": ":hover",
+      "platforms": "web only — NEVER on App",
+      "duration": "var(--f-brand-motion-duration-instant)",
+      "easing": "var(--f-brand-motion-easing-entry)",
+      "css": ".f-card { transition: transform var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-entry), box-shadow var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-entry); } .f-card:hover { transform: translateY(-2px); box-shadow: var(--f-brand-shadow-large); }",
+      "reducedMotion": "Remove entirely — no transform, shadow stays at resting state"
+    },
+
+    "input-focus-ring": {
+      "category": "input",
+      "description": "Border snaps to focus colour + 2px outline appears. Clear, accessible keyboard navigation signal.",
+      "trigger": ":focus-visible",
+      "platforms": "both",
+      "duration": "var(--f-brand-motion-duration-instant)",
+      "easing": "var(--f-brand-motion-easing-default)",
+      "css": ".f-input { transition: border-color var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-default), outline-color var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-default); outline: var(--f-brand-border-size-focused) solid transparent; outline-offset: var(--f-brand-space-xs); } .f-input:focus-visible { border-color: var(--f-brand-color-border-focused); outline-color: var(--f-brand-color-border-focused); }",
+      "reducedMotion": "Keep — focus ring is a WCAG accessibility requirement, never remove"
+    },
+
+    "accordion-expand": {
+      "category": "accordion",
+      "description": "Content reveals smoothly downward using grid-template-rows trick. GPU-safe height animation — no layout thrash.",
+      "trigger": "Expanded=True prop / state change",
+      "platforms": "both",
+      "duration": "var(--f-brand-motion-duration-quick)",
+      "easing": "entry: var(--f-brand-motion-easing-entry) / exit: var(--f-brand-motion-easing-exit)",
+      "css": ".f-accordion__content { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-entry); } .f-accordion--expanded .f-accordion__content { grid-template-rows: 1fr; } .f-accordion__content-inner { overflow: hidden; } .f-accordion__icon { transition: transform var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-default); } .f-accordion--expanded .f-accordion__icon { transform: rotate(180deg); }",
+      "reducedMotion": "Set transition-duration: 0.01ms — content appears/disappears instantly"
+    },
+
+    "modal-entrance": {
+      "category": "modal",
+      "description": "Modal scales in from 95% → 100% with opacity fade. Backdrop fades simultaneously. Feels deliberate, not abrupt.",
+      "trigger": "modal open state",
+      "platforms": "web (Sidesheet slides from right); app (Modal Alert uses same scale pattern)",
+      "duration": "var(--f-brand-motion-duration-gentle)",
+      "easing": "entry: var(--f-brand-motion-easing-entry) / exit: var(--f-brand-motion-easing-exit)",
+      "css": ".f-modal { transform: scale(0.95); opacity: 0; transition: transform var(--f-brand-motion-duration-gentle) var(--f-brand-motion-easing-entry), opacity var(--f-brand-motion-duration-gentle) var(--f-brand-motion-easing-entry); pointer-events: none; } .f-modal--open { transform: scale(1); opacity: 1; pointer-events: auto; } .f-modal__backdrop { opacity: 0; transition: opacity var(--f-brand-motion-duration-gentle) var(--f-brand-motion-easing-entry); } .f-modal--open .f-modal__backdrop { opacity: 1; }",
+      "reducedMotion": "Skip transform/opacity — modal appears instantly; keep pointer-events toggle"
+    },
+
+    "drawer-slide": {
+      "category": "drawer",
+      "description": "App Drawer slides from bottom; Web Sidesheet slides from right. Backdrop fades simultaneously.",
+      "trigger": "drawer open state",
+      "platforms": "app (bottom), web (right/left depending on locale)",
+      "duration": "var(--f-brand-motion-duration-gentle)",
+      "easing": "entry: var(--f-brand-motion-easing-entry) / exit: var(--f-brand-motion-easing-exit)",
+      "appCSS": ".f-drawer { transform: translateY(100%); transition: transform var(--f-brand-motion-duration-gentle) var(--f-brand-motion-easing-entry); } .f-drawer--open { transform: translateY(0); }",
+      "webCSS": ".f-sidesheet { transform: translateX(100%); transition: transform var(--f-brand-motion-duration-gentle) var(--f-brand-motion-easing-entry); } .f-sidesheet--open { transform: translateX(0); } [dir='rtl'] .f-sidesheet { transform: translateX(-100%); } [dir='rtl'] .f-sidesheet--open { transform: translateX(0); }",
+      "reducedMotion": "Skip transform — drawer appears at final position instantly"
+    },
+
+    "dropdown-reveal": {
+      "category": "dropdown",
+      "description": "Dropdown list fades + translates 4px down from anchor. Closes with reverse. Natural spatial relationship.",
+      "trigger": "open / close state",
+      "platforms": "both",
+      "duration": "var(--f-brand-motion-duration-quick)",
+      "easing": "entry: var(--f-brand-motion-easing-entry) / exit: var(--f-brand-motion-easing-exit)",
+      "css": ".f-dropdown__list { opacity: 0; transform: translateY(-4px); transition: opacity var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-entry), transform var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-entry); pointer-events: none; } .f-dropdown--open .f-dropdown__list { opacity: 1; transform: translateY(0); pointer-events: auto; }",
+      "reducedMotion": "Skip opacity/transform — list appears instantly"
+    },
+
+    "toggle-switch": {
+      "category": "toggle",
+      "description": "Thumb slides across track with background colour transition. Physical switch metaphor.",
+      "trigger": "checked / unchecked state",
+      "platforms": "both",
+      "duration": "var(--f-brand-motion-duration-quick)",
+      "easing": "var(--f-brand-motion-easing-default)",
+      "css": ".f-toggle__track { transition: background-color var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-default); } .f-toggle__thumb { transition: transform var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-default); transform: translateX(0); } .f-toggle--checked .f-toggle__thumb { transform: translateX(20px); } .f-toggle--checked .f-toggle__track { background-color: var(--f-brand-color-background-primary); }",
+      "reducedMotion": "Set transition-duration: 0.01ms — thumb jumps to position"
+    },
+
+    "checkbox-check": {
+      "category": "checkbox",
+      "description": "Box fills with brand colour, checkmark strokes in via SVG path animation. Confident confirmation.",
+      "trigger": "checked state",
+      "platforms": "both",
+      "duration": "var(--f-brand-motion-duration-instant)",
+      "easing": "var(--f-brand-motion-easing-default)",
+      "css": ".f-checkbox__box { transition: background-color var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-default), border-color var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-default); } .f-checkbox__check { stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-default); } .f-checkbox--checked .f-checkbox__box { background-color: var(--f-brand-color-background-primary); border-color: var(--f-brand-color-border-primary); } .f-checkbox--checked .f-checkbox__check { stroke-dashoffset: 0; }",
+      "reducedMotion": "Skip stroke animation — checkmark appears instantly"
+    },
+
+    "success-pulse": {
+      "category": "feedback",
+      "description": "Component scales to 1.05 then returns to 1 after success state is reached. Subtle 'job done' confirmation.",
+      "trigger": "state transitions to Success",
+      "platforms": "both",
+      "duration": "var(--f-brand-motion-duration-quick)",
+      "easing": "var(--f-brand-motion-easing-entry)",
+      "css": "@keyframes f-success-pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } } .f-component--success { animation: f-success-pulse var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-entry) 1; } @media (prefers-reduced-motion: reduce) { .f-component--success { animation: none; } }",
+      "reducedMotion": "Remove entirely — state colour change alone communicates success"
+    },
+
+    "error-shake": {
+      "category": "feedback",
+      "description": "Component shakes horizontally on error state — physical 'wrong' signal. Lateral 4px oscillation × 3.",
+      "trigger": "state transitions to Error (especially failed form submission)",
+      "platforms": "both",
+      "duration": "480ms total (4 × 120ms steps)",
+      "easing": "var(--f-brand-motion-easing-default)",
+      "css": "@keyframes f-error-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-4px); } 40% { transform: translateX(4px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(2px); } } .f-input--error, .f-component--error { animation: f-error-shake 480ms var(--f-brand-motion-easing-default) 1; } @media (prefers-reduced-motion: reduce) { .f-input--error, .f-component--error { animation: none; } }",
+      "reducedMotion": "Remove entirely — error border + icon + text communicates the state without motion"
+    },
+
+    "skeleton-shimmer": {
+      "category": "loading",
+      "description": "Shimmer gradient sweeps left-to-right on placeholder content. Standard skeleton loading pattern.",
+      "trigger": "Loading state where content dimensions are known",
+      "platforms": "both",
+      "duration": "1500ms (loops — not a token-based duration)",
+      "easing": "linear",
+      "css": "@keyframes f-skeleton-shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } } .f-skeleton { background: linear-gradient(90deg, var(--f-brand-color-background-disabled) 25%, var(--f-brand-color-background-default) 50%, var(--f-brand-color-background-disabled) 75%); background-size: 200% 100%; animation: f-skeleton-shimmer 1500ms linear infinite; border-radius: var(--f-brand-radius-sm); } @media (prefers-reduced-motion: reduce) { .f-skeleton { animation: none; background: var(--f-brand-color-background-disabled); } }",
+      "note": "Only use skeleton when content dimensions are predictable. For unknown-size content, use Oryx spinner (Loading component)."
+    },
+
+    "tooltip-entrance": {
+      "category": "tooltip",
+      "description": "Tooltip fades in + translates 4px from pointer direction. Disappears immediately on blur/mouseout.",
+      "trigger": "hover / focus (Web only)",
+      "platforms": "web only",
+      "duration": "var(--f-brand-motion-duration-instant)",
+      "easing": "var(--f-brand-motion-easing-entry)",
+      "css": ".f-tooltip { opacity: 0; transform: translateY(4px); transition: opacity var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-entry), transform var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-entry); pointer-events: none; } .f-tooltip--visible { opacity: 1; transform: translateY(0); pointer-events: auto; }",
+      "reducedMotion": "Skip opacity/transform — tooltip appears instantly"
+    },
+
+    "notification-slide": {
+      "category": "notification",
+      "description": "Toast/notification slides from top with backdrop fade. Auto-dismisses after content read time.",
+      "trigger": "notification shown",
+      "platforms": "both (App: bottom of screen; Web: top-right)",
+      "duration": "var(--f-brand-motion-duration-quick)",
+      "easing": "entry: var(--f-brand-motion-easing-entry) / exit: var(--f-brand-motion-easing-exit)",
+      "appCSS": ".f-notification { transform: translateY(100%); opacity: 0; transition: transform var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-entry), opacity var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-entry); } .f-notification--visible { transform: translateY(0); opacity: 1; }",
+      "webCSS": ".f-notification { transform: translateY(-100%); opacity: 0; transition: transform var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-entry), opacity var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-entry); } .f-notification--visible { transform: translateY(0); opacity: 1; }",
+      "reducedMotion": "Skip transform — fade opacity only (or appear instantly)"
+    },
+
+    "tab-indicator": {
+      "category": "tabs",
+      "description": "Active tab underline or pill glides smoothly between items on tab change.",
+      "trigger": "tab selection change",
+      "platforms": "both",
+      "duration": "var(--f-brand-motion-duration-instant)",
+      "easing": "var(--f-brand-motion-easing-default)",
+      "css": ".f-tab-bar__indicator { position: absolute; bottom: 0; height: 2px; background: var(--f-brand-color-border-primary); transition: left var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-default), width var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-default); }",
+      "reducedMotion": "Skip transition — indicator jumps to new position"
+    },
+
+    "page-transition": {
+      "category": "navigation",
+      "description": "Route change: current content fades + slides left; new content enters from right. Full-page spatial model.",
+      "trigger": "navigation / route change",
+      "platforms": "both (App: slide left/right; Web: fade + translate)",
+      "duration": "var(--f-brand-motion-duration-gentle) split: 480ms exit + 480ms entry",
+      "easing": "exit: var(--f-brand-motion-easing-exit) / entry: var(--f-brand-motion-easing-entry)",
+      "css": ".f-page-exit { animation: f-page-exit var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-exit) forwards; } .f-page-enter { animation: f-page-enter var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-entry) forwards; } @keyframes f-page-exit { to { opacity: 0; transform: translateX(-16px); } } @keyframes f-page-enter { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }",
+      "note": "Disable pointer events on the exiting page during transition",
+      "reducedMotion": "Skip transform/opacity — use instant content swap"
+    },
+
+    "progress-fill": {
+      "category": "progress",
+      "description": "Progress bar fill width animates smoothly to new value on state change.",
+      "trigger": "progress value change",
+      "platforms": "both",
+      "duration": "var(--f-brand-motion-duration-quick)",
+      "easing": "var(--f-brand-motion-easing-default)",
+      "css": ".f-progress__fill { transition: width var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-default); }",
+      "reducedMotion": "Skip transition — bar jumps to new width"
+    },
+
+    "badge-pop": {
+      "category": "badge",
+      "description": "New badge/count appears with a scale-in pop. Draws attention to new notifications without scrolling.",
+      "trigger": "badge appears / count increases",
+      "platforms": "both",
+      "duration": "var(--f-brand-motion-duration-instant)",
+      "easing": "var(--f-brand-motion-easing-entry)",
+      "css": "@keyframes f-badge-pop { 0% { transform: scale(0.5); opacity: 0; } 80% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } } .f-badge--new { animation: f-badge-pop var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-entry) 1; } @media (prefers-reduced-motion: reduce) { .f-badge--new { animation: none; } }"
+    },
+
+    "link-underline": {
+      "category": "link",
+      "description": "Link underline grows from left to right on hover. Reinforces interactive affordance without colour change.",
+      "trigger": ":hover",
+      "platforms": "web only",
+      "duration": "var(--f-brand-motion-duration-instant)",
+      "easing": "var(--f-brand-motion-easing-default)",
+      "css": ".f-link { text-decoration: none; background-image: linear-gradient(var(--f-brand-color-text-primary), var(--f-brand-color-text-primary)); background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size var(--f-brand-motion-duration-instant) var(--f-brand-motion-easing-default); } .f-link:hover { background-size: 100% 1px; }",
+      "reducedMotion": "Remove — show underline by default on link hover without transition"
+    }
+  },
+
+  "selectionGuide": {
+    "rule": "Match interaction to component category. When in doubt, use the simpler pattern.",
+    "button-like":    ["button-press", "button-hover-lift (web only)"],
+    "input-like":     ["input-focus-ring"],
+    "card-like":      ["card-hover-lift (web only)"],
+    "expand-collapse":["accordion-expand"],
+    "overlay":        ["modal-entrance OR drawer-slide"],
+    "feedback":       ["success-pulse OR error-shake"],
+    "loading":        ["skeleton-shimmer (known dimensions) OR use Loading component"],
+    "navigation":     ["tab-indicator OR page-transition"],
+    "informational":  ["tooltip-entrance (web only)", "notification-slide"]
+  }
+}

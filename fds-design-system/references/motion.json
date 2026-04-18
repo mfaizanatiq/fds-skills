@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "motion.v1",
+  "lastUpdated": "2026-04-17",
+  "description": "FDS motion system — canonical specs for every animation in the design system. Machine-readable companion to foundations.md §Motion. Use this file for all timing, easing, stagger, and state-transition decisions.",
+
+  "tokens": {
+    "durations": {
+      "extraFast": {
+        "css": "--f-base-duration-120",
+        "value": "120ms",
+        "use": "Button press feedback ONLY — the fastest perceptible response"
+      },
+      "instant": {
+        "css": "--f-brand-motion-duration-instant",
+        "value": "240ms",
+        "use": "State changes (hover, focus, active), icon swaps, colour transitions"
+      },
+      "quick": {
+        "css": "--f-brand-motion-duration-quick",
+        "value": "480ms",
+        "use": "Content transitions, accordion expand/collapse, dropdown open, tab indicator"
+      },
+      "gentle": {
+        "css": "--f-brand-motion-duration-gentle",
+        "value": "960ms",
+        "use": "Modal entrance/exit, drawer slide, sidesheet, overlay fade"
+      },
+      "generous": {
+        "css": "--f-brand-motion-duration-generous",
+        "value": "1200ms",
+        "use": "Page-level transitions, onboarding, full-screen overlays"
+      }
+    },
+    "easings": {
+      "entry": {
+        "css": "--f-brand-motion-easing-entry",
+        "value": "cubic-bezier(0.4, 0, 0, 1)",
+        "use": "Elements entering the viewport — decelerates to rest"
+      },
+      "exit": {
+        "css": "--f-brand-motion-easing-exit",
+        "value": "cubic-bezier(0, 0, 0.08, 1)",
+        "use": "Elements leaving the viewport — accelerates away"
+      },
+      "default": {
+        "css": "--f-brand-motion-easing-default",
+        "value": "cubic-bezier(0.4, 0, 0.08, 1)",
+        "use": "In-place state transitions — enters fast, exits gently"
+      },
+      "linear": {
+        "css": "--f-base-motion-easing-linear",
+        "value": "linear",
+        "use": "Looping animations only (skeleton shimmer, loading spinners)"
+      }
+    },
+    "transformOrigins": {
+      "center": "--f-base-motion-transform-origin-center",
+      "top":    "--f-base-motion-transform-origin-top",
+      "bottom": "--f-base-motion-transform-origin-bottom",
+      "left":   "--f-base-motion-transform-origin-left",
+      "right":  "--f-base-motion-transform-origin-right"
+    },
+    "scales": {
+      "press":  { "css": "--f-base-motion-scale-small",  "value": "0.8",  "note": "Use 0.97 for button press — 0.8 is too aggressive for UI" },
+      "pop":    { "css": "--f-base-motion-scale-medium", "value": "1.2",  "use": "Success pulse overshoot" },
+      "large":  { "css": "--f-base-motion-scale-large",  "value": "1.5",  "use": "Decorative — not for functional UI" }
+    }
+  },
+
+  "perComponentDefaults": {
+    "button":                { "duration": "instant",  "easing": "default",  "pressOverride": "120ms" },
+    "action-button":         { "duration": "instant",  "easing": "default",  "pressOverride": "120ms" },
+    "payment-button":        { "duration": "instant",  "easing": "default",  "pressOverride": "120ms" },
+    "input-field":           { "duration": "instant",  "easing": "default" },
+    "text-area":             { "duration": "instant",  "easing": "default" },
+    "search-bar":            { "duration": "instant",  "easing": "default" },
+    "dropdown":              { "duration": "quick",    "easing": "entry",   "closeEasing": "exit" },
+    "accordion":             { "duration": "quick",    "easing": "entry",   "closeEasing": "exit" },
+    "checkbox":              { "duration": "instant",  "easing": "default" },
+    "radio-button":          { "duration": "instant",  "easing": "default" },
+    "toggle":                { "duration": "quick",    "easing": "default" },
+    "chips":                 { "duration": "instant",  "easing": "default" },
+    "badge":                 { "duration": "instant",  "easing": "entry" },
+    "alert":                 { "duration": "quick",    "easing": "entry" },
+    "modal":                 { "duration": "gentle",   "easing": "entry",   "closeEasing": "exit" },
+    "drawer":                { "duration": "gentle",   "easing": "entry",   "closeEasing": "exit" },
+    "sidesheet":             { "duration": "gentle",   "easing": "entry",   "closeEasing": "exit" },
+    "tooltip":               { "duration": "instant",  "easing": "entry",   "closeEasing": "exit" },
+    "bottom-navigation-bar": { "duration": "instant",  "easing": "default" },
+    "tab-bar":               { "duration": "instant",  "easing": "default" },
+    "progress-stepper":      { "duration": "quick",    "easing": "default" },
+    "pagination":            { "duration": "instant",  "easing": "default" },
+    "card":                  { "duration": "instant",  "easing": "default" },
+    "general-card":          { "duration": "instant",  "easing": "default" },
+    "fare-card":             { "duration": "instant",  "easing": "default" },
+    "flight-card":           { "duration": "quick",    "easing": "default" },
+    "loading":               { "duration": "generous", "easing": "linear",  "loops": true },
+    "super-nav":             { "duration": "instant",  "easing": "default" },
+    "breadcrumbs":           { "duration": "instant",  "easing": "default" },
+    "carousel":              { "duration": "quick",    "easing": "default" },
+    "notification":          { "duration": "quick",    "easing": "entry",   "closeEasing": "exit" },
+    "modal-alert":           { "duration": "gentle",   "easing": "entry",   "closeEasing": "exit" },
+    "interstitial":          { "duration": "generous", "easing": "entry" },
+    "walkthrough-modal":     { "duration": "gentle",   "easing": "entry" },
+    "number-stepper":        { "duration": "instant",  "easing": "default" },
+    "otp-input":             { "duration": "instant",  "easing": "default" },
+    "helper-text":           { "duration": "instant",  "easing": "entry" },
+    "link":                  { "duration": "instant",  "easing": "default" }
+  },
+
+  "stagger": {
+    "rule": "Add 60ms delay per successive item in a list, grid, or group entrance",
+    "formula": "animation-delay: calc(var(--item-index, 0) * 60ms)",
+    "maxItems": 8,
+    "maxDelay": "480ms — never stagger beyond 8 items; remaining items share the final delay",
+    "useWhen": "List items entering screen, card grids loading, nav link reveals",
+    "avoidWhen": "Content already on screen, user-triggered single actions",
+    "cssPattern": ".f-list__item { opacity: 0; transform: translateY(8px); animation: f-list-enter var(--f-brand-motion-duration-quick) var(--f-brand-motion-easing-entry) forwards; } .f-list__item:nth-child(1) { animation-delay: 0ms; } .f-list__item:nth-child(2) { animation-delay: 60ms; } .f-list__item:nth-child(3) { animation-delay: 120ms; } .f-list__item:nth-child(4) { animation-delay: 180ms; } .f-list__item:nth-child(5) { animation-delay: 240ms; } .f-list__item:nth-child(6) { animation-delay: 300ms; } .f-list__item:nth-child(7) { animation-delay: 360ms; } .f-list__item:nth-child(8) { animation-delay: 420ms; } .f-list__item:nth-child(n+9) { animation-delay: 420ms; } @keyframes f-list-enter { to { opacity: 1; transform: none; } }"
+  },
+
+  "stateTransitions": {
+    "default-to-hover":    { "duration": "instant", "easing": "default",  "appNote": "NEVER on App — no hover" },
+    "default-to-focus":    { "duration": "instant", "easing": "default",  "bothPlatforms": true },
+    "default-to-pressed":  { "duration": "extraFast", "easing": "default","bothPlatforms": true },
+    "default-to-disabled": { "duration": "instant", "easing": "default",  "bothPlatforms": true },
+    "default-to-loading":  { "duration": "instant", "easing": "default",  "bothPlatforms": true },
+    "loading-to-success":  { "duration": "quick",   "easing": "entry",    "note": "Success icon scales in after spinner fades" },
+    "loading-to-error":    { "duration": "instant", "easing": "default",  "note": "Error is immediate — never animate errors in slowly" },
+    "error-to-default":    { "duration": "instant", "easing": "default" },
+    "collapsed-to-expanded": { "duration": "quick", "easing": "entry" },
+    "expanded-to-collapsed":  { "duration": "quick", "easing": "exit" }
+  },
+
+  "gpuRules": {
+    "animateOnly": ["transform", "opacity"],
+    "neverAnimate": ["width", "height", "padding", "margin", "top", "left", "right", "bottom", "font-size", "border-width"],
+    "heightTrick": "Use grid-template-rows: 0fr → 1fr for smooth height animation without animating height directly",
+    "willChange": "Add will-change: transform only immediately before animation starts; remove on animationend/transitionend",
+    "compositeOnly": "Only properties that are GPU-composited (transform, opacity) guarantee 60fps on low-end devices",
+    "performanceTarget": "60fps minimum on mid-range mobile (1GB RAM, 2-core)"
+  },
+
+  "interruptionRules": {
+    "principle": "All animations must be interruptible by user action",
+    "cssTransitions": "CSS transitions are inherently interruptible — prefer over CSS animations for reversible states",
+    "cssAnimations": "Use CSS @keyframes only for looping or one-shot effects (skeleton, success pulse)",
+    "exceptions": ["Loading spinners may complete their current cycle", "Page transitions should not interrupt (disable pointer events during)"],
+    "pattern": "Never use animation-fill-mode: forwards on interactive state animations — use CSS transitions instead"
+  },
+
+  "reducedMotion": {
+    "css": "@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }",
+    "keepAlways": ["focus ring outline — accessibility requirement"],
+    "replaceWithInstant": ["accordion-expand", "modal-entrance", "drawer-slide", "tooltip", "page-transition"],
+    "disableCompletely": ["button-hover-lift", "card-hover-lift", "success-pulse", "skeleton-shimmer", "stagger-entrances", "notification-slide"],
+    "rule": "Every @keyframes animation must have a prefers-reduced-motion equivalent. No exceptions."
+  },
+
+  "luxuryPrinciples": {
+    "restraint": "One micro-interaction per component — not a showcase of every effect",
+    "purposeful": "Every animation must communicate state change or guide attention — never decorative",
+    "premium": "Animations feel confident and unhurried — not bouncy, not snappy, not playful",
+    "neverUse": ["spring/elastic overshoot (cubic-bezier bounce)", "3D perspective transforms", "blur transitions on mobile", "particle effects", "confetti"]
+  }
+}
