@@ -68,7 +68,7 @@ Source datasets: `_Flow_App_V2_DataSet_23032026`, `_Flow_Web_V2_DataSet_23032026
 | `references/flow-app-v2.lookup.json` | iOS / Android | 58 component families: nodeId, figmaLink, props, subComponents, tokens, dos, donts, figmaPush |
 | `references/flow-web-v2.lookup.json` | Web (desktop/tablet/mobile) | 88 component families: same schema + Viewport prop |
 | `references/flow-email.lookup.json` | Email templates | Email component schema + platform constraints |
-| `references/flow-icons-v4.lookup.json` | All platforms | Full icon catalogue: 1,245 icons with names, descriptions, keywords, node IDs. Index by prefix. 43 common icon CSS names. |
+| `references/flow-icons-v4.lookup.json` | All platforms | Full icon catalogue: 1,229 icons with CSS names, descriptions, keywords, nodeIds, figmaLinks. Phosphor fallback protocol. 35 common icon CSS names. |
 
 #### Token and foundation files
 
@@ -330,21 +330,31 @@ The FDS icon library (`ic_nav_`, `ic_badge_`, `ic_payment_`, `ic_alerts_`, `ic_i
 
 ### Icon selection workflow (mandatory when coding)
 
-1. **Identify the icon needed** from the UI requirement
-2. **Look up the correct FDS name** in `foundations.md` §Iconography
-3. **Choose the right type**:
-   - Interactive UI element → `ic_nav_` (24px)
-   - Illustrative/decorative → `ic_badge_` (48px)
-   - Inline with text → `ic_inline_` (16px)
-   - Status indicator → `ic_alerts_` (12px or 24px)
-   - Payment method → `ic_payment_` (48px)
-   - Flight status → `ic_flightindicator_` (16px)
-   - Bottom app nav → `ic_nav_menu_` (32px)
-   - Social footer → `Ic_badge_footer_` (32px)
-4. **Use Arabic variant** (`ar_` infix) when `dir="rtl"` and a mirrored version exists
-5. **Reference by exact name** in code — e.g. `ic_nav_search`, `ic_badge_avios`, `ic_alerts_error-24`
+**FDS Flow Icons are always first. Phosphor is the only fallback.**
 
-If no FDS icon covers the need, flag it: **"Icon gap: [description] — no FDS icon exists for this. Recommend raising with design team."** Never reach for an external icon.
+1. **Search `flow-icons-v4.lookup.json` → `allIcons[]`** by `keywords[]` or `description` — confirm an FDS icon fits the purpose
+2. **If found** → use it. Get the exact CSS `name` field. Check `prefix` for size and CSS class pattern.
+3. **If NOT found** → use **Phosphor Icons** as secondary fallback only:
+   - Nav/UI (24px) → `ph-light ph-{icon-name}` — Light weight
+   - Badge/illustrative (48px) → `ph-thin ph-{icon-name}` — Thin weight
+   - **Flag in build manifest**: "Icon gap: [purpose] — Phosphor fallback used: ph-{name}. Recommend raising with DS team."
+4. **Never use** emoji, Material Icons, Feather, Heroicons, or any other library — Phosphor is the only approved secondary
+
+**Correct size for each use:**
+
+| Prefix | Size | CSS class pattern | Use |
+|---|---|---|---|
+| `ic_nav_` | 24px | `icon icon-ic-nav-{name}` | All UI/action icons — default |
+| `ic_badge_` | 48px | `icon icon-ic-badge-{name}` | Illustrative/category only |
+| `ic_nav_ar_` | 24px | `icon icon-ic-nav-ar-{name}` | RTL mirrored nav |
+| `ic_nav_menu_` | 32px | `ic-nav-menu-{name}` | Bottom app nav only |
+| `ic_payment_` | 48px | `ic-payment-{name}` | Payment methods |
+| `ic_alerts_` | 12 or 24px | `{size}/ic-alerts-{name}-{size}` | Status indicators |
+| `ic_inline_` | 16px | `ic-inline-{name}` | Inline with text |
+
+**Use Arabic variant** (`ic_nav_ar_` / `ic_badge_ar_`) when `dir="rtl"` and a mirrored version exists.
+
+**Quick lookup** of 35 most-used icons → `flow-icons-v4.lookup.json` → `commonNavIcons` (semantic key → CSS name).
 
 ---
 
@@ -1944,6 +1954,7 @@ Beyond token compliance, a well-built FDS UI should:
 - Alert icons `ic_alerts_` — 12px or 24px, status indicators only
 - Payment icons `ic_payment_` — 48px, payment method logos
 - Never resize icons outside their intended grid size
+- If no FDS icon exists → Phosphor fallback: Light weight at 24px, Thin weight at 48px — flag as icon gap
 
 ---
 
