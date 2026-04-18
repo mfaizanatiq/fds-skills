@@ -1738,9 +1738,9 @@ Every stylesheet in an FDS project must follow this layer order. Never mix them.
 }
 
 .f-card {
-  --f-card-bg:             var(--f-brand-color-surface-primary);
-  --f-card-radius:         var(--f-brand-radius-md);
-  --f-card-shadow:         var(--f-brand-shadow-md);
+  --f-card-bg:             var(--f-brand-color-background-light);
+  --f-card-radius:         var(--f-brand-radius-base);
+  --f-card-shadow:         var(--f-brand-shadow-medium);
 }
 
 /* ... one block per component ... */
