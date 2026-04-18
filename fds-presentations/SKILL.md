@@ -228,8 +228,8 @@ Applied when `.deck` has no theme modifier (default).
   --accent:          #B4567A;
   --accent-muted:    rgba(180,86,122,0.08);
   --accent-border:   rgba(180,86,122,0.18);
-  --burgundy:        #8E2157;
-  --burgundy-hover:  #5C0931;
+  --burgundy:        #E53E8D;   /* dark theme — bright, legible on #111218 */
+  --burgundy-hover:  #A8246A;
 
   --text-default:    #FFFFFF;
   --text-body:       rgba(255,255,255,0.70);
@@ -320,11 +320,11 @@ Applied to `.deck[data-theme="light"]` or a dedicated light deck.
   --surface-03:      #EEEEF5;   /* inset areas, icon bg */
   --surface-inset:   #1A1C24;   /* code blocks stay dark */
 
-  --accent:          #B4567A;   /* same burgundy — unchanged */
+  --accent:          #B4567A;   /* same — unchanged */
   --accent-muted:    rgba(180,86,122,0.07);
   --accent-border:   rgba(180,86,122,0.20);
-  --burgundy:        #8E2157;
-  --burgundy-hover:  #5C0931;
+  --burgundy:        #8E2157;   /* light theme — deep, legible on #F2F3FA */
+  --burgundy-hover:  #6A1040;
 
   --text-default:    #0D0E14;   /* near-black — same hex as dark-theme bg inverted */
   --text-body:       rgba(13,14,20,0.70);
@@ -874,6 +874,8 @@ When the user shares a screenshot from Apple, Google, or any other source:
 |---|---|---|
 | `--slide-bg` | `#111218` | `#F2F3FA` |
 | `--accent` | `#B4567A` | `#B4567A` |
+| `--burgundy` | `#E53E8D` (bright — legible on dark) | `#8E2157` (deep — legible on light) |
+| `--burgundy-hover` | `#A8246A` | `#6A1040` |
 | `--surface-01` | `rgba(255,255,255,0.04)` | `rgba(0,0,0,0.04)` |
 | `--surface-02` | `rgba(255,255,255,0.08)` | `rgba(0,0,0,0.06)` |
 | `--surface-03` | `rgba(255,255,255,0.12)` | `rgba(0,0,0,0.09)` |
@@ -881,6 +883,11 @@ When the user shares a screenshot from Apple, Google, or any other source:
 | `--text-default` | `#FFFFFF` | `#0D0E14` |
 | `--text-muted` | `rgba(255,255,255,0.55)` | `rgba(13,14,20,0.55)` |
 | `--text-subtle` | `rgba(255,255,255,0.35)` | `rgba(13,14,20,0.35)` |
+
+> **Burgundy rule:** `--burgundy` has two theme-split values because the brand colour must remain legible.
+> `#E53E8D` is bright enough to read on `#111218` dark backgrounds.
+> `#8E2157` is deep enough to read on `#F2F3FA` light backgrounds.
+> Always use `var(--burgundy)` — never hardcode either hex directly. The theme switch handles it.
 
 Title gradient — dark: `linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0.60) 100%)`  
 Title gradient — light: `linear-gradient(180deg, #0D0E14 0%, rgba(13,14,20,0.55) 100%)`
