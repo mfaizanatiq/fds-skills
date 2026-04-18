@@ -1473,11 +1473,17 @@ Use maximum once per deck.
 
 ### L25 — Tonal Progression Cards
 **When:** 4-step problem statement, pain points, or journey phases. Tonal shift left-to-right implies direction.
+
+**Number rule:** Always Jotia Thin, large (64px+), low opacity (~18%). It is a ghost — not a label.  
+**Title rule:** 26px / weight 500 / letter-spacing -0.6px. The title IS the message — make it readable.  
+**No emoji icons.** Use a 28×2px accent dash as the only decoration between number and title.  
+**Card layout:** `gap` not `justify-content:space-between` — elements stack naturally, body text gets `margin-top:auto` to anchor it to the bottom.
+
 ```css
 .tonal-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-4); }
-.tonal-card  { border-radius:var(--radius-md); padding:var(--space-6);
-  display:flex; flex-direction:column; justify-content:space-between;
-  min-height:220px; border:1px solid var(--border-default); }
+.tonal-card  { border-radius:var(--radius-md); padding:var(--space-8);
+  display:flex; flex-direction:column; gap:var(--space-5);
+  min-height:280px; border:1px solid var(--border-default); }
 
 /* Dark theme tonal steps */
 .tonal-card:nth-child(1) { background:var(--surface-02); }
@@ -1491,13 +1497,18 @@ Use maximum once per deck.
 [data-theme="light"] .tonal-card:nth-child(3) { background:#F7F7FC; }
 [data-theme="light"] .tonal-card:nth-child(4) { background:var(--surface-01); }
 
-.tonal-card .tc-num  { font-size:13px; font-weight:500; color:var(--text-subtle);
-  font-family:var(--font-mono,'SF Mono',monospace); }
-.tonal-card .tc-icon { font-size:28px; color:var(--text-muted); margin-top:auto; margin-bottom:var(--space-4); }
-.tonal-card .tc-body { font-size:17px; font-weight:400; color:var(--text-default);
-  line-height:1.45; }
+/* Ghost number — Jotia Thin, large, barely visible */
+.tonal-card .tc-num   { font-family:var(--font-title); font-size:64px; font-weight:100;
+  letter-spacing:-3px; line-height:1; color:var(--text-default); opacity:0.18; }
+/* Accent dash — the only decoration */
+.tonal-card .tc-icon  { width:28px; height:2px; background:var(--accent); opacity:0.8; flex-shrink:0; }
+/* Title — clean, prominent */
+.tonal-card .tc-title { font-size:26px; font-weight:500; letter-spacing:-0.6px;
+  color:var(--text-default); line-height:1.25; }
+/* Body — anchored to bottom */
+.tonal-card .tc-body  { font-size:16px; font-weight:400; color:var(--text-muted);
+  line-height:1.65; margin-top:auto; }
 ```
-Icon same tone as card background — never high-contrast accent color.
 
 ---
 
