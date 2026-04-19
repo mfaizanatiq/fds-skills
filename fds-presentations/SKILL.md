@@ -4,7 +4,7 @@ description: |
   You are the Chief Presentation Officer for Qatar Airways FDS. This skill governs
   every HTML slide deck the FDS team produces: product marketing, investor pitches,
   strategy decks, design system documentation, research reports, feature launches, and
-  executive briefings. You operate a 41-layout library with an intelligent 3-step
+  executive briefings. You operate a 51-layout library with an intelligent 3-step
   decision tree (presentation type → message intent → content type) to select the
   perfect layout for any context. You enforce the FDS dark PS5 caustic and light Flow
   Foundations themes — Jotia Thin titles (weight 100 only), Graphik body, 1920×1080
@@ -98,8 +98,8 @@ Never use `vw`/`vh` units inside slides — always `px`.
 
 ### Font stacks
 ```css
---font-primary: 'Graphik', -apple-system, sans-serif;
---font-title:   'Jotia', 'Graphik', sans-serif;
+--font-primary: 'Graphik', 'Aptos', -apple-system, sans-serif;
+--font-title:   'Jotia', 'Graphik', 'Aptos', sans-serif;
 ```
 
 ---
@@ -147,6 +147,12 @@ Number         Graphik      —     weight:300  tracking:-1.5px  —         .nu
 
 /* Subtitle — body text directly below a t1/t2 */
 .slide-subtitle { font-size:28px; font-weight:400; color:var(--text-body); line-height:1.6; margin-top:var(--space-7); }
+
+/* Eyebrow — small uppercase label above a title (use in HTML; .label is the CSS equivalent) */
+.eyebrow { font-size:17px; font-weight:500; text-transform:uppercase; letter-spacing:3px; color:var(--accent); }
+
+/* Mixed-weight title span — use inside .t1/.t2 to reduce non-key words. Once per deck max. */
+.t-muted { -webkit-text-fill-color:var(--text-muted); background:none; }
 ```
 
 **Legacy aliases** (CopyOnboarding uses these — keep compatible):
@@ -246,6 +252,11 @@ Applied when `.deck` has no theme modifier (default).
   --title-gradient:  linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0.60) 100%);
 
   --warning: #FCC500; --error: #D95757; --success: #34DB80;
+
+  /* Layout constants */
+  --font-mono:         'SF Mono', 'Fira Code', 'Courier New', monospace;
+  --slide-padding-h:   100px;
+  --slide-padding-v:   80px;
 }
 ```
 
@@ -323,8 +334,8 @@ Applied to `.deck[data-theme="light"]` or a dedicated light deck.
   --accent:          #B4567A;   /* same — unchanged */
   --accent-muted:    rgba(180,86,122,0.07);
   --accent-border:   rgba(180,86,122,0.20);
-  --burgundy:        #8E2157;   /* light theme — deep, legible on #F2F3FA */
-  --burgundy-hover:  #6A1040;
+  --burgundy:        #941651;   /* light theme — exact PPTX brand value, legible on #F2F3FA */
+  --burgundy-hover:  #6F103D;
 
   --text-default:    #0D0E14;   /* near-black — same hex as dark-theme bg inverted */
   --text-body:       rgba(13,14,20,0.70);
@@ -348,21 +359,21 @@ Applied to `.deck[data-theme="light"]` or a dedicated light deck.
 
 Sourced from Flow Foundations V1 (node 5540:46). A clean vertical linear gradient:
 pure white at the top, transitioning to `#F2F3FA` (`--f-brand-color-background-default`)
-by 37.13%, then holding solid from there to the bottom. No halo, no radial layers.
+by 40%, then holding solid from there to the bottom. No halo, no radial layers.
 
 ```css
 [data-theme="light"] .slide {
   background: linear-gradient(
     180deg,
-    #ffffff           0%,
-    #F2F3FA        37.13%
+    #ffffff       0%,
+    #F2F3FA      40%
   );
 }
 ```
 
 Token reference:
-- `0%` → `--f-brand-color-background-light` = `#ffffff`
-- `37.13%` → `--f-brand-color-background-default` = `#F2F3FA`
+- `0%`  → `--f-brand-color-background-light` = `#ffffff`
+- `40%` → `--f-brand-color-background-default` = `#F2F3FA`
 
 **RULE — no pseudo-layer effects.** Do not add `::before` blur or radial overlays on
 top of this gradient. The surface is intentionally flat and clean.
@@ -534,7 +545,7 @@ background: [tier accent colour];
 ```
 .label (eyebrow)
 .t1    (144px thin, gradient, Jotia)
-.slide-subtitle (22px body at --space-7 top)
+.slide-subtitle (28px body at --space-7 top)
 .pill  (--space-10 top)
 ```
 `.slide-body` — bottom-anchored.
@@ -803,11 +814,165 @@ Before designing a single slide, ask: **"Is this a Keynote or a Product Board pr
 | **Mood** | Flashy, dramatic, cinematic | Clean, structured, professional |
 | **Cover style** | Full-bleed atmospheric photo or bold type hero | White card on light background, presenter names, B2C logo |
 | **Card surfaces** | `--surface-01/02/03` (dark tinted) | Always white `#FFFFFF` — never tinted |
-| **Burgundy** | `#E53E8D` (vibrant for dark screens) | `#8E2157` (deep brand colour) |
+| **Burgundy** | `#E53E8D` (vibrant for dark screens) | `#941651` (native PPTX brand value) |
 | **Typography feel** | Large ghost numerals, oversized Jotia titles, high contrast | Precise hierarchy, generous whitespace, restrained scale |
 | **Typical use** | Company all-hands, conference keynote, product launch event | Weekly product review, stakeholder update, design critique |
 
 **If the user does not specify:** infer from context clues — "pitch", "launch", "event" → Keynote. "review", "update", "board", "sync" → Product Board.
+
+---
+
+## PRODUCT BOARD TEMPLATE — GCEO REFERENCE
+
+Derived from canonical source: `B2C GCEO Pack I 25 February 2026.pptx` (170 slides).
+This is the live Qatar Airways product board deck. All patterns below are observed, not invented.
+
+### Canvas
+The PPTX source is 13.33" × 7.5" (960×540pt at 72dpi). The FDS HTML canvas is 1920×1080px (2× scale). All PPTX pt values × 2 = HTML px values.
+
+### Native Font Stack
+| PPTX font | HTML equivalent | Role |
+|-----------|-----------------|------|
+| Jotia Thin | `'Jotia', var(--font-title)` | Section titles, slide titles |
+| Jotia Light | `font-family:var(--font-title); font-weight:300` | Metric/stat numbers |
+| Aptos / Aptos SemiBold | `var(--font-primary)` (Graphik in HTML) | Body, labels, captions |
+| Graphik-Light / Graphik Regular | `var(--font-primary)` | Stat labels, supporting text |
+
+> **Jotia Light for stats** — the real PPTX uses Jotia Light (not Graphik weight:300) for metric numbers. In HTML, use `font-family:var(--font-title); font-weight:300` for stat numbers.
+
+### Exact Brand Colours (from PPTX fill/text analysis)
+| Role | Hex | Notes |
+|------|-----|-------|
+| Primary text | `#494949` | Dark gray — used everywhere as default text. NOT near-black. |
+| Near-black text | `#1E212A` | Metric descriptions, dense body |
+| Accent/burgundy | `#941651` | Stats, labels, icons — the actual PPTX brand value |
+| Dark burgundy fill | `#860049` | Section header bar fill (darker) |
+| Light bg text | `#F7F9FF` | Text over dark/burgundy bar backgrounds |
+| Slide bg | `#F2F3FA` | Matches `--slide-bg` light token ✓ |
+| Card surface | `#F2F2FA` | Slightly purple-tinted card bg (close to `--surface-02`) |
+| White card | `#FFFFFF` | Elevated cards on light bg |
+
+> **Product board text color note:** The PPTX uses `#494949` (warm dark gray) as the primary text color — not near-black `#0D0E14`. When building HTML product board slides, use `color: #494949` for Jotia Thin titles and `color: var(--text-body)` for Aptos/Graphik body text.
+
+### Typography Scale (PPTX → HTML at 2× scale)
+| Role | PPTX | HTML px | Font | Color |
+|------|------|---------|------|-------|
+| Slide/section title | 40pt | 80px | Jotia Thin | `#494949` |
+| Sub-section title | 36–32pt | 72–64px | Jotia Thin | `#494949` |
+| Large narrative title | 30pt | 60px | Jotia Thin | `#494949` |
+| Ghost numeral bg | 166pt | 332px | Jotia Thin | surface-level opacity |
+| Metric stat number | 22pt | 44px | Jotia Light | `#941651` |
+| Large impact stat | 80pt | 160px | Jotia Thin | `#941651` |
+| Stat/feature label | 20pt | 40px | Graphik-Light | inherit |
+| Metric sub-label | 14pt | 28px | Graphik-Light | inherit |
+| Body / card label | 12pt | 24px | Aptos (= Graphik) | `#494949` |
+| Caption / footnote | 10–10.5pt | 20px | Aptos | `#1E212A` |
+| Section number pill | 10.5pt | 21px | Aptos | `#941651` |
+
+### Key Layout Patterns (from slide analysis)
+
+**PB-L1 — Agenda / Contents Slide**
+- `Jotia Thin 40pt #494949` title top-left (`L=7%, T=18%`)
+- Section rows below — each a numbered rule item
+- Clean white/light bg, no decorative elements
+
+**PB-L2 — Stats Dashboard (most common content slide)**
+This is the dominant pattern — seen across ~60% of content slides:
+```
+[Section title — Jotia Thin top-left]
+[Section number pill — Aptos 10.5pt #941651]
+[Category label — Aptos/Graphik bold 14pt #494949]
+
+[Grid of stat pairs — right 50-90% of canvas:]
+  ┌────────────────────────────────────────┐
+  │  Metric#   Metric#   Metric#   Metric#  │
+  │  Jotia L   Jotia L   Jotia L   Jotia L  │
+  │  22pt bur  22pt bur  22pt bur  22pt bur │
+  │                                          │
+  │  desc      desc      desc      desc     │
+  │  Aptos     Aptos     Aptos     Aptos    │
+  │  10.5pt    10.5pt    10.5pt    10.5pt   │
+  └────────────────────────────────────────┘
+```
+CSS translation:
+```css
+.pb-stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-8); }
+.pb-stat-num   { font-family:var(--font-title); font-weight:300; font-size:44px;
+                 color:var(--burgundy); letter-spacing:-1.5px; line-height:1; }
+.pb-stat-desc  { font-size:21px; font-weight:400; color:#1E212A;
+                 line-height:1.5; margin-top:var(--space-3); }
+.pb-section-title { font-family:var(--font-title); font-weight:100; font-size:72px;
+                    color:#494949; letter-spacing:-3px; line-height:1.1; }
+.pb-category-label { font-size:28px; font-weight:500; color:#494949; }
+```
+
+**PB-L3 — Mission / Statement Slide**
+- Large Jotia Thin text centered (~32pt PPTX = 64px HTML)
+- Small label top-right: "Mission Statement" Aptos 12pt
+- Near-empty canvas — text is the slide
+
+**PB-L4 — Animated Counter / Impact Slide**
+- Full-bleed Jotia Thin 166pt (= 332px) numbers filling canvas
+- Numbers positioned in 4 overlapping columns, clipped by overflow:hidden
+- Used for dramatic "every minute" impact moments
+- Subtitle: Graphik Regular 18pt (= 36px) centered below
+```css
+.pb-counter-num { font-family:var(--font-title); font-weight:100; font-size:332px;
+                  letter-spacing:-16px; line-height:1; color:#494949; }
+.pb-counter-label { font-size:36px; font-weight:400; font-family:var(--font-primary);
+                    color:#494949; text-align:center; }
+```
+
+**PB-L5 — Large Impact Stat Row (4-up)**
+- Title top-left: Jotia Thin 60px
+- 4 columns each: big stat (Jotia Thin ~160px) + sub-label (Graphik-Light 28px) + arrow + from/to values
+```css
+.pb-impact-num  { font-family:var(--font-title); font-weight:100; font-size:160px;
+                  color:#494949; letter-spacing:-8px; line-height:1; }
+.pb-impact-sub  { font-size:28px; font-weight:300; font-family:var(--font-primary); color:#494949; }
+.pb-impact-arrow { font-size:28px; color:var(--text-muted); }
+.pb-impact-range { font-size:28px; font-weight:300; font-family:var(--font-primary); color:#494949; }
+```
+
+### Product Board Slide Shell
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, initial-scale=1.0">
+  <title>Deck Title — Qatar Airways B2C</title>
+  <link rel="stylesheet" href="../deck-engine.css">
+  <style>
+    /* Product board text override */
+    .pb-title { font-family:var(--font-title); font-weight:100; font-size:80px;
+                color:#494949; letter-spacing:-4px; line-height:1.05; }
+    .pb-section-num { font-size:21px; font-weight:500; color:var(--burgundy);
+                      text-transform:uppercase; letter-spacing:2px; }
+  </style>
+</head>
+<body>
+<div class="deck" id="deck" data-theme="light">
+
+  <!-- SLIDE 1: Cover (use L16 with light theme) -->
+  <section class="slide">
+    <div class="slide-body v-center">
+      <p class="label">Qatar Airways · B2C</p>
+      <h1 class="t2 pb-title">Deck Title</h1>
+      <div class="cover-footer">
+        <div class="cover-footer-item"><div class="cf-label">Presenter</div><div class="cf-value">Name</div></div>
+        <div class="cover-footer-item"><div class="cf-label">Date</div><div class="cf-value">25 February 2026</div></div>
+        <div class="cover-footer-item"><div class="cf-label">Version</div><div class="cf-value">v1.0</div></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+<script src="../deck-engine.js"></script>
+<script>initDeck({ lightBg: '#f2f3fa' });</script>
+</body>
+</html>
+```
 
 ---
 
@@ -880,7 +1045,7 @@ When the user says "audit this", "fix this presentation", "apply new layouts", o
 When the user shares a screenshot from Apple, Google, or any other source:
 
 1. Identify the **layout pattern** (not the brand style).
-2. Map it to the nearest FDS layout code (L1–L41) or define a new one.
+2. Map it to the nearest FDS layout code (L1–L51) or define a new one.
 3. Translate every visual element using the FDS → Google/Apple translation table (see below).
 4. Never carry over the source brand's colours, fonts, or surface treatments.
 
@@ -892,21 +1057,21 @@ When the user shares a screenshot from Apple, Google, or any other source:
 |---|---|---|
 | `--slide-bg` | `#111218` | `#F2F3FA` |
 | `--accent` | `#B4567A` | `#B4567A` |
-| `--burgundy` | `#E53E8D` (bright — legible on dark) | `#8E2157` (deep — legible on light) |
-| `--burgundy-hover` | `#A8246A` | `#6A1040` |
-| `--surface-01` | `rgba(255,255,255,0.04)` | `rgba(0,0,0,0.04)` |
-| `--surface-02` | `rgba(255,255,255,0.08)` | `rgba(0,0,0,0.06)` |
-| `--surface-03` | `rgba(255,255,255,0.12)` | `rgba(0,0,0,0.09)` |
-| `--border-default` | `rgba(255,255,255,0.08)` | `rgba(0,0,0,0.08)` |
+| `--burgundy` | `#E53E8D` (bright — legible on dark) | `#941651` (native PPTX brand value) |
+| `--burgundy-hover` | `#A8246A` | `#6F103D` |
+| `--surface-01` | `#1F212B` | `#FFFFFF` |
+| `--surface-02` | `#282A37` | `#F7F7FB` |
+| `--surface-03` | `#323544` | `#EEEEF5` |
+| `--border-default` | `rgba(255,255,255,0.06)` | `rgba(0,0,0,0.06)` |
 | `--text-default` | `#FFFFFF` | `#0D0E14` |
-| `--text-muted` | `rgba(255,255,255,0.55)` | `rgba(13,14,20,0.55)` |
+| `--text-muted` | `rgba(255,255,255,0.50)` | `rgba(13,14,20,0.50)` |
 | `--text-subtle` | `rgba(255,255,255,0.35)` | `rgba(13,14,20,0.35)` |
 
 > **Burgundy rule — brand vs presentation:**
-> The Qatar Airways brand burgundy is `#8E2157`. That is the canonical brand token used in product UI.
-> In presentations, `--burgundy` is **theme-split** for screen legibility:
+> The Qatar Airways brand burgundy as used in the canonical GCEO product board PPTX is `#941651`. That is the primary brand accent applied to stats, icons, and labels throughout the real template.
+> In HTML presentations, `--burgundy` is **theme-split** for screen legibility:
 > - Dark theme (keynote): `#E53E8D` — bright, vibrant, legible on `#111218`
-> - Light theme (product board): `#8E2157` — deep, on-brand, legible on `#F2F3FA`
+> - Light theme (product board): `#941651` — the exact native brand value from the PPTX template
 > Always use `var(--burgundy)` — the CSS theme switch resolves the correct value automatically. Never hardcode either hex directly in slide CSS.
 
 Title gradient — dark: `linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0.60) 100%)`  
@@ -920,15 +1085,15 @@ FDS spectrum (use in place of "rainbow"): `var(--burgundy)` → `var(--accent)` 
 
 | Class | Font | Size | Weight | Use |
 |---|---|---|---|---|
-| `.t1` | Jotia | 128px | 100 | Hero title, cover |
+| `.t1` | Jotia | 144px | 100 | Hero title, cover |
 | `.t2` | Jotia | 88px | 100 | Section title, big stat |
-| `.t3` | Jotia | 64px | 100 | Sub-section title |
-| `.headline` | Graphik | 36px | 500 | Card headline |
-| `.headline-md` | Graphik | 28px | 500 | Supporting headline |
-| `.subheading` | Graphik | 20px | 500 | Label, subheading |
-| `.body-text` | Graphik | 16px | 400 | Body copy |
-| `.caption` | Graphik | 12px | 400 | Caption, footnote |
-| `.eyebrow` | Graphik | 11px | 500 | Eyebrow label (uppercase) |
+| `.t3` | Jotia | 56px | 100 | Sub-section title |
+| `.headline` | Graphik | 36px | 400 | Card headline |
+| `.headline-md` | Graphik | 28px | 400 | Supporting headline |
+| `.subheading` | Graphik | 22px | 400 | Label, subheading |
+| `.body-text` | Graphik | 20px | 400 | Body copy |
+| `.caption` | Graphik | 16px | 400 | Caption, footnote |
+| `.label` | Graphik | 17px | 500 | Eyebrow label — uppercase, letter-spacing:3px |
 
 ---
 
@@ -938,6 +1103,7 @@ FDS spectrum (use in place of "rainbow"): `var(--burgundy)` → `var(--accent)` 
 
 | You are building… | Primary layouts to reach for |
 |---|---|
+| **Product Board (GCEO / stakeholder review)** | KPI dashboard (PB-L2), Agenda (PB-L1), Statement (PB-L3), Counter impact (PB-L4), Large stat row (PB-L5), Cover footer (L16), ToC (L18) |
 | **Product launch / marketing** | Cover hero (L1), Statement (L4), Bento (L11/L12), Solo stat (L9/L10), Topic reveal (L6), Type list (L7) |
 | **Pitch deck** (investor, stakeholder) | Cover + footer (L16), Section break (L17), Proof + inline stats (L19), Bubble chart (L20), Mixed-weight statement (L22), ToC split (L18) |
 | **Strategy / roadmap** | Section break (L17), Phase columns (L21), Horizontal timeline (L33), Performance bar (L14), Split spec (L15), Statement (L4) |
@@ -950,6 +1116,15 @@ FDS spectrum (use in place of "rainbow"): `var(--burgundy)` → `var(--accent)` 
 ---
 
 ### Step 2 — Message Intent
+
+**"I'm showing strategic KPIs / metrics across multiple priorities" (Product Board)**
+→ PB-L2 KPI Dashboard — section title top-left, 4-column stat grid right (Jotia Light stat number + Aptos description)
+→ One slide per strategic priority. Each metric: Jotia Light 44px `#941651` + Aptos 21px `#1E212A`.
+→ Light theme always. Use `pb-stats-grid` CSS class.
+
+**"I need a dramatic impact moment for the board" (Product Board)**
+→ PB-L4 Counter slide — Jotia Thin 332px numbers filling canvas, Graphik subtitle below
+→ Dark bg (`--surface-inset` or `#322435`), no nav, single phrase only
 
 **"I want to make one strong point"**
 → Statement slide (L4) or Solo stat (L9) or Canvas-filling number (L10)
@@ -1000,6 +1175,11 @@ FDS spectrum (use in place of "rainbow"): `var(--burgundy)` → `var(--accent)` 
 
 | Content you have | Best layout |
 |---|---|
+| **Product board — KPI grid (4–8 metrics per priority)** | PB-L2 stats dashboard |
+| **Product board — agenda / section list** | PB-L1 agenda slide |
+| **Product board — single mission/vision statement** | PB-L3 mission statement |
+| **Product board — dramatic scale metric ("X per minute")** | PB-L4 counter slide |
+| **Product board — 4-up large stat comparison** | PB-L5 impact stat row |
 | Single number / metric | L9 (centred) or L10 (canvas-filling) or L39 (atmospheric) |
 | Metric + visual proof / source | L28 stat + floating evidence panel |
 | Metric + product screenshot | L31 floating product + stat |
@@ -1033,6 +1213,83 @@ FDS spectrum (use in place of "rainbow"): `var(--burgundy)` → `var(--accent)` 
 | Cover slide | L16 cover with metadata footer |
 | Category / domain overview | L8 icon constellation or L34 cap grid |
 | Atmospheric transition | L6 topic reveal or L39 atmospheric stat |
+| Big stat + product visual | L42 big stat + tilted product |
+| Single product moment (tilted) | L43 tilted product showcase |
+| One capability, 3 surfaces | L44 perspective app row |
+| Architecture as floating slabs | L45 isometric layer stack |
+| Voice / audio feature | L46 audio waveform centrepiece |
+| Two peer metrics | L47 twin big stats |
+| Keynote punchline (gradient base) | L48 minimal statement |
+| Breadth reveal (no captions) | L49 inspiration mosaic |
+| 6–8 dated milestones | L50 chip-rail timeline |
+| 3 story stills | L51 filmstrip media |
+
+---
+
+### Step 4 — Visual Density Decision (text-heavy vs visual-first)
+
+The biggest tell of an average deck is over-writing. When the narrative carries the point in spoken words, the slide should carry it in a single image or number. When the slide must teach or prove on its own, text earns its place. Decide per slide.
+
+**Rule of thumb:** If you can write the idea in ≤8 words on the slide AND the spoken narrative explains the rest → **Visual-first**. If the slide must stand alone as documentation or teach the reader → **Text-supported**.
+
+```
+┌── Can the idea land in ≤8 words ON the slide + voiceover carries the rest?
+│
+├─ YES → VISUAL-FIRST track (one hero element, near-empty canvas)
+│   │
+│   ├─ Hero is a NUMBER
+│   │   • standalone impact          → L9 / L10 Solo Stat or Canvas-filling Number
+│   │   • paired with a product shot → L31 or L42 Big Stat + Tilted Product
+│   │   • two peer metrics           → L47 Twin Big Stats
+│   │
+│   ├─ Hero is a PRODUCT / UI
+│   │   • one moment (tilted)        → L43 Tilted Product Showcase
+│   │   • three surfaces side-by-side → L44 Perspective App Row
+│   │   • many surfaces at once      → L49 Inspiration Mosaic (= L11 bento w/ UI shots)
+│   │
+│   ├─ Hero is a STATEMENT
+│   │   • dark, punchline            → L48 Minimal Statement (gradient base optional)
+│   │   • short emotional reveal     → L6 Topic Reveal
+│   │   • mixed-weight headline      → L22 Mixed-weight Statement
+│   │
+│   ├─ Hero is MEDIA / SOUND
+│   │   • voice/audio feature        → L46 Audio Waveform Centrepiece
+│   │   • 3 film stills              → L35 / L51 Filmstrip
+│   │   • single hero photo          → L6 Topic Reveal
+│   │
+│   └─ Hero is a TRANSITION
+│       • new chapter                → L17 Section Break + ghost numeral
+│       • hierarchy reveal           → L45 Isometric Layer Stack
+│
+└─ NO — the slide must teach / prove → TEXT-SUPPORTED track
+    │
+    ├─ 1 point + data proof           → L30 Line Chart + Callout or L14 Performance Bar
+    │   (highlight ONE bar/point in `--accent`, dim the rest to `--text-subtle`)
+    ├─ 3 parallel themes              → L8 Icon Constellation (stroke outline squares)
+    ├─ 4 parallel themes              → L25 Tonal Progression Cards (number or icon variant)
+    ├─ 3 phases                       → L21 Phase Columns
+    ├─ Sequence over time             → L33 Timeline or L50 Chip-Rail Timeline
+    ├─ 6+ mixed items                 → L11 / L12 Bento
+    ├─ Comparison (1 vs 1)            → L15 Split Spec or L13 Spec Callout
+    ├─ Architecture / layers          → L29 Isometric Layer Stack (labelled)
+    ├─ Ecosystem / hub                → L41 Hub-and-Spoke
+    ├─ Board KPI grid (4–8 metrics)   → PB-L2 Stats Dashboard
+    ├─ Board agenda / section list    → PB-L1 Agenda Slide
+    └─ Board 4-up stat comparison     → PB-L5 Impact Stat Row
+```
+
+**Word count gates (hard):**
+- Visual-first slide — **≤40 words total** including eyebrow, title, caption.
+- Hero-number slide — **≤12 words** supporting copy. If more, re-track to Text-supported.
+- Section break — **≤10 words** (label + title).
+- Text-supported card — **≤30 words per card**, 4 cards max per slide.
+
+**Visual-first atmosphere rules:**
+- Prefer tilted / perspective product shots over flat thumbnails. Rotation angle 8–18°, subtle shadow.
+- Let product UI **bleed off edges** (20–40% cropped) — implies "there's more than this slide can show."
+- Pair one vivid accent element with mostly neutral surfaces. One spotlight per slide.
+- Under dark theme, use a soft gradient blur at the base (`linear-gradient(180deg, transparent, accent 20%)` at 12% opacity) for statement slides.
+- Stroke-outline icon squares (`border:1px var(--accent)`, no fill) read more premium than filled icon chips on dark statements.
 
 ---
 
@@ -1040,6 +1297,7 @@ FDS spectrum (use in place of "rainbow"): `var(--burgundy)` → `var(--accent)` 
 
 | Situation | Theme |
 |---|---|
+| **Product Board (GCEO / stakeholder)** | **Light** — Flow Foundations `#F2F3FA`, white cards, `#941651` burgundy |
 | Default FDS presentations | **Dark** — PS5 caustic, `#111218` bg |
 | Client-facing, lightweight reports | **Light** — Flow Foundations gradient |
 | High-impact product marketing | **Dark** — deeper drama |
@@ -1086,7 +1344,7 @@ Full-bleed photographs belong behind content as a blurred, desaturated atmospher
 
 ## LAYOUT LIBRARY
 
-All 25 named patterns. Each has: **when to use**, **FDS tokens used**, **CSS**.
+All 51 named patterns. Each has: **when to use** and **CSS**. Patterns L1–L25 are core; L26–L41 are Google-translated; L42–L51 are visual-first.
 
 ---
 
@@ -1474,10 +1732,15 @@ Use maximum once per deck.
 ### L25 — Tonal Progression Cards
 **When:** 4-step problem statement, pain points, or journey phases. Tonal shift left-to-right implies direction.
 
-**Number rule:** Always Jotia Thin, large (64px+), low opacity (~18%). It is a ghost — not a label.  
-**Title rule:** 26px / weight 500 / letter-spacing -0.6px. The title IS the message — make it readable.  
-**No emoji icons.** Use a 28×2px accent dash as the only decoration between number and title.  
-**Card layout:** `gap` not `justify-content:space-between` — elements stack naturally, body text gets `margin-top:auto` to anchor it to the bottom.
+Two sub-variants — choose based on content type:
+- **Number variant** — sequential/ordered content (pain points, steps, phases). Ghost Jotia numeral at top.
+- **Icon variant** — thematic/categorised content (feature pillars, capabilities, principles). Icon box at top.
+
+**Number rule:** Always Jotia Thin, 64px, opacity 0.18. Ghost — not a label.  
+**Icon box rule:** 44×44px, `var(--accent-muted)` fill, `var(--accent-border)` border, `var(--radius-xs)`. SVG only — no emoji.  
+**Title rule:** 26px / weight 500 / letter-spacing −0.6px. The title IS the message.  
+**No emoji.** The `.tc-icon` dash (28×2px accent) is the only decoration between identifier and title.  
+**Card layout:** `gap` not `justify-content:space-between`. Body gets `margin-top:auto` to anchor to bottom.
 
 ```css
 .tonal-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-4); }
@@ -1497,17 +1760,47 @@ Use maximum once per deck.
 [data-theme="light"] .tonal-card:nth-child(3) { background:#F7F7FC; }
 [data-theme="light"] .tonal-card:nth-child(4) { background:var(--surface-01); }
 
-/* Ghost number — Jotia Thin, large, barely visible */
-.tonal-card .tc-num   { font-family:var(--font-title); font-size:64px; font-weight:100;
+/* Ghost number — number variant */
+.tc-num { font-family:var(--font-title); font-size:64px; font-weight:100;
   letter-spacing:-3px; line-height:1; color:var(--text-default); opacity:0.18; }
-/* Accent dash — the only decoration */
-.tonal-card .tc-icon  { width:28px; height:2px; background:var(--accent); opacity:0.8; flex-shrink:0; }
-/* Title — clean, prominent */
-.tonal-card .tc-title { font-size:26px; font-weight:500; letter-spacing:-0.6px;
+
+/* Icon box — icon variant */
+.tc-icon-box { width:44px; height:44px; background:var(--accent-muted);
+  border:1px solid var(--accent-border); border-radius:var(--radius-xs);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.tc-icon-box svg { width:20px; height:20px; color:var(--accent);
+  fill:none; stroke:currentColor; stroke-width:1.5;
+  stroke-linecap:round; stroke-linejoin:round; }
+
+/* Accent dash — present in both variants, between identifier and title */
+.tc-icon  { width:28px; height:2px; background:var(--accent); opacity:0.8; flex-shrink:0; }
+
+.tc-title { font-size:26px; font-weight:500; letter-spacing:-0.6px;
   color:var(--text-default); line-height:1.25; }
-/* Body — anchored to bottom */
-.tonal-card .tc-body  { font-size:16px; font-weight:400; color:var(--text-muted);
+.tc-body  { font-size:16px; font-weight:400; color:var(--text-muted);
   line-height:1.65; margin-top:auto; }
+```
+
+**Number variant HTML:**
+```html
+<div class="tonal-card">
+  <div class="tc-num">01</div>
+  <div class="tc-icon"></div>
+  <div class="tc-title">Title here</div>
+  <div class="tc-body">Body text.</div>
+</div>
+```
+
+**Icon variant HTML:**
+```html
+<div class="tonal-card">
+  <div class="tc-icon-box">
+    <svg viewBox="0 0 24 24"><!-- inline SVG path --></svg>
+  </div>
+  <div class="tc-icon"></div>
+  <div class="tc-title">Title here</div>
+  <div class="tc-body">Body text.</div>
+</div>
 ```
 
 ---
@@ -1865,13 +2158,193 @@ Title `.t3` top-left or centered above diagram. No nav. Light theme works well.
 
 ---
 
-## New CSS Tokens (add to both themes)
+---
 
-These tokens support the new layout library:
+## VISUAL-FIRST LAYOUT LIBRARY (L42–L51)
 
+These patterns carry meaning through imagery, perspective, or a single oversized figure — not through bulleted copy. Use them when the spoken narrative does the explaining. Every one of them enforces the ≤40-word slide gate from Step 4. Derived from studying Google I/O 2025 keynote slides and fully translated to FDS tokens.
+
+### L42 — Big Stat + Tilted Product
+**When:** one headline metric + one product moment on the same slide. The stat claims the impact; the tilted UI proves it exists.  
+**Structure:** 40% column left (eyebrow + oversized number + caption) / 60% column right (tilted product card bleeding off the right edge).
 ```css
-/* Add to :root (dark) and [data-theme="light"] */
---font-mono: 'SF Mono', 'Fira Code', 'Courier New', monospace;
---slide-padding-h: 100px;   /* horizontal slide padding reference */
---slide-padding-v: 80px;    /* vertical slide padding reference */
+.l42            { display:grid; grid-template-columns:42% 58%; align-items:center; gap:var(--space-12); height:100%; }
+.l42-stat-num   { font-size:200px; font-weight:100; letter-spacing:-10px; line-height:0.9;
+                  font-family:var(--font-title); color:var(--accent); }
+.l42-eyebrow    { font-size:22px; color:var(--text-muted); letter-spacing:0.2px; margin-bottom:var(--space-4); }
+.l42-caption    { font-size:20px; color:var(--text-body); margin-top:var(--space-5); max-width:380px; line-height:1.5; }
+.l42-product    { position:relative; transform:rotate(-10deg) perspective(1400px) rotateY(-6deg);
+                  box-shadow:0 40px 120px rgba(0,0,0,0.35); border-radius:var(--radius-md);
+                  margin-right:-120px; /* bleed off right edge */ }
+.l42-product img{ width:100%; display:block; border-radius:inherit; }
 ```
+Title optional, placed top-left small eyebrow.
+
+---
+
+### L43 — Tilted Product Showcase
+**When:** you want one product screen to *be* the slide. A moment slide — not a walkthrough.  
+**Structure:** full-bleed tilted product card, small eyebrow top-centre, title overlay beneath it.
+```css
+.l43            { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:var(--space-6); }
+.l43-eyebrow    { font-size:24px; color:var(--text-muted); letter-spacing:0.3px; }
+.l43-title      { font-family:var(--font-title); font-size:96px; font-weight:100;
+                  letter-spacing:-5px; line-height:1; color:var(--accent); text-align:center; max-width:1400px; }
+.l43-showcase   { position:absolute; bottom:-120px; right:-80px;
+                  transform:rotate(-8deg) perspective(1600px) rotateX(6deg);
+                  width:720px; box-shadow:0 60px 160px rgba(0,0,0,0.45);
+                  border-radius:var(--radius-lg); overflow:hidden; }
+```
+Accent-coloured title (never gradient here — pure `var(--accent)`, that's the Google cue).
+
+---
+
+### L44 — Perspective App Row
+**When:** one capability is coming to 3 product surfaces (Chrome / Search / Gemini-style). Three tilted cards, each representing a product, floating in a row.
+```css
+.l44-row        { display:flex; justify-content:center; align-items:flex-end; gap:var(--space-10);
+                  perspective:2000px; margin-top:var(--space-12); }
+.l44-app        { width:380px; height:420px; background:var(--surface-01);
+                  border:1px solid var(--border-default); border-radius:var(--radius-md);
+                  box-shadow:0 30px 80px rgba(0,0,0,0.25); overflow:hidden;
+                  display:flex; flex-direction:column; }
+.l44-app:nth-child(1) { transform:rotateY(14deg)  translateZ(-40px); }
+.l44-app:nth-child(2) { transform:rotateY(0deg)   translateZ(0);     z-index:2; }
+.l44-app:nth-child(3) { transform:rotateY(-14deg) translateZ(-40px); }
+.l44-app-label  { padding:var(--space-5) var(--space-6); font-size:18px; font-weight:500;
+                  color:var(--text-default); border-bottom:1px solid var(--border-default); text-align:center; }
+.l44-app-body   { flex:1; padding:var(--space-6); }
+```
+Light theme gets a pastel rainbow gradient border using the FDS spectrum (burgundy → accent → `#7F6CAF` → `#34DB80`) — cue borrowed from Google, fully retokenised.
+
+---
+
+### L45 — Isometric Layer Stack
+**When:** hierarchy or architecture told as floating slabs stacked vertically — each layer is a tier (e.g. Products · Models · Research · Infrastructure).
+```css
+.l45-stack      { position:relative; width:520px; height:640px; margin-left:var(--space-12); perspective:2000px; }
+.l45-layer      { position:absolute; left:0; right:0; height:160px;
+                  background:var(--surface-01); border:1px solid var(--border-default);
+                  border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center;
+                  transform:rotateX(55deg) rotateZ(-35deg);
+                  box-shadow:0 24px 60px rgba(0,0,0,0.18); }
+.l45-layer:nth-child(1) { top:0;   }
+.l45-layer:nth-child(2) { top:140px; }
+.l45-layer:nth-child(3) { top:280px; }
+.l45-layer:nth-child(4) { top:420px; }
+.l45-layer svg  { width:48px; height:48px; color:var(--accent); stroke:currentColor; fill:none; stroke-width:1.5; }
+.l45-labels     { position:absolute; top:0; right:-320px; display:flex; flex-direction:column;
+                  justify-content:space-between; height:640px; padding:var(--space-4) 0; }
+.l45-label      { font-size:22px; color:var(--text-default); line-height:1; }
+```
+Bottom layer may carry a thin rainbow-spectrum underline (`linear-gradient(90deg, burgundy, accent, #7F6CAF, #34DB80)`) at 2px — Google's keynote finisher, translated.
+
+---
+
+### L46 — Audio Waveform Centrepiece
+**When:** voice, audio, or expressive sound is the feature. Empty canvas with eyebrow + title + animated dot strip + one tag pill.
+```css
+.l46            { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:var(--space-8); }
+.l46-eyebrow    { font-size:22px; color:var(--text-muted); font-weight:500; }
+.l46-title      { font-family:var(--font-title); font-size:104px; font-weight:100;
+                  letter-spacing:-5px; line-height:1; color:var(--text-default); text-align:center; }
+.l46-wave       { display:flex; align-items:center; gap:4px; margin-top:var(--space-6); }
+.l46-wave span  { width:4px; border-radius:2px; background:var(--accent); opacity:0.9; }
+/* Generate 60 bars; heights vary 4–32px in a smooth sine-ish distribution */
+.l46-pill       { padding:var(--space-3) var(--space-6); background:var(--surface-02);
+                  border:1px solid var(--border-default); border-radius:999px;
+                  font-size:16px; color:var(--text-muted); }
+```
+Dark theme only. Background gets the atmospheric caustic baked in — no other elements.
+
+---
+
+### L47 — Twin Big Stats
+**When:** two peer metrics tell the story together (e.g. Developers 7M+ / Enterprise 40×). Two half-slide columns, eyebrow + oversized number + descriptor each.
+```css
+.l47            { display:grid; grid-template-columns:1fr 1fr; align-items:center; justify-items:center; height:100%; gap:var(--space-14); }
+.l47-col        { display:flex; flex-direction:column; align-items:center; gap:var(--space-3); text-align:center; max-width:440px; }
+.l47-eyebrow    { font-size:22px; color:var(--text-muted); font-weight:500; }
+.l47-num        { font-family:var(--font-title); font-size:180px; font-weight:100;
+                  letter-spacing:-8px; line-height:0.9; color:var(--accent); }
+.l47-label      { font-size:20px; color:var(--text-body); line-height:1.5; max-width:360px; }
+```
+No divider between columns — spacing does the work. Put the product mosaic behind as a faint atmospheric layer (opacity 0.08) if the slide needs texture.
+
+---
+
+### L48 — Minimal Statement (Gradient Base)
+**When:** a single headline is the entire slide. Keynote punchline. Nothing else competes.  
+**Dark variant** adds a soft gradient blur at the bottom edge evoking a horizon — taken from Google's "150+ countries" slide, retokenised.
+```css
+.l48            { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:var(--space-6); position:relative; }
+.l48-eyebrow    { font-size:28px; color:var(--text-muted); font-weight:500; }
+.l48-headline   { font-family:var(--font-title); font-size:128px; font-weight:100;
+                  letter-spacing:-6.5px; line-height:1; color:var(--text-default); text-align:center; max-width:1600px; }
+.l48-headline .accent { color:var(--accent); }   /* highlight one word */
+.l48-base       { position:absolute; left:0; right:0; bottom:0; height:320px;
+                  background:radial-gradient(ellipse 1400px 320px at 50% 100%,
+                    rgba(229,62,141,0.22) 0%,
+                    rgba(127,108,175,0.12) 40%,
+                    transparent 80%);
+                  filter:blur(40px); pointer-events:none; z-index:0; }
+```
+Optional: swap the radial for a Flow spectrum stripe (2px high) for "chapter end" feel.
+
+---
+
+### L49 — Inspiration Mosaic
+**When:** you need to convey breadth — "look at everything this covers" — without captions. Dense bento of real UI crops, short conversation bubbles, and tag chips in mixed orientations. Use this as a breadth reveal, not a detail slide.
+```css
+.l49            { display:grid; grid-template-columns:repeat(6, 1fr); grid-auto-rows:160px;
+                  gap:var(--space-4); width:100%; height:100%; }
+.l49-tile       { background:var(--surface-01); border:1px solid var(--border-default);
+                  border-radius:var(--radius-sm); overflow:hidden; position:relative; }
+.l49-tile.lg    { grid-column:span 2; grid-row:span 2; }
+.l49-tile.wide  { grid-column:span 2; }
+.l49-tile.tall  { grid-row:span 2; }
+.l49-tile img   { width:100%; height:100%; object-fit:cover; }
+.l49-tile.bubble{ padding:var(--space-5) var(--space-6); font-size:15px; color:var(--text-body);
+                  display:flex; align-items:center; }
+```
+No title — the mosaic is the message. Accept ≤6 words overlayed at top-left if essential.
+
+---
+
+### L50 — Chip-Rail Timeline
+**When:** a history line of 6–8 dated milestones that the audience needs to SCAN, not read. Date-pill nodes strung along a horizontal connector.
+```css
+.l50            { display:flex; flex-direction:column; align-items:center; justify-content:center;
+                  height:100%; padding:var(--space-20) 0; }
+.l50-rail       { position:relative; width:100%; display:flex; justify-content:space-between;
+                  align-items:center; padding:0 var(--space-12); }
+.l50-rail::before { content:""; position:absolute; top:50%; left:5%; right:5%;
+                  height:1px; background:var(--border-elevated); z-index:0; }
+.l50-node       { position:relative; z-index:1; display:flex; flex-direction:column;
+                  align-items:center; gap:var(--space-4); }
+.l50-pill       { padding:var(--space-3) var(--space-5); background:var(--surface-02);
+                  border:1px solid var(--border-elevated); border-radius:999px;
+                  font-size:17px; font-weight:500; color:var(--text-default); }
+.l50-pill.active{ background:var(--accent-muted); border-color:var(--accent); color:var(--accent); }
+.l50-label      { font-size:16px; color:var(--text-muted); text-align:center; }
+```
+Highlight exactly one node in `--accent` — the moment that matters most on this slide.
+
+---
+
+### L51 — Filmstrip Media
+**When:** 3 moments from the same story — photos, interview stills, use-case shots. Portrait aspect, centre crop slightly larger.
+```css
+.l51            { display:flex; justify-content:center; align-items:center; gap:var(--space-6);
+                  height:100%; padding:0 var(--space-12); }
+.l51-frame      { border-radius:var(--radius-sm); overflow:hidden; background:var(--surface-02);
+                  box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+.l51-frame.side  { width:320px; height:560px; opacity:0.85; transform:scale(0.95); }
+.l51-frame.center{ width:380px; height:640px; z-index:1; }
+.l51-frame img  { width:100%; height:100%; object-fit:cover; }
+```
+Dark theme preferred. Optional eyebrow + short caption above, nothing below.
+
+---
+
+<!-- NOTE: --font-mono, --slide-padding-h, --slide-padding-v are defined in the :root block above. -->
